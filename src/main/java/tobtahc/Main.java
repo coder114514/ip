@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
 import tobtahc.task.Task;
-import tobtahc.task.TaskType;
 
 public class Main {
     public static void main(String[] args) {
@@ -46,7 +45,7 @@ public class Main {
                 continue;
             }
 
-            var patternMarkUnmark = Pattern.compile("(?:un)?mark\\s+([0-9]+)\\s*");
+            var patternMarkUnmark = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
             var matcherMarkUnmark = patternMarkUnmark.matcher(input);
 
             if (matcherMarkUnmark.find()) {
@@ -73,9 +72,15 @@ public class Main {
                     botMessageSep();
                 }
                 continue;
+            } else if (input.startsWith("mark") || input.startsWith("unmark")) {
+                botMessageSep();
+                botMessageLine("Syntax error! Correct syntax:");
+                botMessageLine("  mark <no> or unmark <no>");
+                botMessageSep();
+                continue;
             }
 
-            var patternDelete = Pattern.compile("^delete\\s+([0-9]+)\\s*$");
+            var patternDelete = Pattern.compile("^delete\\s*([0-9]+)\\s*$");
             var matcherDelete = patternDelete.matcher(input);
 
             if (matcherDelete.find()) {

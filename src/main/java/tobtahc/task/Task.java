@@ -11,7 +11,7 @@ public abstract class Task {
     private boolean isDone;
 
     public static Task parseTask(String input) throws NotATask, TaskParseError {
-        var patternToDo = Pattern.compile("todo (.+)");
+        var patternToDo = Pattern.compile("^todo (.+)");
         var matcherToDo = patternToDo.matcher(input);
 
         if (matcherToDo.find()) {
@@ -21,7 +21,7 @@ public abstract class Task {
             throw new TaskParseError(TaskType.TODO);
         }
 
-        var patternDeadline = Pattern.compile("deadline (.+)/by (.+)");
+        var patternDeadline = Pattern.compile("^deadline (.+)/by (.+)");
         var matcherDeadline = patternDeadline.matcher(input);
 
         if (matcherDeadline.find()) {
@@ -32,7 +32,7 @@ public abstract class Task {
             throw new TaskParseError(TaskType.DEADLINE);
         }
 
-        var patternEvent = Pattern.compile("event (.+)/from (.+)/to (.+)");
+        var patternEvent = Pattern.compile("^event (.+)/from (.+)/to (.+)");
         var matcherEvent = patternEvent.matcher(input);
 
         if (matcherEvent.find()) {
