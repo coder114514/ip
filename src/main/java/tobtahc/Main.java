@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import tobtahc.exceptions.NotATask;
+import tobtahc.exceptions.TaskParseError;
 import tobtahc.task.Task;
+import tobtahc.task.TaskType;
 
 public class Main {
     public static void main(String[] args) {
@@ -72,9 +75,8 @@ public class Main {
                 continue;
             }
 
-            var task = Task.parseTask(input);
-
-            if (task != null) {
+            try {
+                var task = Task.parseTask(input);
                 tasks.add(task);
                 botMessageSep();
                 if (rng % 4 == 0) {
@@ -89,16 +91,35 @@ public class Main {
                                                  tasks.size()));
                 }
                 botMessageSep();
-                continue;
-            }
 
-            botMessageSep();
-            if (rng % 4 == 0) {
-                botMessageLine("ohce: " + input);
-            } else {
-                botMessageLine("echo: " + input);
+            } catch (TaskParseError e) {
+                botMessageSep();
+                botMessageLine("Syntax error! Correct syntax:");
+                switch (e.getTaskType()) {
+                    case TODO: {
+                        botMessageLine("  todo <task>");
+                        break;
+                    }
+                    case DEADLINE: {
+                        botMessageLine("  deadline <task> /by <time>");
+                        break;
+                    }
+                    case EVENT: {
+                        botMessageLine("  event <task> /from <time> /to <time>");
+                        break;
+                    }
+                }
+                botMessageSep();
+
+            } catch (NotATask e) {
+                botMessageSep();
+                if (rng % 4 == 0) {
+                    botMessageLine("ohce: " + input);
+                } else {
+                    botMessageLine("echo: " + input);
+                }
+                botMessageSep();
             }
-            botMessageSep();
         }
 
         chatBye(endByEof);

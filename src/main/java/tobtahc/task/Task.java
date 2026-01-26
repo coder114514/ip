@@ -2,17 +2,23 @@ package tobtahc.task;
 
 import java.util.regex.Pattern;
 
+import tobtahc.exceptions.NotATask;
+import tobtahc.exceptions.TaskParseError;
+import tobtahc.task.TaskType;
+
 public abstract class Task {
     private String description;
     private boolean isDone;
 
-    public static Task parseTask(String input) {
+    public static Task parseTask(String input) throws NotATask, TaskParseError {
         var patternToDo = Pattern.compile("todo (.+)");
         var matcherToDo = patternToDo.matcher(input);
 
         if (matcherToDo.find()) {
             var desc = matcherToDo.group(1).trim();
             return new ToDo(desc);
+        } else if (input.startsWith("todo")) {
+            throw new TaskParseError(TaskType.TODO);
         }
 
         var patternDeadline = Pattern.compile("deadline (.+)/by (.+)");
@@ -22,6 +28,8 @@ public abstract class Task {
             var desc = matcherDeadline.group(1).trim();
             var deadline = matcherDeadline.group(2).trim();
             return new Deadline(desc, deadline);
+        } else if (input.startsWith("deadline")) {
+            throw new TaskParseError(TaskType.DEADLINE);
         }
 
         var patternEvent = Pattern.compile("event (.+)/from (.+)/to (.+)");
@@ -32,9 +40,11 @@ public abstract class Task {
             var from = matcherEvent.group(2).trim();
             var to = matcherEvent.group(3).trim();
             return new Event(desc, from, to);
+        } else if (input.startsWith("event")) {
+            throw new TaskParseError(TaskType.EVENT);
         }
 
-        return null;
+        throw new NotATask();
     }
 
     public Task(String description) {
