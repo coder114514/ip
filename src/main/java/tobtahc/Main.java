@@ -34,7 +34,7 @@ public class Main {
             if (input.equals("list")) {
                 botMessageSep();
                 botMessageLine(String.format("You have %s tasks in your list:",
-                                             tasks.size()));
+                        tasks.size()));
                 if (tasks.size() == 0) {
                     botMessageLine("(empty)");
                 }
@@ -102,7 +102,7 @@ public class Main {
                 }
                 botMessageLine("  " + task);
                 botMessageLine(String.format("Now you have %s tasks in the list.",
-                                             tasks.size()));
+                        tasks.size()));
                 botMessageSep();
                 continue;
             } else if (input.startsWith("delete")) {
@@ -121,12 +121,12 @@ public class Main {
                     botMessageLine("Ti tog!");
                     botMessageLine("  dedda ksat: " + task.getDescription());
                     botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.",
-                                                 tasks.size()));
+                            tasks.size()));
                 } else {
                     botMessageLine("Got it!");
                     botMessageLine("  task added: " + task.getDescription());
                     botMessageLine(String.format("Now you have %s tasks in the list.",
-                                                 tasks.size()));
+                            tasks.size()));
                 }
                 botMessageSep();
 
@@ -134,18 +134,15 @@ public class Main {
                 botMessageSep();
                 botMessageLine("Syntax error! Correct syntax:");
                 switch (e.getTaskType()) {
-                    case TODO: {
-                        botMessageLine("  todo <task>");
-                        break;
-                    }
-                    case DEADLINE: {
-                        botMessageLine("  deadline <task> /by <time>");
-                        break;
-                    }
-                    case EVENT: {
-                        botMessageLine("  event <task> /from <time> /to <time>");
-                        break;
-                    }
+                case TODO:
+                    botMessageLine("  todo <task>");
+                    break;
+                case DEADLINE:
+                    botMessageLine("  deadline <task> /by <time>");
+                    break;
+                case EVENT:
+                    botMessageLine("  event <task> /from <time> /to <time>");
+                    break;
                 }
                 botMessageSep();
 

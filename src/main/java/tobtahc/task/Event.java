@@ -13,8 +13,7 @@ public class Event extends Task {
     @Override
     public String getDescription() {
         return String.format("%s (from: %s to: %s)",
-                             super.getDescription(),
-                             this.from, this.to);
+                super.getDescription(), this.from, this.to);
     }
 
     @Override

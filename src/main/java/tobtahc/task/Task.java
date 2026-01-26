@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
-import tobtahc.task.TaskType;
 
 public abstract class Task {
     private String description;
