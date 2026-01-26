@@ -1,7 +1,9 @@
 @ECHO OFF
 
-REM create bin directory if it doesn't exist
-if not exist ..\bin mkdir ..\bin
+cd /d %~dp0
+
+if exist ..\bin rmdir /s /q ..\bin
+mkdir ..\bin
 
 REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
@@ -19,7 +21,7 @@ REM no error here, errorlevel == 0
 del sources.txt
 
 REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin tobtahch.TobTahc < input.txt > ACTUAL.TXT
+java -classpath ..\bin tobtahc.Main < input.txt > ACTUAL.TXT
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT

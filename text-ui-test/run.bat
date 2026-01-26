@@ -1,7 +1,9 @@
 @ECHO OFF
 
-REM create bin directory if it doesn't exist
-if not exist ..\bin mkdir ..\bin
+cd /d %~dp0
+
+if exist ..\bin rmdir /s /q ..\bin
+mkdir ..\bin
 
 REM compile the code into the bin folder
 if exist sources.txt del sources.txt
@@ -16,4 +18,4 @@ REM no error here, errorlevel == 0
 del sources.txt
 
 REM run the program
-java -classpath ..\bin tobtahc.TobTahc
+java -classpath ..\bin tobtahc.Main

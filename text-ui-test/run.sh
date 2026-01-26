@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+
 # create bin directory if it doesn't exist
-if [ ! -d "../bin" ]
+if [ -d "../bin" ]
 then
-    mkdir ../bin
+    rm -rf ../bin
 fi
+mkdir ../bin
 
 # compile the code into the bin folder, terminates if error occurred
 if [ -e "./sources.txt" ]
@@ -21,4 +24,4 @@ fi
 rm sources.txt
 
 # run the program
-java -classpath ../bin tobtahc.TobTahc
+java -classpath ../bin tobtahc.Main

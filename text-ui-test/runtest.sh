@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")"
+
 # create bin directory if it doesn't exist
-if [ ! -d "../bin" ]
+if [ -d "../bin" ]
 then
-    mkdir ../bin
+    rm -rf ../bin
 fi
+mkdir ../bin
 
 # delete output from previous run
 if [ -e "./ACTUAL.TXT" ]
@@ -26,7 +29,7 @@ fi
 rm sources.txt
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin tobtahc.TobTahc < input.txt > ACTUAL.TXT
+java -classpath ../bin tobtahc.Main < input.txt > ACTUAL.TXT
 
 # convert to UNIX format
 cp EXPECTED.TXT EXPECTED-UNIX.TXT
