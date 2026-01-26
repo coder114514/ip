@@ -1,3 +1,9 @@
 list
-blah
+read book
+return book
+read manual
+return manual
+list
+hi
+list
 bye
