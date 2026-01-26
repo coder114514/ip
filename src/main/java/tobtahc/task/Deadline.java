@@ -1,8 +1,15 @@
 package tobtahc.task;
 
+/**
+ * Implements the Deadline task.
+ */
 public class Deadline extends Task {
     private String deadline;
 
+    /**
+     * @param description Task description.
+     * @param deadline The deadline of the task.
+     */
     public Deadline(String description, String deadline) {
         super(description);
         this.deadline = deadline;

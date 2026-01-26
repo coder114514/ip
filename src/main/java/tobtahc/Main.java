@@ -8,7 +8,15 @@ import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
 import tobtahc.task.Task;
 
+/**
+ * The main program.
+ */
 public class Main {
+    /**
+     * The main program.
+     *
+     * @param args The command line args passed to the program.
+     */
     public static void main(String[] args) {
         chatIntro();
 
@@ -161,18 +169,33 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * A helper for displaying the bot's response with an indentation.
+     * When called with no arguments, it just outputs a newline.
+     */
     public static void botMessageLine() {
         System.out.println();
     }
 
-    public static void botMessageLine(String str) {
-        System.out.println("    " + str);
+    /**
+     * A helper for displaying the bot's response with an indentation.
+     *
+     * @param message The message to display.
+     */
+    public static void botMessageLine(String message) {
+        System.out.println("    " + message);
     }
 
+    /**
+     * A helper for displaying the separator line.
+     */
     public static void botMessageSep() {
         botMessageLine("___________________________________________________________________\n");
     }
 
+    /**
+     * A helper for displaying the intro message.
+     */
     public static void chatIntro() {
         botMessageSep();
         botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
@@ -181,6 +204,11 @@ public class Main {
         botMessageLine();
     }
 
+    /**
+     * A helper for displaying the bye message.
+     *
+     * @param endByEof If the chat is ended by an EOF instead of the user input 'bye', display a info.
+     */
     public static void chatBye(boolean endByEof) {
         botMessageSep();
         if (endByEof) {

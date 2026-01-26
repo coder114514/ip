@@ -5,15 +5,30 @@ import java.util.regex.Pattern;
 import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
 
+/**
+ * This is the base class for the three kinds of tasks.
+ * It implements the common behavior.
+ */
 public abstract class Task {
     private String description;
     private boolean isDone;
 
+    /**
+     * @param description Task description.
+     */
     public Task(String description) {
         this.description = description;
         isDone = false;
     }
 
+    /**
+     * Parses the user input to get the task.
+     *
+     * @param input User input.
+     * @return Task object.
+     * @throws NotATask if the input does not resemble a task at all.
+     *         TaskParseError if the input resembles a task but is not in the correct syntax.
+     */
     public static Task parseTask(String input) throws NotATask, TaskParseError {
         var patternToDo = Pattern.compile("^todo (.+)");
         var matcherToDo = patternToDo.matcher(input);
@@ -60,6 +75,9 @@ public abstract class Task {
         return description;
     }
 
+    /**
+     * @return Return in the form of [X]description, which is treated as the string form of the task.
+     */
     public String getDescriptionWithStatus() {
         return "[" + getStatusIcon() + "] " + getDescription();
     }
@@ -68,23 +86,24 @@ public abstract class Task {
         return isDone;
     }
 
+    /**
+     * @return Returns X if the task is done.
+     */
     public String getStatusIcon() {
         return isDone() ? "X" : " ";
     }
 
+    /**
+     * Mark the task as done.
+     */
     public void markAsDone() {
         isDone = true;
     }
 
-    public void markAsDone(boolean isDone) {
-        this.isDone = isDone;
-    }
-
+    /**
+     * Unmark the task.
+     */
     public void markAsUndone() {
         isDone = false;
-    }
-
-    public void markAsUndone(boolean isUndone) {
-        isDone = !isUndone;
     }
 }
