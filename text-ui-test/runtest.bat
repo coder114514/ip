@@ -7,15 +7,19 @@ REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
 
 REM compile the code into the bin folder
-javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\*.java
+if exist sources.txt del sources.txt
+dir /S /B ..\src\main\java\*.java > sources.txt
+javac -cp ..\src\main\java -Xlint:none -d ..\bin @sources.txt
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
+    del sources.txt
     exit /b 1
 )
 REM no error here, errorlevel == 0
+del sources.txt
 
 REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin TobTahc < input.txt > ACTUAL.TXT
+java -classpath ..\bin tobtahch.TobTahc < input.txt > ACTUAL.TXT
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT

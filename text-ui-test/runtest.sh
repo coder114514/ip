@@ -13,14 +13,20 @@ then
 fi
 
 # compile the code into the bin folder, terminates if error occurred
-if ! javac -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/*.java
+if [ -e "./sources.txt" ]
+then
+    rm sources.txt
+fi
+find ../src/main/java -name "*.java" > sources.txt
+if ! javac -cp ../src/main/java -Xlint:none -d ../bin @sources.txt
 then
     echo "********** BUILD FAILURE **********"
     exit 1
 fi
+rm sources.txt
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin TobTahc < input.txt > ACTUAL.TXT
+java -classpath ../bin tobtahc.TobTahc < input.txt > ACTUAL.TXT
 
 # convert to UNIX format
 cp EXPECTED.TXT EXPECTED-UNIX.TXT
