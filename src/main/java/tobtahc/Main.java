@@ -4,46 +4,58 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import tobtahc.task.Task;
+
 public class Main {
     public static void main(String[] args) {
         chatIntro();
 
-        var list = new ArrayList<Task>();
+        int rng = 0;
+        boolean endByEof = false;
+        var tasks = new ArrayList<Task>();
         var scanner = new Scanner(System.in);
 
         for (;;) {
+            if (!scanner.hasNextLine()) {
+                endByEof = true;
+                break;
+            }
+
             var input = scanner.nextLine();
 
             if (input.equals("bye")) {
                 break;
             }
 
+            rng = Utils.nextRng(rng, input.hashCode());
+
             if (input.equals("list")) {
                 botMessageSep();
-                botMessageLine("Here are the tasks in your list:");
-                if (list.size() == 0) {
+                botMessageLine(String.format("You have %s tasks in your list:",
+                                             tasks.size()));
+                if (tasks.size() == 0) {
                     botMessageLine("(empty)");
                 }
-                for (int i = 0; i < list.size(); ++i) {
-                    botMessageLine(String.format("%s.%s", i + 1, list.get(i)));
+                for (int i = 0; i < tasks.size(); ++i) {
+                    botMessageLine(String.format("%s.%s", i + 1, tasks.get(i)));
                 }
                 botMessageSep();
                 continue;
             }
 
-            var patternMarkUnmark = Pattern.compile("(?:un)?mark ([0-9]+)");
+            var patternMarkUnmark = Pattern.compile("(?:un)?mark\\s+([0-9]+)\\s*");
             var matcherMarkUnmark = patternMarkUnmark.matcher(input);
 
             if (matcherMarkUnmark.find()) {
                 var indexString = matcherMarkUnmark.group(1);
                 int index = Integer.parseInt(indexString) - 1;
-                if (index < 0 || index >= list.size()) {
+                if (index < 0 || index >= tasks.size()) {
                     botMessageSep();
                     botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
                     botMessageSep();
                     continue;
                 }
-                var task = list.get(index);
+                var task = tasks.get(index);
                 if (input.charAt(0) == 'm') {
                     task.markAsDone();
                     botMessageSep();
@@ -60,17 +72,36 @@ public class Main {
                 continue;
             }
 
-            list.add(new Task(input));
+            var task = Task.parseTask(input);
+
+            if (task != null) {
+                tasks.add(task);
+                botMessageSep();
+                if (rng % 4 == 0) {
+                    botMessageLine("Ti tog!");
+                    botMessageLine("  dedda ksat: " + task.getDescription());
+                    botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.",
+                                                 tasks.size()));
+                } else {
+                    botMessageLine("Got it!");
+                    botMessageLine("  task added: " + task.getDescription());
+                    botMessageLine(String.format("Now you have %s tasks in the list.",
+                                                 tasks.size()));
+                }
+                botMessageSep();
+                continue;
+            }
+
             botMessageSep();
-            if (list.hashCode() % 4 == 0) {
-                botMessageLine("dedda: " + input);
+            if (rng % 4 == 0) {
+                botMessageLine("ohce: " + input);
             } else {
-                botMessageLine("added: " + input);
+                botMessageLine("echo: " + input);
             }
             botMessageSep();
         }
 
-        chatBye();
+        chatBye(endByEof);
         scanner.close();
     }
 
@@ -94,8 +125,11 @@ public class Main {
         botMessageLine();
     }
 
-    public static void chatBye() {
+    public static void chatBye(boolean endByEof) {
         botMessageSep();
+        if (endByEof) {
+            botMessageLine("EOF DETECTED! Remember to say 'bye' next time!");
+        }
         botMessageLine("Noos niaga uoy ees ot epoh! Eyb.");
         botMessageSep();
     }
