@@ -9,6 +9,11 @@ public abstract class Task {
     private String description;
     private boolean isDone;
 
+    public Task(String description) {
+        this.description = description;
+        isDone = false;
+    }
+
     public static Task parseTask(String input) throws NotATask, TaskParseError {
         var patternToDo = Pattern.compile("^todo (.+)");
         var matcherToDo = patternToDo.matcher(input);
@@ -46,34 +51,29 @@ public abstract class Task {
         throw new NotATask();
     }
 
-    public Task(String description) {
-        this.description = description;
-        this.isDone = false;
-    }
-
     @Override
     public String toString() {
-        return this.getDescriptionWithStatus();
+        return getDescriptionWithStatus();
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public String getDescriptionWithStatus() {
-        return "[" + this.getStatusIcon() + "] " + this.getDescription();
+        return "[" + getStatusIcon() + "] " + getDescription();
     }
 
     public boolean isDone() {
-        return this.isDone;
+        return isDone;
     }
 
     public String getStatusIcon() {
-        return this.isDone() ? "X" : " ";
+        return isDone() ? "X" : " ";
     }
 
     public void markAsDone() {
-        this.isDone = true;
+        isDone = true;
     }
 
     public void markAsDone(boolean isDone) {
@@ -81,10 +81,10 @@ public abstract class Task {
     }
 
     public void markAsUndone() {
-        this.isDone = false;
+        isDone = false;
     }
 
     public void markAsUndone(boolean isUndone) {
-        this.isDone = !isUndone;
+        isDone = !isUndone;
     }
 }

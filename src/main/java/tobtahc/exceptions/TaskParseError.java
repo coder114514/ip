@@ -10,6 +10,6 @@ public class TaskParseError extends TobTahcException {
     }
 
     public TaskType getTaskType() {
-        return this.type;
+        return type;
     }
 }

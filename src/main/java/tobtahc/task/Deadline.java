@@ -11,7 +11,7 @@ public class Deadline extends Task {
     @Override
     public String getDescription() {
         return String.format("%s (by: %s)",
-                super.getDescription(), this.deadline);
+                super.getDescription(), deadline);
     }
 
     @Override
