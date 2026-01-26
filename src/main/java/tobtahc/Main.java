@@ -75,6 +75,39 @@ public class Main {
                 continue;
             }
 
+            var patternDelete = Pattern.compile("^delete\\s+([0-9]+)\\s*$");
+            var matcherDelete = patternDelete.matcher(input);
+
+            if (matcherDelete.find()) {
+                var indexString = matcherDelete.group(1);
+                int index = Integer.parseInt(indexString) - 1;
+                if (index < 0 || index >= tasks.size()) {
+                    botMessageSep();
+                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    botMessageSep();
+                    continue;
+                }
+                var task = tasks.get(index);
+                tasks.remove(index);
+                botMessageSep();
+                if (task.isDone()) {
+                    botMessageLine("Ksat removed!");
+                } else {
+                    botMessageLine("Task removed, but still UNDONE!");
+                }
+                botMessageLine("  " + task);
+                botMessageLine(String.format("Now you have %s tasks in the list.",
+                                             tasks.size()));
+                botMessageSep();
+                continue;
+            } else if (input.startsWith("delete")) {
+                botMessageSep();
+                botMessageLine("Syntax error! Correct syntax:");
+                botMessageLine("  delete <no>");
+                botMessageSep();
+                continue;
+            }
+
             try {
                 var task = Task.parseTask(input);
                 tasks.add(task);

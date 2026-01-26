@@ -13,4 +13,5 @@ event project meeting/from Mon 2pm/to 4pm
 deadline do homework /by no idea :-p
 list
 todo
+delete 3
 bye
