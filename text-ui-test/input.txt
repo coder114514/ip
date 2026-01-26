@@ -1,9 +1,10 @@
-list
 read book
 return book
-read manual
-return manual
+buy bread
+mark 1
 list
-hi
+mark 2
+list
+unmark 2
 list
 bye
