@@ -2,7 +2,6 @@
 
 cd "$(dirname "$0")"
 
-# create bin directory if it doesn't exist
 if [ -d "../bin" ]
 then
     rm -rf ../bin

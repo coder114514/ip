@@ -9,7 +9,7 @@ public class TaskParseError extends TobTahcException {
     private TaskType type;
 
     /**
-     * @param type The type of the task, one of ToDo, Deadline or Event.
+     * @param type The type of the task.
      */
     public TaskParseError(TaskType type) {
         this.type = type;

@@ -2,7 +2,6 @@
 
 cd "$(dirname "$0")"
 
-# create bin directory if it doesn't exist
 if [ -d "../bin" ]
 then
     rm -rf ../bin
@@ -24,6 +23,7 @@ find ../src/main/java -name "*.java" > sources.txt
 if ! javac -cp ../src/main/java -Xlint:none -d ../bin @sources.txt
 then
     echo "********** BUILD FAILURE **********"
+    rm sources.txt
     exit 1
 fi
 rm sources.txt

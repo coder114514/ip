@@ -12,6 +12,10 @@ import tobtahc.task.Task;
  * The main program.
  */
 public class Main {
+    /** The pattern for matching the commands. The \s* before the number makes it more forgiving. */
+    private static final Pattern PATTERN_MARK_UNMARK = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
+    private static final Pattern PATTERN_DELETE = Pattern.compile("^delete\\s*([0-9]+)\\s*$");
+
     /**
      * The main program.
      *
@@ -53,12 +57,19 @@ public class Main {
                 continue;
             }
 
-            var patternMarkUnmark = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
-            var matcherMarkUnmark = patternMarkUnmark.matcher(input);
+            var matcherMarkUnmark = PATTERN_MARK_UNMARK.matcher(input);
 
             if (matcherMarkUnmark.find()) {
                 var indexString = matcherMarkUnmark.group(1);
-                int index = Integer.parseInt(indexString) - 1;
+                int index;
+                try {
+                    index = Integer.parseInt(indexString) - 1;
+                } catch (NumberFormatException e) {
+                    botMessageSep();
+                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    botMessageSep();
+                    continue;
+                }
                 if (index < 0 || index >= tasks.size()) {
                     botMessageSep();
                     botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
@@ -88,13 +99,14 @@ public class Main {
                 continue;
             }
 
-            var patternDelete = Pattern.compile("^delete\\s*([0-9]+)\\s*$");
-            var matcherDelete = patternDelete.matcher(input);
+            var matcherDelete = PATTERN_DELETE.matcher(input);
 
             if (matcherDelete.find()) {
                 var indexString = matcherDelete.group(1);
-                int index = Integer.parseInt(indexString) - 1;
-                if (index < 0 || index >= tasks.size()) {
+                int index;
+                try {
+                    index = Integer.parseInt(indexString) - 1;
+                } catch (NumberFormatException e) {
                     botMessageSep();
                     botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
                     botMessageSep();

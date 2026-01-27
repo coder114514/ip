@@ -10,6 +10,10 @@ import tobtahc.exceptions.TaskParseError;
  * It implements the common behavior.
  */
 public abstract class Task {
+    private static final Pattern PATTERN_TODO = Pattern.compile("^todo (.+)");
+    private static final Pattern PATTERN_DEADLINE = Pattern.compile("^deadline (.+)/by (.+)");
+    private static final Pattern PATTERN_EVENT = Pattern.compile("^event (.+)/from (.+)/to (.+)");
+
     private String description;
     private boolean isDone;
 
@@ -30,8 +34,7 @@ public abstract class Task {
      *         TaskParseError if the input resembles a task but is not in the correct syntax.
      */
     public static Task parseTask(String input) throws NotATask, TaskParseError {
-        var patternToDo = Pattern.compile("^todo (.+)");
-        var matcherToDo = patternToDo.matcher(input);
+        var matcherToDo = PATTERN_TODO.matcher(input);
 
         if (matcherToDo.find()) {
             var desc = matcherToDo.group(1).trim();
@@ -40,8 +43,7 @@ public abstract class Task {
             throw new TaskParseError(TaskType.TODO);
         }
 
-        var patternDeadline = Pattern.compile("^deadline (.+)/by (.+)");
-        var matcherDeadline = patternDeadline.matcher(input);
+        var matcherDeadline = PATTERN_DEADLINE.matcher(input);
 
         if (matcherDeadline.find()) {
             var desc = matcherDeadline.group(1).trim();
@@ -51,8 +53,7 @@ public abstract class Task {
             throw new TaskParseError(TaskType.DEADLINE);
         }
 
-        var patternEvent = Pattern.compile("^event (.+)/from (.+)/to (.+)");
-        var matcherEvent = patternEvent.matcher(input);
+        var matcherEvent = PATTERN_EVENT.matcher(input);
 
         if (matcherEvent.find()) {
             var desc = matcherEvent.group(1).trim();
