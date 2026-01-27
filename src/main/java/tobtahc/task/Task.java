@@ -31,7 +31,7 @@ public abstract class Task {
      * @param input User input.
      * @return Task object.
      * @throws NotATask if the input does not resemble a task at all.
-     *         TaskParseError if the input resembles a task but is not in the correct syntax.
+     * @throws TaskParseError if the input resembles a task but is not in the correct syntax.
      */
     public static Task parseTask(String input) throws NotATask, TaskParseError {
         var matcherToDo = PATTERN_TODO.matcher(input);

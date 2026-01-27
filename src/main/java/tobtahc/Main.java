@@ -225,7 +225,8 @@ public class Main {
     /**
      * A helper for displaying the bye message.
      *
-     * @param endByEof If the chat is ended by an EOF instead of the user input 'bye', display a info.
+     * @param endByEof If the chat is ended by an EOF instead of the user input 'bye',
+     * display an info message.
      */
     public static void chatBye(boolean endByEof) {
         botMessageSep();
