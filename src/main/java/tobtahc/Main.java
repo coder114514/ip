@@ -112,6 +112,12 @@ public class Main {
                     botMessageSep();
                     continue;
                 }
+                if (index < 0 || index >= tasks.size()) {
+                    botMessageSep();
+                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    botMessageSep();
+                    continue;
+                }
                 var task = tasks.get(index);
                 tasks.remove(index);
                 botMessageSep();
