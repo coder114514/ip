@@ -19,8 +19,9 @@ import tobtahc.task.Task;
 public class Data {
     /** Basically we always run the program from /text-ui-test, so no need to check for null */
     private static final Path PROJECT_ROOT = Path.of(System.getProperty("user.dir")).getParent();
-    private static final Path TASKS_FILE = PROJECT_ROOT.resolve("data/tasks.txt");
-    private static final Path TASKS_TMP_FILE = PROJECT_ROOT.resolve("data/tasks.tmp.txt");
+    private static final Path DATA_DIR = PROJECT_ROOT.resolve("data");
+    private static final Path TASKS_FILE = DATA_DIR.resolve("tasks.txt");
+    private static final Path TASKS_TMP_FILE = DATA_DIR.resolve("tasks.tmp.txt");
 
     /**
      * @param numBadLines The number of bad lines in the save file.
@@ -28,10 +29,24 @@ public class Data {
      */
     public record LoadResult(int numBadLines, List<Task> tasks) {}
 
+    private static void ensureDirExists() throws IOException {
+        try {
+            if (Files.notExists(DATA_DIR)) {
+                Files.createDirectories(DATA_DIR);
+            }
+        } catch (IOException e) {
+            throw new IOException("failed to create the data directory", e);
+        }
+    }
+
     private static void ensureFileExists() throws IOException {
-        if (Files.notExists(TASKS_FILE)) {
-            Files.createDirectories(TASKS_FILE.getParent());
-            Files.createFile(TASKS_FILE);
+        try {
+            ensureDirExists();
+            if (Files.notExists(TASKS_FILE)) {
+                Files.createFile(TASKS_FILE);
+            }
+        } catch (IOException e) {
+            throw new IOException("failed to create inital tasks.txt", e);
         }
     }
 
@@ -60,7 +75,8 @@ public class Data {
     }
 
     /**
-     * Save the tasks to the save file.
+     * Save the tasks to the temp file, and if {@code areTasksLoaded} is {@code true},
+     * replace the save file with the temp file.
      *
      * @param tasks The tasks to save.
      * @param areTasksLoaded Whether the tasks were successfully loaded at the start.
@@ -68,6 +84,7 @@ public class Data {
      * file.
      */
     public static void saveTasks(List<Task> tasks, boolean areTasksLoaded) throws IOException {
+        ensureDirExists();
         var sb = new StringBuilder();
         for (var task : tasks) {
             sb.append(task.serialize()).append("\n");
@@ -82,7 +99,8 @@ public class Data {
         }
         try {
             try {
-                Files.move(TASKS_TMP_FILE, TASKS_FILE, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+                Files.move(TASKS_TMP_FILE, TASKS_FILE, StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException e) {
                 Files.move(TASKS_TMP_FILE, TASKS_FILE, StandardCopyOption.REPLACE_EXISTING);
             }
