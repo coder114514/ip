@@ -12,6 +12,11 @@ public class ToDo extends Task {
     }
 
     @Override
+    public String serialize() {
+        return (isDone() ? "1todo " : "0todo ") + super.getDescription();
+    }
+
+    @Override
     public String getDescriptionWithStatus() {
         return "[T]" + super.getDescriptionWithStatus();
     }

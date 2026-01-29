@@ -1,6 +1,8 @@
 package tobtahc;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -26,8 +28,31 @@ public class Main {
 
         int rng = 0;
         boolean endByEof = false;
-        var tasks = new ArrayList<Task>();
         var scanner = new Scanner(System.in);
+
+        List<Task> tasks;
+        boolean areTasksLoaded;
+        try {
+            var result = Data.loadTasks();
+            tasks = result.tasks();
+            areTasksLoaded = true;
+            if (result.numBadLines() > 0) {
+                botMessageSepError();
+                botMessageLine(String.format(
+                        "Info: there were %d bad lines in the save file, which will be removed.",
+                                result.numBadLines()));
+                botMessageSepError();
+                botMessageLine();
+            }
+        } catch (IOException e) {
+            tasks = new ArrayList<>();
+            areTasksLoaded = false;
+            botMessageSepError();
+            botMessageLine("Error: " + e.getMessage() + ".");
+            botMessageLine("Tasks will only be written to the temp file.");
+            botMessageSepError();
+            botMessageLine();
+        }
 
         for (;;) {
             if (!scanner.hasNextLine()) {
@@ -90,6 +115,7 @@ public class Main {
                     botMessageLine("  " + task);
                     botMessageSep();
                 }
+                saveTasks(tasks, areTasksLoaded);
                 continue;
             } else if (input.startsWith("mark") || input.startsWith("unmark")) {
                 botMessageSep();
@@ -130,6 +156,7 @@ public class Main {
                 botMessageLine(String.format("Now you have %s tasks in the list.",
                         tasks.size()));
                 botMessageSep();
+                saveTasks(tasks, areTasksLoaded);
                 continue;
             } else if (input.startsWith("delete")) {
                 botMessageSep();
@@ -155,6 +182,7 @@ public class Main {
                             tasks.size()));
                 }
                 botMessageSep();
+                saveTasks(tasks, areTasksLoaded);
 
             } catch (TaskParseError e) {
                 botMessageSep();
@@ -183,8 +211,20 @@ public class Main {
             }
         }
 
+        saveTasks(tasks, areTasksLoaded);
         chatBye(endByEof);
         scanner.close();
+    }
+
+    private static void saveTasks(List<Task> tasks, boolean areTasksLoaded) {
+        try {
+            Data.saveTasks(tasks, areTasksLoaded);
+        } catch (IOException e) {
+            botMessageSepError();
+            botMessageLine("Error: " + e.getMessage() + ".");
+            botMessageSepError();
+            botMessageLine();
+        }
     }
 
     /**
@@ -209,6 +249,10 @@ public class Main {
      */
     private static void botMessageSep() {
         botMessageLine("___________________________________________________________________\n");
+    }
+
+    private static void botMessageSepError() {
+        botMessageLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     /**
