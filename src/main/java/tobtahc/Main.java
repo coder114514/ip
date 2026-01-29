@@ -191,7 +191,7 @@ public class Main {
      * A helper for displaying the bot's response with an indentation.
      * When called with no arguments, it just outputs a newline.
      */
-    public static void botMessageLine() {
+    private static void botMessageLine() {
         System.out.println();
     }
 
@@ -200,21 +200,21 @@ public class Main {
      *
      * @param message The message to display.
      */
-    public static void botMessageLine(String message) {
+    private static void botMessageLine(String message) {
         System.out.println("    " + message);
     }
 
     /**
      * A helper for displaying the separator line.
      */
-    public static void botMessageSep() {
+    private static void botMessageSep() {
         botMessageLine("___________________________________________________________________\n");
     }
 
     /**
      * A helper for displaying the intro message.
      */
-    public static void chatIntro() {
+    private static void chatIntro() {
         botMessageSep();
         botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
         botMessageLine("What can I do for you?");
@@ -228,7 +228,7 @@ public class Main {
      * @param endByEof If the chat is ended by an EOF instead of the user input 'bye',
      * display an info message.
      */
-    public static void chatBye(boolean endByEof) {
+    private static void chatBye(boolean endByEof) {
         botMessageSep();
         if (endByEof) {
             botMessageLine("EOF DETECTED! Remember to say 'bye' next time!");
