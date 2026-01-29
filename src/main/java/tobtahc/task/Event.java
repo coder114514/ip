@@ -19,6 +19,12 @@ public class Event extends Task {
     }
 
     @Override
+    public String serialize() {
+        return String.format("%s %s/from %s/to %s",
+                isDone() ? "1event" : "0event", super.getDescription(), from, to);
+    }
+
+    @Override
     public String getDescription() {
         return String.format("%s (from: %s to: %s)",
                 super.getDescription(), from, to);

@@ -10,6 +10,10 @@ import tobtahc.exceptions.TaskParseError;
  * It implements the common behavior.
  */
 public abstract class Task {
+    /**
+     * The pattern for matching the commands.
+     * The (.+)s without a space before the slashes make it more forgiving.
+     */
     private static final Pattern PATTERN_TODO = Pattern.compile("^todo (.+)");
     private static final Pattern PATTERN_DEADLINE = Pattern.compile("^deadline (.+)/by (.+)");
     private static final Pattern PATTERN_EVENT = Pattern.compile("^event (.+)/from (.+)/to (.+)");
@@ -65,6 +69,52 @@ public abstract class Task {
         }
 
         throw new NotATask();
+    }
+
+    /**
+     * Serializes the task object.
+     * The behavior is delegated to each child class.
+     * Since I'm lazy, the format is largely reusing the command syntax.
+     * The first character is either 0 or 1, representing undone/done.
+     * The rest of the string is just the command used to create the task.
+     *
+     * @return Serialized task object.
+     */
+    public abstract String serialize();
+
+    /**
+     * Deserializes the task object.
+     * Since I'm lazy, the format is largely reusing the command syntax.
+     * The first character is either 0 or 1, representing undone/done.
+     * The rest of the string is just the command used to create the task.
+     * So that is why we can simply use Task.parseTask() here.
+     *
+     * @param input The string to deserialize into a task object.
+     * @return A task object if successful, else null.
+     */
+    public static Task deserialize(String input) {
+        if (input.length() <= 1) {
+            return null;
+        }
+        boolean isDone;
+        if (input.charAt(0) == '0') {
+            isDone = false;
+        } else if (input.charAt(0) == '1') {
+            isDone = true;
+        } else {
+            return null;
+        }
+        try {
+            var task = parseTask(input.substring(1));
+            if (isDone) {
+                task.markAsDone();
+            }
+            return task;
+        } catch (NotATask e) {
+            return null;
+        } catch (TaskParseError e) {
+            return null;
+        }
     }
 
     @Override
