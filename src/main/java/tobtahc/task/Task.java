@@ -71,8 +71,27 @@ public abstract class Task {
         throw new NotATask();
     }
 
+    /**
+     * Serializes the task object.
+     * The behavior is delegated to each child class.
+     * Since I'm lazy, the format is largely reusing the command syntax.
+     * The first character is either 0 or 1, representing undone/done.
+     * The rest of the string is just the command used to create the task.
+     *
+     * @return Serialized task object.
+     */
     public abstract String serialize();
 
+    /**
+     * Deserializes the task object.
+     * Since I'm lazy, the format is largely reusing the command syntax.
+     * The first character is either 0 or 1, representing undone/done.
+     * The rest of the string is just the command used to create the task.
+     * So that is why we can simply use Task.parseTask() here.
+     *
+     * @param input The string to deserialize into a task object.
+     * @return A task object if successful, else null.
+     */
     public static Task deserialize(String input) {
         if (input.length() <= 1) {
             return null;
@@ -89,8 +108,6 @@ public abstract class Task {
             var task = parseTask(input.substring(1));
             if (isDone) {
                 task.markAsDone();
-            } else {
-                task.markAsUndone();
             }
             return task;
         } catch (NotATask e) {
