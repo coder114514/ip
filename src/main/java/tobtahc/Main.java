@@ -162,7 +162,7 @@ public class Main {
                     botMessageLine("Task removed, but still UNDONE!");
                 }
                 botMessageLine("  " + task);
-                botMessageLine(String.format("Now you have %s tasks in the list.",
+                botMessageLine(String.format("Now you have %s tasks in your list.",
                         tasks.size()));
                 botMessageSep();
                 saveTasks(tasks, areTasksLoaded);
@@ -187,7 +187,7 @@ public class Main {
                 } else {
                     botMessageLine("Got it!");
                     botMessageLine("  task added: " + task.getDescription());
-                    botMessageLine(String.format("Now you have %s tasks in the list.",
+                    botMessageLine(String.format("Now you have %s tasks in your list.",
                             tasks.size()));
                 }
                 botMessageSep();
