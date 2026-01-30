@@ -60,13 +60,17 @@ public class Main {
                 break;
             }
 
-            var input = scanner.nextLine();
+            var input = scanner.nextLine().trim();
+            rng = Utils.nextRng(rng, input.hashCode());
 
             if (input.equals("bye")) {
                 break;
+            } else if (input.startsWith("bye")) {
+                botMessageSep();
+                botMessageLine("Enter 'bye' to quit.");
+                botMessageSep();
+                continue;
             }
-
-            rng = Utils.nextRng(rng, input.hashCode());
 
             if (input.equals("list")) {
                 botMessageSep();
