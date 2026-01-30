@@ -4,6 +4,10 @@
     What can I do for you?
     ___________________________________________________________________
 
+    ___________________________________________________________________
+
+    Your tasks are all cleared.
+    ___________________________________________________________________
 
     ___________________________________________________________________
 
@@ -14,7 +18,7 @@
 
     Got it!
       task added: read book
-    Now you have 1 tasks in the list.
+    Now you have 1 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -31,23 +35,23 @@
 
     ___________________________________________________________________
 
-    Ti tog!
-      dedda ksat: return book (by: June 6th)
-    Tsil eht ni sksat 2 evah uoy now.
+    Got it!
+      task added: return book (by: June 6th)
+    Now you have 2 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     Got it!
       task added: project meeting (from: Aug 6th 2pm to: 4pm)
-    Now you have 3 tasks in the list.
+    Now you have 3 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     Got it!
       task added: join sports club
-    Now you have 4 tasks in the list.
+    Now you have 4 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -58,9 +62,9 @@
 
     ___________________________________________________________________
 
-    Ti tog!
-      dedda ksat: borrow book
-    Tsil eht ni sksat 5 evah uoy now.
+    Got it!
+      task added: borrow book
+    Now you have 5 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -77,21 +81,21 @@
 
     Got it!
       task added: return book (by: Sunday)
-    Now you have 6 tasks in the list.
+    Now you have 6 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     Got it!
       task added: project meeting (from: Mon 2pm to: 4pm)
-    Now you have 7 tasks in the list.
+    Now you have 7 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
-    Ti tog!
-      dedda ksat: do homework (by: no idea :-p)
-    Tsil eht ni sksat 8 evah uoy now.
+    Got it!
+      task added: do homework (by: no idea :-p)
+    Now you have 8 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -117,7 +121,7 @@
 
     Task removed, but still UNDONE!
       [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
-    Now you have 7 tasks in the list.
+    Now you have 7 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________

@@ -91,6 +91,19 @@ public class Main {
                 continue;
             }
 
+            if (input.equals("clear")) {
+                botMessageSep();
+                botMessageLine("Your tasks are all cleared.");
+                tasks.clear();
+                botMessageSep();
+                continue;
+            } else if (input.startsWith("clear")) {
+                botMessageSep();
+                botMessageLine("Enter 'clear' to clear your tasks.");
+                botMessageSep();
+                continue;
+            }
+
             var matcherMarkUnmark = PATTERN_MARK_UNMARK.matcher(input);
 
             if (matcherMarkUnmark.find()) {
@@ -272,7 +285,6 @@ public class Main {
         botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
         botMessageLine("What can I do for you?");
         botMessageSep();
-        botMessageLine();
     }
 
     /**

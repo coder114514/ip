@@ -1,3 +1,4 @@
+clear
 hi
 todo read book
 mark 1
