@@ -84,6 +84,11 @@ public class Main {
                 }
                 botMessageSep();
                 continue;
+            } else if (input.startsWith("list")) {
+                botMessageSep();
+                botMessageLine("Enter 'list' to list your tasks.");
+                botMessageSep();
+                continue;
             }
 
             var matcherMarkUnmark = PATTERN_MARK_UNMARK.matcher(input);
