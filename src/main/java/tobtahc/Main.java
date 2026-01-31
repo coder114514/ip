@@ -215,9 +215,11 @@ public class Main {
                     break;
                 case DEADLINE:
                     botMessageLine("  deadline <task> /by <time>");
+                    botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 case EVENT:
                     botMessageLine("  event <task> /from <time> /to <time>");
+                    botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 }
                 botMessageSep();

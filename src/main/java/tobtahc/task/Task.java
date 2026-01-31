@@ -1,7 +1,10 @@
 package tobtahc.task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
+import tobtahc.Utils;
 import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
 
@@ -50,9 +53,14 @@ public abstract class Task {
         var matcherDeadline = PATTERN_DEADLINE.matcher(input);
 
         if (matcherDeadline.find()) {
-            var desc = matcherDeadline.group(1).trim();
-            var deadline = matcherDeadline.group(2).trim();
-            return new Deadline(desc, deadline);
+            try {
+                var desc = matcherDeadline.group(1).trim();
+                var deadlineString = matcherDeadline.group(2).trim();
+                var deadline = LocalDateTime.parse(deadlineString, Utils.DATE_TIME_FORMATTER_INPUT);
+                return new Deadline(desc, deadline);
+            } catch (DateTimeParseException e) {
+                throw new TaskParseError(TaskType.DEADLINE);
+            }
         } else if (input.startsWith("deadline")) {
             throw new TaskParseError(TaskType.DEADLINE);
         }
@@ -60,10 +68,16 @@ public abstract class Task {
         var matcherEvent = PATTERN_EVENT.matcher(input);
 
         if (matcherEvent.find()) {
-            var desc = matcherEvent.group(1).trim();
-            var from = matcherEvent.group(2).trim();
-            var to = matcherEvent.group(3).trim();
-            return new Event(desc, from, to);
+            try {
+                var desc = matcherEvent.group(1).trim();
+                var fromString = matcherEvent.group(2).trim();
+                var from = LocalDateTime.parse(fromString, Utils.DATE_TIME_FORMATTER_INPUT);
+                var toString = matcherEvent.group(3).trim();
+                var to = LocalDateTime.parse(toString, Utils.DATE_TIME_FORMATTER_INPUT);
+                return new Event(desc, from, to);
+            } catch (DateTimeParseException e) {
+                throw new TaskParseError(TaskType.DEADLINE);
+            }
         } else if (input.startsWith("event")) {
             throw new TaskParseError(TaskType.EVENT);
         }
