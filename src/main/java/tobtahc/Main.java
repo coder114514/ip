@@ -37,7 +37,7 @@ public class Main {
         List<Task> tasks;
         boolean areTasksLoaded;
         try {
-            var result = Data.loadTasks();
+            var result = Storage.loadTasks();
             tasks = result.tasks();
             areTasksLoaded = true;
             if (result.numBadLines() > 0) {
@@ -294,7 +294,7 @@ public class Main {
 
     private static void saveTasks(List<Task> tasks, boolean areTasksLoaded) {
         try {
-            Data.saveTasks(tasks, areTasksLoaded);
+            Storage.saveTasks(tasks, areTasksLoaded);
         } catch (IOException e) {
             botMessageSepError();
             botMessageLine("Error: " + e.getMessage() + ".");

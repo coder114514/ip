@@ -16,7 +16,7 @@ import tobtahc.task.Task;
 /**
  * This class implements the save file mechanics.
  */
-public class Data {
+public class Storage {
     /** Basically we always run the program from /text-ui-test, so no need to check for null */
     private static final Path PROJECT_ROOT = Path.of(System.getProperty("user.dir")).getParent();
     private static final Path DATA_DIR = PROJECT_ROOT.resolve("data");
