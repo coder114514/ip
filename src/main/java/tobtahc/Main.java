@@ -13,7 +13,7 @@ import tobtahc.task.Deadline;
 import tobtahc.task.Event;
 import tobtahc.task.NotATask;
 import tobtahc.task.Task;
-import tobtahc.task.TaskParseError;
+import tobtahc.task.TaskFormatError;
 import tobtahc.util.Utils;
 
 /**
@@ -260,7 +260,7 @@ public class Main {
                 botMessageSep();
                 saveTasks(tasks, areTasksLoaded);
 
-            } catch (TaskParseError e) {
+            } catch (TaskFormatError e) {
                 botMessageSep();
                 botMessageLine("Syntax error! Correct syntax:");
                 switch (e.getTaskType()) {

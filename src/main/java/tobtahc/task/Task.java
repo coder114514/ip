@@ -36,16 +36,16 @@ public abstract class Task {
      * @param input User input.
      * @return Task object.
      * @throws NotATask if the input does not resemble a task at all.
-     * @throws TaskParseError if the input resembles a task but is not in the correct syntax.
+     * @throws TaskFormatError if the input resembles a task but is not in the correct syntax.
      */
-    public static Task parseTask(String input) throws NotATask, TaskParseError {
+    public static Task parseTask(String input) throws NotATask, TaskFormatError {
         var matcherToDo = PATTERN_TODO.matcher(input);
 
         if (matcherToDo.find()) {
             var desc = matcherToDo.group(1).trim();
             return new ToDo(desc);
         } else if (input.startsWith("todo")) {
-            throw new TaskParseError(TaskType.TODO);
+            throw new TaskFormatError(TaskType.TODO);
         }
 
         var matcherDeadline = PATTERN_DEADLINE.matcher(input);
@@ -57,10 +57,10 @@ public abstract class Task {
                 var deadline = LocalDateTime.parse(deadlineString, Utils.DATE_TIME_FORMATTER_INPUT);
                 return new Deadline(desc, deadline);
             } catch (DateTimeParseException e) {
-                throw new TaskParseError(TaskType.DEADLINE);
+                throw new TaskFormatError(TaskType.DEADLINE);
             }
         } else if (input.startsWith("deadline")) {
-            throw new TaskParseError(TaskType.DEADLINE);
+            throw new TaskFormatError(TaskType.DEADLINE);
         }
 
         var matcherEvent = PATTERN_EVENT.matcher(input);
@@ -74,10 +74,10 @@ public abstract class Task {
                 var to = LocalDateTime.parse(toString, Utils.DATE_TIME_FORMATTER_INPUT);
                 return new Event(desc, from, to);
             } catch (DateTimeParseException e) {
-                throw new TaskParseError(TaskType.DEADLINE);
+                throw new TaskFormatError(TaskType.DEADLINE);
             }
         } else if (input.startsWith("event")) {
-            throw new TaskParseError(TaskType.EVENT);
+            throw new TaskFormatError(TaskType.EVENT);
         }
 
         throw new NotATask();
@@ -124,7 +124,7 @@ public abstract class Task {
             return task;
         } catch (NotATask e) {
             return null;
-        } catch (TaskParseError e) {
+        } catch (TaskFormatError e) {
             return null;
         }
     }
