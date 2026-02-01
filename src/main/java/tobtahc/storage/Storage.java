@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import tobtahc.task.Task;
+import tobtahc.task.TaskParser;
 
 /**
  * This class implements the save file mechanics.
@@ -61,7 +62,7 @@ public class Storage {
         try (var lines = Files.lines(TASKS_FILE)) {
             var numBadLines = new AtomicInteger(0);
             var tasks = lines.<Task>mapMulti((line, consumer) -> {
-                var task = Task.deserialize(line);
+                var task = TaskParser.deserialize(line);
                 if (task != null) {
                     consumer.accept(task);
                 } else {

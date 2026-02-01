@@ -14,6 +14,7 @@ import tobtahc.task.Event;
 import tobtahc.task.NotATask;
 import tobtahc.task.Task;
 import tobtahc.task.TaskFormatError;
+import tobtahc.task.TaskParser;
 import tobtahc.util.Utils;
 
 /**
@@ -243,7 +244,7 @@ public class Main {
             }
 
             try {
-                var task = Task.parseTask(input);
+                var task = TaskParser.parseTask(input);
                 tasks.add(task);
                 botMessageSep();
                 if (rng % 4 == 0) {
