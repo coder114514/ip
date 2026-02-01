@@ -1,5 +1,6 @@
 package tobtahc.task;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import tobtahc.Utils;
@@ -17,6 +18,13 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDateTime deadline) {
         super(description);
         this.deadline = deadline;
+    }
+
+    /**
+     * {@return Returns whether the task is due on/before {@code date}.}
+     */
+    public boolean isBeforeOrOn(LocalDate date) {
+        return !deadline.toLocalDate().isAfter(date);
     }
 
     @Override

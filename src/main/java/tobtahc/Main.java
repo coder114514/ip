@@ -1,6 +1,8 @@
 package tobtahc;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,6 +10,8 @@ import java.util.regex.Pattern;
 
 import tobtahc.exceptions.NotATask;
 import tobtahc.exceptions.TaskParseError;
+import tobtahc.task.Deadline;
+import tobtahc.task.Event;
 import tobtahc.task.Task;
 
 /**
@@ -101,6 +105,54 @@ public class Main {
                 botMessageSep();
                 botMessageLine("Enter 'clear' to clear your tasks.");
                 botMessageSep();
+                continue;
+            }
+
+            if (input.startsWith("before or on")) {
+                try {
+                    botMessageSep();
+                    var date = LocalDate.parse(input.substring(12).trim());
+                    for (int i = 0; i < tasks.size(); ++i) {
+                        var task = tasks.get(i);
+                        if (!(task instanceof Deadline ddl)) {
+                            continue;
+                        }
+                        if (!ddl.isBeforeOrOn(date)) {
+                            continue;
+                        }
+                        botMessageLine("  " + (i + 1) + ": " + ddl.getDescription());
+                    }
+                    botMessageSep();
+                } catch (DateTimeParseException e) {
+                    botMessageSep();
+                    botMessageLine("Syntax error! Correct syntax:");
+                    botMessageLine("  before or on <date>");
+                    botMessageSep();
+                }
+                continue;
+            }
+
+            if (input.startsWith("occurs on")) {
+                try {
+                    botMessageSep();
+                    var date = LocalDate.parse(input.substring(9).trim());
+                    for (int i = 0; i < tasks.size(); ++i) {
+                        var task = tasks.get(i);
+                        if (!(task instanceof Event event)) {
+                            continue;
+                        }
+                        if (!event.occursOn(date)) {
+                            continue;
+                        }
+                        botMessageLine("  " + (i + 1) + ": " + event.getDescription());
+                    }
+                    botMessageSep();
+                } catch (DateTimeParseException e) {
+                    botMessageSep();
+                    botMessageLine("Syntax error! Correct syntax:");
+                    botMessageLine("  occurs on <date>");
+                    botMessageSep();
+                }
                 continue;
             }
 

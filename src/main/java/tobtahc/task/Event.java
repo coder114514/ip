@@ -1,5 +1,6 @@
 package tobtahc.task;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import tobtahc.Utils;
@@ -20,6 +21,14 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+    }
+
+    /**
+     * {@return Returns whether the event occurs on {@code date}.}
+     */
+    public boolean occursOn(LocalDate date) {
+        return !to.toLocalDate().isBefore(date)
+                && !from.toLocalDate().isAfter(date);
     }
 
     @Override

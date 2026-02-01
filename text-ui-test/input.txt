@@ -9,9 +9,11 @@ todo join sports club
 mark 4
 todo borrow book
 list
+before or on 2019-08-06
 deadline return book/by 2019-08-09 15:00
 event project meeting/from 2019-08-12 14:00/to 2019-08-12 16:00
 deadline do homework /by 2019-08-07 20:00
+occurs on 2019-08-12
 list
 todo
 delete 3
