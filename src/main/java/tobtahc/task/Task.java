@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-import tobtahc.Utils;
+import tobtahc.util.Utils;
 
 /**
  * This is the base class for the three kinds of tasks.

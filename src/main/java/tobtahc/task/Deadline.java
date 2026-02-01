@@ -3,7 +3,7 @@ package tobtahc.task;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import tobtahc.Utils;
+import tobtahc.util.Utils;
 
 /**
  * Implements the Deadline task.
