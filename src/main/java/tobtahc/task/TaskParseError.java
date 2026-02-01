@@ -1,11 +1,9 @@
-package tobtahc.exceptions;
-
-import tobtahc.task.TaskType;
+package tobtahc.task;
 
 /**
- * Is thrown when the input is supposed to be a task but in wrong syntax.
+ * Thrown when the input is supposed to be a task but in wrong syntax.
  */
-public class TaskParseError extends TobTahcException {
+public class TaskParseError extends Exception {
     private TaskType type;
 
     /**

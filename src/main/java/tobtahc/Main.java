@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import tobtahc.exceptions.NotATask;
-import tobtahc.exceptions.TaskParseError;
+import tobtahc.storage.Storage;
 import tobtahc.task.Deadline;
 import tobtahc.task.Event;
+import tobtahc.task.NotATask;
 import tobtahc.task.Task;
+import tobtahc.task.TaskParseError;
 
 /**
  * The main program.
