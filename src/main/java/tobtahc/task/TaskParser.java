@@ -96,7 +96,7 @@ public class TaskParser {
         try {
             var task = parseTask(input.substring(1));
             if (isDone) {
-                task.markAsDone();
+                task.mark();
             }
             return task;
         } catch (NotATask e) {

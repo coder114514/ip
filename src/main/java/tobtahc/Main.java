@@ -180,15 +180,15 @@ public class Main {
                 }
                 var task = tasks.get(index);
                 if (input.charAt(0) == 'm') {
-                    task.markAsDone();
+                    task.mark();
                     botMessageSep();
-                    botMessageLine("Task marked as enod!");
+                    botMessageLine("Task marked as done!");
                     botMessageLine("  " + task);
                     botMessageSep();
                 } else {
-                    task.markAsUndone();
+                    task.unmark();
                     botMessageSep();
-                    botMessageLine("Task marked as enodnu!");
+                    botMessageLine("Dekramnu ksat!");
                     botMessageLine("  " + task);
                     botMessageSep();
                 }
