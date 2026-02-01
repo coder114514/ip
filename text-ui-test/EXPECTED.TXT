@@ -4,6 +4,10 @@
     What can I do for you?
     ___________________________________________________________________
 
+    ___________________________________________________________________
+
+    Your tasks are all cleared.
+    ___________________________________________________________________
 
     ___________________________________________________________________
 
@@ -14,7 +18,7 @@
 
     Got it!
       task added: read book
-    Now you have 1 tasks in the list.
+    Now you have 1 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -31,23 +35,23 @@
 
     ___________________________________________________________________
 
+    Got it!
+      task added: return book (by: Aug 05 2019 15:00)
+    Now you have 2 tasks in your list.
+    ___________________________________________________________________
+
+    ___________________________________________________________________
+
+    Got it!
+      task added: project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)
+    Now you have 3 tasks in your list.
+    ___________________________________________________________________
+
+    ___________________________________________________________________
+
     Ti tog!
-      dedda ksat: return book (by: June 6th)
-    Tsil eht ni sksat 2 evah uoy now.
-    ___________________________________________________________________
-
-    ___________________________________________________________________
-
-    Got it!
-      task added: project meeting (from: Aug 6th 2pm to: 4pm)
-    Now you have 3 tasks in the list.
-    ___________________________________________________________________
-
-    ___________________________________________________________________
-
-    Got it!
-      task added: join sports club
-    Now you have 4 tasks in the list.
+      dedda ksat: join sports club
+    Tsil eht ni sksat 4 evah uoy now.
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -58,53 +62,63 @@
 
     ___________________________________________________________________
 
-    Ti tog!
-      dedda ksat: borrow book
-    Tsil eht ni sksat 5 evah uoy now.
+    Got it!
+      task added: borrow book
+    Now you have 5 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     You have 5 tasks in your list:
     1.[T][ ] read book
-    2.[D][ ] return book (by: June 6th)
-    3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+    2.[D][ ] return book (by: Aug 05 2019 15:00)
+    3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)
     4.[T][X] join sports club
     5.[T][ ] borrow book
     ___________________________________________________________________
 
     ___________________________________________________________________
 
-    Got it!
-      task added: return book (by: Sunday)
-    Now you have 6 tasks in the list.
+      2: return book (by: Aug 05 2019 15:00)
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     Got it!
-      task added: project meeting (from: Mon 2pm to: 4pm)
-    Now you have 7 tasks in the list.
+      task added: return book (by: Aug 09 2019 15:00)
+    Now you have 6 tasks in your list.
     ___________________________________________________________________
 
     ___________________________________________________________________
 
-    Ti tog!
-      dedda ksat: do homework (by: no idea :-p)
-    Tsil eht ni sksat 8 evah uoy now.
+    Got it!
+      task added: project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)
+    Now you have 7 tasks in your list.
+    ___________________________________________________________________
+
+    ___________________________________________________________________
+
+    Got it!
+      task added: do homework (by: Aug 07 2019 20:00)
+    Now you have 8 tasks in your list.
+    ___________________________________________________________________
+
+    ___________________________________________________________________
+
+      7: project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)
     ___________________________________________________________________
 
     ___________________________________________________________________
 
     You have 8 tasks in your list:
     1.[T][ ] read book
-    2.[D][ ] return book (by: June 6th)
-    3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+    2.[D][ ] return book (by: Aug 05 2019 15:00)
+    3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)
     4.[T][X] join sports club
     5.[T][ ] borrow book
-    6.[D][ ] return book (by: Sunday)
-    7.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-    8.[D][ ] do homework (by: no idea :-p)
+    6.[D][ ] return book (by: Aug 09 2019 15:00)
+    7.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)
+    8.[D][ ] do homework (by: Aug 07 2019 20:00)
     ___________________________________________________________________
 
     ___________________________________________________________________
@@ -116,8 +130,20 @@
     ___________________________________________________________________
 
     Task removed, but still UNDONE!
-      [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
-    Now you have 7 tasks in the list.
+      [E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)
+    Now you have 7 tasks in your list.
+    ___________________________________________________________________
+
+    ___________________________________________________________________
+
+    You have 7 tasks in your list:
+    1.[T][ ] read book
+    2.[D][ ] return book (by: Aug 05 2019 15:00)
+    3.[T][X] join sports club
+    4.[T][ ] borrow book
+    5.[D][ ] return book (by: Aug 09 2019 15:00)
+    6.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)
+    7.[D][ ] do homework (by: Aug 07 2019 20:00)
     ___________________________________________________________________
 
     ___________________________________________________________________

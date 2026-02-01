@@ -1,30 +1,43 @@
 package tobtahc.task;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import tobtahc.Utils;
+
 /**
  * Implements the Deadline task.
  */
 public class Deadline extends Task {
-    private String deadline;
+    private LocalDateTime deadline;
 
     /**
      * @param description Task description.
      * @param deadline The deadline of the task.
      */
-    public Deadline(String description, String deadline) {
+    public Deadline(String description, LocalDateTime deadline) {
         super(description);
         this.deadline = deadline;
+    }
+
+    /**
+     * {@return Returns whether the task is due on/before {@code date}.}
+     */
+    public boolean isBeforeOrOn(LocalDate date) {
+        return !deadline.toLocalDate().isAfter(date);
     }
 
     @Override
     public String serialize() {
         return String.format("%s %s/by %s",
-                isDone() ? "1deadline" : "0deadline", super.getDescription(), deadline);
+                isDone() ? "1deadline" : "0deadline", super.getDescription(),
+                        Utils.serializeDateTime(deadline));
     }
 
     @Override
     public String getDescription() {
         return String.format("%s (by: %s)",
-                super.getDescription(), deadline);
+                super.getDescription(), Utils.formatDateTime(deadline));
     }
 
     @Override

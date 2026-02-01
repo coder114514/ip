@@ -1,17 +1,21 @@
+clear
 hi
 todo read book
 mark 1
 unmark 1
-deadline return book /by June 6th
-event project meeting /from Aug 6th 2pm /to 4pm
+deadline return book /by 2019-08-05 15:00
+event project meeting /from 2019-08-06 14:00 /to 2019-08-06 16:00
 todo join sports club
 mark 4
 todo borrow book
 list
-deadline return book/by Sunday
-event project meeting/from Mon 2pm/to 4pm
-deadline do homework /by no idea :-p
+before or on 2019-08-06
+deadline return book/by 2019-08-09 15:00
+event project meeting/from 2019-08-12 14:00/to 2019-08-12 16:00
+deadline do homework /by 2019-08-07 20:00
+occurs on 2019-08-12
 list
 todo
 delete 3
+list
 bye
