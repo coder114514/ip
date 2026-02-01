@@ -3,7 +3,7 @@ package tobtahc.task;
 /**
  * Thrown when the input is supposed to be a task but in wrong syntax.
  */
-public class TaskFormatError extends Exception {
+public class TaskFormatError extends TaskParseError {
     private TaskType type;
 
     /**
