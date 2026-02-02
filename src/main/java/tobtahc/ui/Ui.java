@@ -1,9 +1,28 @@
 package tobtahc.ui;
 
+import java.util.Scanner;
+
 /**
  * This class implements UI stuff.
  */
 public class Ui {
+    private Scanner scanner;
+
+    public Ui() {
+        scanner = new Scanner(System.in);
+    }
+
+    /**
+     * {@return the user input from stdin, null if EOF is met}
+     */
+    public String readInput() {
+        if (!scanner.hasNextLine()) {
+            scanner.close();
+            return null;
+        }
+        return scanner.nextLine();
+    }
+
     /**
      * A helper for displaying the bot's response with an indentation.
      * When called with no arguments, it just outputs a newline.
