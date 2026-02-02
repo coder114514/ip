@@ -1,11 +1,15 @@
 package tobtahc.storage;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -19,8 +23,7 @@ import tobtahc.task.TaskParser;
 public class Storage {
     private Path dataDir;
     private Path saveFilePath;
-    private Path tempFilePath;
-    private boolean replaceSaveFile;
+    private String saveFileName;
 
     /**
      * @param numBadLines number of bad lines in the save file
@@ -33,18 +36,10 @@ public class Storage {
      * @param saveFilePath name of the save file
      * @param tempFilePath name of the temp file
      */
-    public Storage(String dataDirPath, String saveFileName, String tempFileName) {
+    public Storage(String dataDirPath, String saveFileName) {
         dataDir = Path.of(dataDirPath);
         saveFilePath = Path.of(dataDirPath, saveFileName);
-        tempFilePath = Path.of(dataDirPath, tempFileName);
-        replaceSaveFile = true;
-    }
-
-    /**
-     * Switch the storage behavior to only saving to the temp file.
-     */
-    public void switchToFallbackMode() {
-        replaceSaveFile = false;
+        this.saveFileName = saveFileName;
     }
 
     private void ensureDirExists() throws IOException {
@@ -76,7 +71,7 @@ public class Storage {
      */
     public LoadResult loadTasks() throws IOException {
         ensureFileExists();
-        try (var lines = Files.lines(saveFilePath)) {
+        try (var lines = Files.lines(saveFilePath, StandardCharsets.UTF_8)) {
             var numBadLines = new AtomicInteger(0);
             var tasks = lines.<Task>mapMulti((line, consumer) -> {
                 var task = TaskParser.deserialize(line);
@@ -93,30 +88,30 @@ public class Storage {
     }
 
     /**
-     * Saves the tasks to the temp file, and on default, replaces the save file with the temp file,
-     * if switched to fallback mode, then only saves to the temp file.
+     * Saves the tasks to the temp file, and replaces the save file with the temp file.
+     *
      * @param tasks tasks to save
      */
     public void saveTasks(TaskList tasks) throws IOException {
         ensureDirExists();
-        var sb = new StringBuilder();
-        for (var task : tasks) {
-            sb.append(task.serialize()).append("\n");
-        }
-        try {
-            Files.write(tempFilePath, sb.toString().getBytes(StandardCharsets.UTF_8));
+        var tmp = Files.createTempFile(dataDir, saveFileName, ".tmp");
+        try (FileChannel c = FileChannel.open(tmp, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING);
+             BufferedWriter w = new BufferedWriter(Channels.newWriter(c, StandardCharsets.UTF_8.name()))) {
+            for (var task : tasks) {
+                w.write(task.serialize());
+                w.newLine();
+            }
+            w.flush();
         } catch (IOException e) {
             throw new IOException("could not write to the temp file", e);
         }
-        if (!replaceSaveFile) {
-            return;
-        }
         try {
             try {
-                Files.move(tempFilePath, saveFilePath, StandardCopyOption.REPLACE_EXISTING,
+                Files.move(tmp, saveFilePath, StandardCopyOption.REPLACE_EXISTING,
                         StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException e) {
-                Files.move(tempFilePath, saveFilePath, StandardCopyOption.REPLACE_EXISTING);
+                Files.move(tmp, saveFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             throw new IOException("failed to replace the save file with the temp file", e);

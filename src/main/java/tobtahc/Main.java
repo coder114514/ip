@@ -17,6 +17,8 @@ public class Main {
     private Ui ui;
     private Rng rng;
     private CommandParser cmdParser;
+    private TaskList tasks;
+    private boolean endByEof;
 
     /**
      * The main program launcher.
@@ -24,7 +26,7 @@ public class Main {
      * @param args command line arguments passed to the program
      */
     public static void main(String[] args) {
-        new Main("../data", "tasks.txt", "tasks.tmp.txt").run();
+        new Main("../data", "tasks.txt").run();
     }
 
     /**
@@ -32,11 +34,12 @@ public class Main {
      * @param saveFilePath name of the save file
      * @param tempFilePath name of the temp file
      */
-    public Main(String dataDir, String saveFileName, String tempFileName) {
-        storage = new Storage(dataDir, saveFileName, tempFileName);
+    public Main(String dataDir, String saveFileName) {
+        storage = new Storage(dataDir, saveFileName);
         ui = new Ui();
         rng = new Rng();
         cmdParser = new CommandParser(rng);
+        endByEof = false;
     }
 
     /**
@@ -45,9 +48,6 @@ public class Main {
     public void run() {
         ui.chatIntro();
 
-        boolean endByEof = false;
-
-        TaskList tasks;
         try {
             var result = storage.loadTasks();
             tasks = result.tasks();
@@ -60,13 +60,11 @@ public class Main {
                 ui.botMessageLine();
             }
         } catch (IOException e) {
-            tasks = new TaskList();
-            storage.switchToFallbackMode();
             ui.botMessageSepError();
             ui.botMessageLine("Error: " + e.getMessage() + ".");
-            ui.botMessageLine("Tasks will only be written to the temp file.");
+            ui.botMessageLine("Aborting");
             ui.botMessageSepError();
-            ui.botMessageLine();
+            return;
         }
 
         for (;;) {
