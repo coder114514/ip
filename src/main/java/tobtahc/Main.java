@@ -33,7 +33,7 @@ public class Main {
      * @param tempFilePath name of the temp file
      */
     public Main(String dataDir, String saveFileName, String tempFileName) {
-        storage = new Storage("../data", "tasks.txt", "tasks.tmp.txt");
+        storage = new Storage(dataDir, saveFileName, tempFileName);
         ui = new Ui();
         rng = new Rng();
         cmdParser = new CommandParser(rng);

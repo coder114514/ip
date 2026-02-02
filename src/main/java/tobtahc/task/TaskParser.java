@@ -62,7 +62,7 @@ public class TaskParser {
                 var to = LocalDateTime.parse(toString, DateTime.DATE_TIME_FORMATTER_INPUT);
                 return new Event(desc, from, to);
             } catch (DateTimeParseException e) {
-                throw new TaskFormatError(TaskType.DEADLINE);
+                throw new TaskFormatError(TaskType.EVENT);
             }
         } else if (input.startsWith("event")) {
             throw new TaskFormatError(TaskType.EVENT);

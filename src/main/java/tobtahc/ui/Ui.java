@@ -16,10 +16,6 @@ public class Ui {
      * {@return the user input from stdin, null if EOF is met}
      */
     public String readInput() {
-        if (!scanner.hasNextLine()) {
-            scanner.close();
-            return null;
-        }
         return scanner.nextLine();
     }
 

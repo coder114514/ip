@@ -64,7 +64,7 @@ public class Storage {
                 Files.createFile(saveFilePath);
             }
         } catch (IOException e) {
-            throw new IOException("failed to create the inital save file", e);
+            throw new IOException("failed to create the initial save file", e);
         }
     }
 
