@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * This class contains some utilities.
  */
-final public class Utils {
+final public class DateTime {
     /**
      * The date time formats used for parsing user input and printing tasks.
      */

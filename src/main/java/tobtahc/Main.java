@@ -15,7 +15,7 @@ import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
 import tobtahc.ui.Ui;
 import tobtahc.util.Rng;
-import tobtahc.util.Utils;
+import tobtahc.util.DateTime;
 
 /**
  * The main program.
@@ -288,11 +288,11 @@ public class Main {
                     break;
                 case DEADLINE:
                     ui.botMessageLine("  deadline <task> /by <time>");
-                    ui.botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
+                    ui.botMessageLine("And the correct form of <time> should be " + DateTime.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 case EVENT:
                     ui.botMessageLine("  event <task> /from <time> /to <time>");
-                    ui.botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
+                    ui.botMessageLine("And the correct form of <time> should be " + DateTime.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 }
                 ui.botMessageSep();
