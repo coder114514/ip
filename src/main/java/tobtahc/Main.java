@@ -57,11 +57,9 @@ public class Main {
         var scanner = new Scanner(System.in);
 
         TaskList tasks;
-        boolean areTasksLoaded;
         try {
             var result = storage.loadTasks();
             tasks = result.tasks();
-            areTasksLoaded = true;
             if (result.numBadLines() > 0) {
                 ui.botMessageSepError();
                 ui.botMessageLine(String.format(
@@ -72,7 +70,7 @@ public class Main {
             }
         } catch (IOException e) {
             tasks = new TaskList();
-            areTasksLoaded = false;
+            storage.switchToFallbackMode();
             ui.botMessageSepError();
             ui.botMessageLine("Error: " + e.getMessage() + ".");
             ui.botMessageLine("Tasks will only be written to the temp file.");
@@ -211,7 +209,7 @@ public class Main {
                     ui.botMessageLine("  " + task);
                     ui.botMessageSep();
                 }
-                saveTasks(tasks, areTasksLoaded);
+                saveTasks(tasks);
                 continue;
             } else if (input.startsWith("mark") || input.startsWith("unmark")) {
                 ui.botMessageSep();
@@ -252,7 +250,7 @@ public class Main {
                 ui.botMessageLine(String.format("Now you have %s tasks in your list.",
                         tasks.size()));
                 ui.botMessageSep();
-                saveTasks(tasks, areTasksLoaded);
+                saveTasks(tasks);
                 continue;
             } else if (input.startsWith("delete")) {
                 ui.botMessageSep();
@@ -278,7 +276,7 @@ public class Main {
                             tasks.size()));
                 }
                 ui.botMessageSep();
-                saveTasks(tasks, areTasksLoaded);
+                saveTasks(tasks);
 
             } catch (TaskFormatError e) {
                 ui.botMessageSep();
@@ -309,14 +307,14 @@ public class Main {
             }
         }
 
-        saveTasks(tasks, areTasksLoaded);
+        saveTasks(tasks);
         ui.chatBye(endByEof);
         scanner.close();
     }
 
-    private void saveTasks(TaskList tasks, boolean areTasksLoaded) {
+    private void saveTasks(TaskList tasks) {
         try {
-            storage.saveTasks(tasks, areTasksLoaded);
+            storage.saveTasks(tasks);
         } catch (IOException e) {
             ui.botMessageSepError();
             ui.botMessageLine("Error: " + e.getMessage() + ".");

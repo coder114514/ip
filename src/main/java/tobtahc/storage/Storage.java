@@ -20,6 +20,7 @@ public class Storage {
     private Path dataDir;
     private Path saveFilePath;
     private Path tempFilePath;
+    private boolean replaceSaveFile;
 
     /**
      * @param numBadLines number of bad lines in the save file
@@ -36,6 +37,14 @@ public class Storage {
         dataDir = Path.of(dataDirPath);
         saveFilePath = Path.of(dataDirPath, saveFileName);
         tempFilePath = Path.of(dataDirPath, tempFileName);
+        replaceSaveFile = true;
+    }
+
+    /**
+     * Switch the storage behavior to only saving to the temp file.
+     */
+    public void switchToFallbackMode() {
+        replaceSaveFile = false;
     }
 
     private void ensureDirExists() throws IOException {
@@ -84,13 +93,11 @@ public class Storage {
     }
 
     /**
-     * Saves the tasks to the temp file, and if {@code replaceSaveFile} is {@code true},
-     * replace the save file with the temp file.
-     *
+     * Saves the tasks to the temp file, and on default, replaces the save file with the temp file,
+     * if switched to fallback mode, then only saves to the temp file.
      * @param tasks tasks to save
-     * @param replaceSaveFile if true, replace the save file with the temp file
      */
-    public void saveTasks(TaskList tasks, boolean replaceSaveFile) throws IOException {
+    public void saveTasks(TaskList tasks) throws IOException {
         ensureDirExists();
         var sb = new StringBuilder();
         for (var task : tasks) {
