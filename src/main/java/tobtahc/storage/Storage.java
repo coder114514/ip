@@ -6,12 +6,11 @@ import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import tobtahc.task.Task;
+import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
 
 /**
@@ -28,7 +27,7 @@ public class Storage {
      * @param numBadLines number of bad lines in the save file
      * @param tasks the deserialized task objects
      */
-    public record LoadResult(int numBadLines, List<Task> tasks) {}
+    public record LoadResult(int numBadLines, TaskList tasks) {}
 
     private static void ensureDirExists() throws IOException {
         try {
@@ -68,7 +67,7 @@ public class Storage {
                 } else {
                     numBadLines.getAndIncrement();
                 }
-            }).collect(Collectors.toCollection(ArrayList::new));
+            }).collect(Collectors.toCollection(TaskList::new));
             return new LoadResult(numBadLines.intValue(), tasks);
         } catch (IOException e) {
             throw new IOException("could not load tasks", e);
@@ -84,7 +83,7 @@ public class Storage {
      *     if not, then we would only write to the temp file and would not replace the
      *     save file
      */
-    public static void saveTasks(List<Task> tasks, boolean areTasksLoaded) throws IOException {
+    public static void saveTasks(TaskList tasks, boolean areTasksLoaded) throws IOException {
         ensureDirExists();
         var sb = new StringBuilder();
         for (var task : tasks) {

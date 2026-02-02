@@ -3,8 +3,6 @@ package tobtahc;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -12,8 +10,8 @@ import tobtahc.storage.Storage;
 import tobtahc.task.Deadline;
 import tobtahc.task.Event;
 import tobtahc.task.NotATask;
-import tobtahc.task.Task;
 import tobtahc.task.TaskFormatError;
+import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
 import tobtahc.util.Utils;
 
@@ -37,7 +35,7 @@ public class Main {
         boolean endByEof = false;
         var scanner = new Scanner(System.in);
 
-        List<Task> tasks;
+        TaskList tasks;
         boolean areTasksLoaded;
         try {
             var result = Storage.loadTasks();
@@ -52,7 +50,7 @@ public class Main {
                 botMessageLine();
             }
         } catch (IOException e) {
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
             areTasksLoaded = false;
             botMessageSepError();
             botMessageLine("Error: " + e.getMessage() + ".");
@@ -295,7 +293,7 @@ public class Main {
         scanner.close();
     }
 
-    private static void saveTasks(List<Task> tasks, boolean areTasksLoaded) {
+    private static void saveTasks(TaskList tasks, boolean areTasksLoaded) {
         try {
             Storage.saveTasks(tasks, areTasksLoaded);
         } catch (IOException e) {
