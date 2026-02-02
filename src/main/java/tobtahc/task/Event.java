@@ -3,7 +3,7 @@ package tobtahc.task;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import tobtahc.util.DateTime;
+import tobtahc.util.DateTimeUtil;
 
 /**
  * Implements the Event task.
@@ -35,14 +35,14 @@ public class Event extends Task {
     public String serialize() {
         return String.format("%s event %s /from %s /to %s",
                 isDone() ? "1" : "0", super.getDescription(),
-                        DateTime.serializeDateTime(from), DateTime.serializeDateTime(to));
+                        DateTimeUtil.serializeDateTime(from), DateTimeUtil.serializeDateTime(to));
     }
 
     @Override
     public String getDescription() {
         return String.format("%s (from: %s to: %s)",
                 super.getDescription(),
-                        DateTime.formatDateTime(from), DateTime.formatDateTime(to));
+                        DateTimeUtil.formatDateTime(from), DateTimeUtil.formatDateTime(to));
     }
 
     @Override

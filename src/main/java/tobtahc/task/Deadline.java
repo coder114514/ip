@@ -3,7 +3,7 @@ package tobtahc.task;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import tobtahc.util.DateTime;
+import tobtahc.util.DateTimeUtil;
 
 /**
  * Implements the Deadline task.
@@ -31,13 +31,13 @@ public class Deadline extends Task {
     public String serialize() {
         return String.format("%s deadline %s /by %s",
                 isDone() ? "1" : "0", super.getDescription(),
-                        DateTime.serializeDateTime(deadline));
+                        DateTimeUtil.serializeDateTime(deadline));
     }
 
     @Override
     public String getDescription() {
         return String.format("%s (by: %s)",
-                super.getDescription(), DateTime.formatDateTime(deadline));
+                super.getDescription(), DateTimeUtil.formatDateTime(deadline));
     }
 
     @Override

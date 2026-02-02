@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import tobtahc.task.NotATask;
 import tobtahc.task.TaskFormatError;
 import tobtahc.task.TaskParser;
-import tobtahc.util.DateTime;
+import tobtahc.util.DateTimeUtil;
 import tobtahc.util.ParserUtil;
 import tobtahc.util.Rng;
 
@@ -145,12 +145,12 @@ public class CommandParser {
                 throw new CommandParseError("Syntax error! Correct syntax:",
                         "  deadline <task> /by <time>",
                                 "And the correct form of <time> should be "
-                                        + DateTime.DATE_TIME_FORMATTER_INPUT_STRING);
+                                        + DateTimeUtil.DATE_TIME_FORMATTER_INPUT_STRING);
             case EVENT:
                 throw new CommandParseError("Syntax error! Correct syntax:",
                         "  event <task> /from <time> /to <time>",
                                 "And the correct form of <time> should be "
-                                        + DateTime.DATE_TIME_FORMATTER_INPUT_STRING);
+                                        + DateTimeUtil.DATE_TIME_FORMATTER_INPUT_STRING);
             }
 
         } catch (NotATask e) {
