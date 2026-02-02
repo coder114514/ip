@@ -32,7 +32,6 @@ public class Main {
     /**
      * @param dataDirPath path of the date directory
      * @param saveFilePath name of the save file
-     * @param tempFilePath name of the temp file
      */
     public Main(String dataDir, String saveFileName) {
         storage = new Storage(dataDir, saveFileName);

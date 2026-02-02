@@ -34,7 +34,6 @@ public class Storage {
     /**
      * @param dataDirPath path of the date directory
      * @param saveFilePath name of the save file
-     * @param tempFilePath name of the temp file
      */
     public Storage(String dataDirPath, String saveFileName) {
         dataDir = Path.of(dataDirPath);
@@ -103,6 +102,7 @@ public class Storage {
                 w.newLine();
             }
             w.flush();
+            c.force(true);
         } catch (IOException e) {
             throw new IOException("could not write to the temp file", e);
         }
