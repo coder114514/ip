@@ -84,7 +84,7 @@ public class Storage {
     }
 
     /**
-     * Save the tasks to the temp file, and if {@code replaceSaveFile} is {@code true},
+     * Saves the tasks to the temp file, and if {@code replaceSaveFile} is {@code true},
      * replace the save file with the temp file.
      *
      * @param tasks tasks to save

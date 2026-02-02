@@ -23,7 +23,7 @@ final public class Utils {
                     Locale.ROOT);
 
     /**
-     * Update the RNG {@code cur} with {@code inc}.
+     * Updates the RNG {@code cur} with {@code inc}.
      *
      * @param cur current RNG
      * @param inc the incremental value
