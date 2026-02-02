@@ -49,6 +49,10 @@ public final class ParserUtil {
             return ret;
         }
 
+        if (s.endsWith("/")) {
+            return null;
+        }
+
         int i = nextSlash(s, 0);
         ret.put("", s.substring(0, i++).trim());
 
@@ -60,14 +64,14 @@ public final class ParserUtil {
             while (j < s.length() && Character.isAlphabetic(s.charAt(j))) {
                 ++j;
             }
+            if (j < s.length() && !Character.isWhitespace(s.charAt(j))) {
+                return null;
+            }
             var key = s.substring(i, j).toLowerCase(Locale.ROOT);
             if (ret.containsKey(key)) {
                 return null;
             }
             int k = nextSlash(s, j);
-            //if (k == s.length() - 1) {
-            //    return null;
-            //}
             var value = j < s.length() ? s.substring(j, k).trim() : "";
             ret.put(key, value);
             i = k + 1;
