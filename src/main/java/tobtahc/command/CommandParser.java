@@ -2,21 +2,23 @@ package tobtahc.command;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import tobtahc.task.NotATask;
 import tobtahc.task.TaskFormatError;
 import tobtahc.task.TaskParser;
 import tobtahc.util.DateTime;
+import tobtahc.util.ParserUtil;
 import tobtahc.util.Rng;
 
 /**
  * Implements the command parser.
  */
 public class CommandParser {
-    /** The pattern for matching the commands. The \s* before the number makes it more forgiving. */
-    private static final Pattern PATTERN_MARK_UNMARK = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
-    private static final Pattern PATTERN_DELETE = Pattern.compile("^delete\\s*([0-9]+)\\s*$");
+    /** The patterns for matching the commands. The \s* before the number makes it more permissive. */
+    private static final Pattern PATTERN_NUMERIC_CMD =
+            Pattern.compile("^(mark|unmark|delete)\\s*(\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     private Rng rng;
 
@@ -35,87 +37,104 @@ public class CommandParser {
      * @throws CommandParseError if the user input resembles a command but in a wrong syntax
      */
     public Command parse(String input) throws CommandParseError {
-        input = input.trim();
-        rng.nextRng(input.hashCode());
+        var trimmed = input.trim();
+        rng.nextRng(trimmed.hashCode());
 
-        if (input.equals("bye")) {
-            return new ExitCommand();
-        } else if (input.startsWith("bye")) {
-            throw new CommandParseError("Enter 'bye' to quit.");
-        }
+        var lower = trimmed.toLowerCase(Locale.ROOT);
 
-        if (input.equals("list")) {
-            return new ListCommand();
-        } else if (input.startsWith("list")) {
-            throw new CommandParseError("Enter 'list' to list your tasks.");
-        }
-
-        if (input.equals("clear")) {
-            return new ClearCommand();
-        } else if (input.startsWith("clear")) {
-            throw new CommandParseError("Enter 'clear' to clear your tasks.");
-        }
-
-        if (input.startsWith("before or on")) {
-            try {
-                var date = LocalDate.parse(input.substring(12).trim());
-                return new BeforeOrOnCommand(date);
-            } catch (DateTimeParseException e) {
-                throw new CommandParseError("Syntax error! Correct syntax:",
-                        "  before or on <date>");
+        if (lower.startsWith("mark") || lower.startsWith("unmark") || lower.startsWith("delete")) {
+            var m = PATTERN_NUMERIC_CMD.matcher(trimmed);
+            if (!m.matches()) {
+                if (lower.startsWith("mark")) {
+                    throw new CommandParseError("Syntax error! Correct syntax:", "  mark <no>");
+                } else if (lower.startsWith("unmark")) {
+                    throw new CommandParseError("Syntax error! Correct syntax:", "  unmark <no>");
+                } else {
+                    throw new CommandParseError("Syntax error! Correct syntax:", "  delete <no>");
+                }
             }
+
+            String verb = m.group(1).toLowerCase(Locale.ROOT);
+            int index = Integer.parseInt(m.group(2)) - 1;
+
+            return switch (verb) {
+                case "mark" -> new MarkCommand(index);
+                case "unmark" -> new UnmarkCommand(index);
+                case "delete" -> new DeleteCommand(index);
+                default -> throw new AssertionError("unreachable");
+            };
         }
 
-        if (input.startsWith("occurs on")) {
-            try {
-                var date = LocalDate.parse(input.substring(9).trim());
-                return new OccursOnCommand(date);
-            } catch (DateTimeParseException e) {
-                throw new CommandParseError("Syntax error! Correct syntax:",
-                        "  occurs on <date>");
-            }
+        var lowerToks = lower.split("\\s+");
+        String verb = null;
+        String arg = null;
+
+        if (lowerToks.length >= 3
+                && lowerToks[0].equals("before")
+                && lowerToks[1].equals("or")
+                && lowerToks[2].equals("on")) {
+            verb = "before or on";
+            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 3));
+
+        } else if (lowerToks.length >= 2
+                && lowerToks[0].equals("occurs")
+                && lowerToks[1].equals("on")) {
+            verb = "occurs on";
+            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 2));
+
+        } else if (lowerToks.length >= 1
+                && lowerToks[0].equals("list")) {
+            verb = "list";
+            arg = lowerToks.length == 1 ? "" : null;
+
+        } else if (lowerToks.length >= 1
+                && lowerToks[0].equals("clear")) {
+            verb = "clear";
+            arg = lowerToks.length == 1 ? "" : null;
+
+        } else if (lowerToks.length >= 1
+                && lowerToks[0].equals("bye")) {
+            verb = "bye";
+            arg = lowerToks.length == 1 ? "" : null;
         }
 
-        var matcherMarkUnmark = PATTERN_MARK_UNMARK.matcher(input);
-
-        if (matcherMarkUnmark.find()) {
-            var indexString = matcherMarkUnmark.group(1);
-            int index;
-            try {
-                index = Integer.parseInt(indexString) - 1;
-            } catch (NumberFormatException e) {
-                throw new CommandParseError("Syntax error! Correct syntax:",
-                        "  mark <no> or unmark <no>");
+        if (verb != null) {
+            switch (verb) {
+            case "before or on":
+                try {
+                    return new BeforeOrOnCommand(LocalDate.parse(arg));
+                } catch (DateTimeParseException e) {
+                    throw new CommandParseError("Syntax error! Correct syntax:", "  before or on <date>");
+                }
+            case "occurs on":
+                try {
+                    return new OccursOnCommand(LocalDate.parse(arg));
+                } catch (DateTimeParseException e) {
+                    throw new CommandParseError("Syntax error! Correct syntax:", "  occurs on <date>");
+                }
+            case "bye":
+                if (arg != null) {
+                    return new ExitCommand();
+                } else {
+                    throw new CommandParseError("Enter 'bye' to quit.");
+                }
+            case "list":
+                if (arg != null) {
+                    return new ListCommand();
+                } else {
+                    throw new CommandParseError("Enter 'list' to list your tasks.");
+                }
+            case "clear":
+                if (arg != null) {
+                    return new ClearCommand();
+                } else {
+                    throw new CommandParseError("Enter 'clear' to clear your tasks.");
+                }
             }
-            if (input.charAt(0) == 'm') {
-                return new MarkCommand(index);
-            } else {
-                return new UnmarkCommand(index);
-            }
-        } else if (input.startsWith("mark") || input.startsWith("unmark")) {
-            throw new CommandParseError("Syntax error! Correct syntax:",
-                    "  mark <no> or unmark <no>");
-        }
-
-        var matcherDelete = PATTERN_DELETE.matcher(input);
-
-        if (matcherDelete.find()) {
-            var indexString = matcherDelete.group(1);
-            int index;
-            try {
-                index = Integer.parseInt(indexString) - 1;
-            } catch (NumberFormatException e) {
-                throw new CommandParseError("Syntax error! Correct syntax:",
-                        "  delete <no>");
-            }
-            return new DeleteCommand(index);
-        } else if (input.startsWith("delete")) {
-            throw new CommandParseError("Syntax error! Correct syntax:",
-                    "  delete <no>");
         }
 
         try {
-            var task = TaskParser.parse(input);
+            var task = TaskParser.parse(trimmed);
             return new AddCommand(task, rng);
         } catch (TaskFormatError e) {
             switch (e.getTaskType()) {
@@ -135,11 +154,9 @@ public class CommandParser {
             }
 
         } catch (NotATask e) {
-            return new EchoCommand(input, rng);
+            return new EchoCommand(trimmed, rng);
         }
 
-        // not reachable
-        // just to make the compiler happy
-        return null;
+        throw new AssertionError("unreachable");
     }
 }
