@@ -33,8 +33,8 @@ public class Event extends Task {
 
     @Override
     public String serialize() {
-        return String.format("%s %s/from %s/to %s",
-                isDone() ? "1event" : "0event", super.getDescription(),
+        return String.format("%s event %s /from %s /to %s",
+                isDone() ? "1" : "0", super.getDescription(),
                         DateTime.serializeDateTime(from), DateTime.serializeDateTime(to));
     }
 

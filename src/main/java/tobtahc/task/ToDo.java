@@ -13,7 +13,8 @@ public class ToDo extends Task {
 
     @Override
     public String serialize() {
-        return (isDone() ? "1todo " : "0todo ") + super.getDescription();
+        return String.format("%s todo %s",
+                isDone() ? "1" : "0", super.getDescription());
     }
 
     @Override

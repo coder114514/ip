@@ -29,8 +29,8 @@ public class Deadline extends Task {
 
     @Override
     public String serialize() {
-        return String.format("%s %s/by %s",
-                isDone() ? "1deadline" : "0deadline", super.getDescription(),
+        return String.format("%s deadline %s /by %s",
+                isDone() ? "1" : "0", super.getDescription(),
                         DateTime.serializeDateTime(deadline));
     }
 
