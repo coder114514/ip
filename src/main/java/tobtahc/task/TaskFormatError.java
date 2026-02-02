@@ -7,7 +7,7 @@ public class TaskFormatError extends TaskParseError {
     private TaskType type;
 
     /**
-     * @param type The type of the task.
+     * @param type type of the task
      */
     public TaskFormatError(TaskType type) {
         this.type = type;

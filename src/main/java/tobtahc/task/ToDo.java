@@ -5,7 +5,7 @@ package tobtahc.task;
  */
 public class ToDo extends Task {
     /**
-     * @param description Task description.
+     * @param description description of the task
      */
     public ToDo(String description) {
         super(description);

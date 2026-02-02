@@ -23,13 +23,13 @@ final public class Utils {
                     Locale.ROOT);
 
     /**
-     * Update the RNG with inc.
+     * Update the RNG {@code cur} with {@code inc}.
      *
-     * @param cur Current RNG.
-     * @param inc The incremental value.
-     * @return New RNG.
+     * @param cur current RNG
+     * @param inc the incremental value
+     * @return updated RNG
      */
-    public static int nextRng(long cur, long inc) {
+    public static int nextRng(int cur, int inc) {
         var mul = ((22695477L * cur) & ((1L << 31) - 1));
         return (int)((mul + inc) & ((1L << 31) - 1));
     }
@@ -37,8 +37,8 @@ final public class Utils {
     /**
      * Outputs a string of the {@code LocalDateTime} object used for printing tasks.
      *
-     * @param ldt The {@code LocalDateTime} object.
-     * @return The string of the object.
+     * @param ldt the {@code LocalDateTime} object
+     * @return formatted string of the object for output
      */
     public static String formatDateTime(LocalDateTime ldt) {
         return ldt.format(DATE_TIME_FORMATTER_OUTPUT);
@@ -47,8 +47,8 @@ final public class Utils {
     /**
      * Outputs a string of the {@code LocalDateTime} object used for serializing tasks.
      *
-     * @param ldt The {@code LocalDateTime} object.
-     * @return The string of the object.
+     * @param ldt the {@code LocalDateTime} object
+     * @return formatted string of the object for serialization
      */
     public static String serializeDateTime(LocalDateTime ldt) {
         return ldt.format(DATE_TIME_FORMATTER_INPUT);

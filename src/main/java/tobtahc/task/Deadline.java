@@ -12,8 +12,8 @@ public class Deadline extends Task {
     private LocalDateTime deadline;
 
     /**
-     * @param description Task description.
-     * @param deadline The deadline of the task.
+     * @param description description of the task
+     * @param deadline The deadline of the task
      */
     public Deadline(String description, LocalDateTime deadline) {
         super(description);
@@ -21,7 +21,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * {@return Returns whether the task is due on/before {@code date}.}
+     * {@return whether the task is due on/before {@code date}}
      */
     public boolean isBeforeOrOn(LocalDate date) {
         return !deadline.toLocalDate().isAfter(date);

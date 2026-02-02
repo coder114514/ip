@@ -28,7 +28,7 @@ public class Main {
     /**
      * The main program.
      *
-     * @param args The command line args passed to the program.
+     * @param args command line arguments passed to the program
      */
     public static void main(String[] args) {
         chatIntro();
@@ -317,7 +317,7 @@ public class Main {
     /**
      * A helper for displaying the bot's response with an indentation.
      *
-     * @param message The message to display.
+     * @param message message to display
      */
     private static void botMessageLine(String message) {
         System.out.println("    " + message);
@@ -347,8 +347,8 @@ public class Main {
     /**
      * A helper for displaying the bye message.
      *
-     * @param endByEof If the chat is ended by an EOF instead of the user input 'bye',
-     * display an info message.
+     * @param endByEof if the chat is ended by an EOF instead of the user input 'bye',
+     *     display an info message.
      */
     private static void chatBye(boolean endByEof) {
         botMessageSep();

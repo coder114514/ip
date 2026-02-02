@@ -9,7 +9,7 @@ public abstract class Task {
     private boolean isDone;
 
     /**
-     * @param description Task description.
+     * @param description description of the task
      */
     public Task(String description) {
         this.description = description;
@@ -23,7 +23,7 @@ public abstract class Task {
      * The first character is either 0 or 1, representing undone/done.
      * The rest of the string is just the command used to create the task.
      *
-     * @return Serialized task object.
+     * @return serialized task object
      */
     public abstract String serialize();
 
@@ -32,23 +32,29 @@ public abstract class Task {
         return getDescriptionWithStatus();
     }
 
+    /**
+     * {@return description of the task}
+     */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @return Return in the form of [X]description, which is treated as the string form of the task.
+     * {@return task status plus the description of the task}
      */
     public String getDescriptionWithStatus() {
         return "[" + getStatusIcon() + "] " + getDescription();
     }
 
+    /**
+     * {@return whether the task is marked done}
+     */
     public boolean isDone() {
         return isDone;
     }
 
     /**
-     * @return Returns X if the task is done.
+     * {@return X if the task is done, space otherwise}
      */
     public String getStatusIcon() {
         return isDone() ? "X" : " ";

@@ -13,9 +13,9 @@ public class Event extends Task {
     private LocalDateTime to;
 
     /**
-     * @param description Task description.
-     * @param from The starting time of the event.
-     * @param to The ending time of the event.
+     * @param description description of the task
+     * @param from starting time of the event
+     * @param to ending time of the event
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
@@ -24,7 +24,7 @@ public class Event extends Task {
     }
 
     /**
-     * {@return Returns whether the event occurs on {@code date}.}
+     * {@return whether the event occurs on {@code date}}
      */
     public boolean occursOn(LocalDate date) {
         return !to.toLocalDate().isBefore(date)

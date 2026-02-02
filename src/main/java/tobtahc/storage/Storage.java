@@ -18,15 +18,15 @@ import tobtahc.task.TaskParser;
  * This class implements the save file mechanics.
  */
 public class Storage {
-    /** Basically we always run the program from /text-ui-test, so no need to check for null */
+    /** Basically we always run the program from /text-ui-test, so no need to check for null. */
     private static final Path PROJECT_ROOT = Path.of(System.getProperty("user.dir")).getParent();
     private static final Path DATA_DIR = PROJECT_ROOT.resolve("data");
     private static final Path TASKS_FILE = DATA_DIR.resolve("tasks.txt");
     private static final Path TASKS_TMP_FILE = DATA_DIR.resolve("tasks.tmp.txt");
 
     /**
-     * @param numBadLines The number of bad lines in the save file.
-     * @param tasks The deserialized task objects.
+     * @param numBadLines number of bad lines in the save file
+     * @param tasks the deserialized task objects
      */
     public record LoadResult(int numBadLines, List<Task> tasks) {}
 
@@ -54,8 +54,8 @@ public class Storage {
     /**
      * Loads the tasks from the save file.
      *
-     * @return A LoadResult.
-     * @throws IOException If there are IO exceptions.
+     * @return a LoadResult
+     * @throws IOException if there was an IO exception
      */
     public static LoadResult loadTasks() throws IOException {
         ensureFileExists();
@@ -79,10 +79,10 @@ public class Storage {
      * Save the tasks to the temp file, and if {@code areTasksLoaded} is {@code true},
      * replace the save file with the temp file.
      *
-     * @param tasks The tasks to save.
-     * @param areTasksLoaded Whether the tasks were successfully loaded at the start.
-     * If not, then we would only write to the temp file and will not replace the save
-     * file.
+     * @param tasks tasks to save
+     * @param areTasksLoaded whether the save file was loaded successfully at the start,
+     *     if not, then we would only write to the temp file and would not replace the
+     *     save file
      */
     public static void saveTasks(List<Task> tasks, boolean areTasksLoaded) throws IOException {
         ensureDirExists();

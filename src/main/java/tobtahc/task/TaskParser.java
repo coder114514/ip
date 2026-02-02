@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import tobtahc.util.Utils;
 
 /**
- * This class implements the task parser function.
+ * This class implements task parser and deserializer.
  */
 public class TaskParser {
     /**
@@ -21,10 +21,10 @@ public class TaskParser {
     /**
      * Parses the user input to get the task.
      *
-     * @param input User input.
-     * @return Task object.
-     * @throws NotATask if the input does not resemble a task at all.
-     * @throws TaskFormatError if the input resembles a task but is not in the correct syntax.
+     * @param input user input
+     * @return task object
+     * @throws NotATask if the input does not resemble a task at all
+     * @throws TaskFormatError if the input resembles a task but is not in the correct syntax
      */
     public static Task parseTask(String input) throws NotATask, TaskFormatError {
         var matcherToDo = PATTERN_TODO.matcher(input);
@@ -78,8 +78,8 @@ public class TaskParser {
      * The rest of the string is just the command used to create the task.
      * So that is why we can simply use Task.parseTask() here.
      *
-     * @param input The string to deserialize into a task object.
-     * @return A task object if successful, else null.
+     * @param input the string to deserialize into a task object
+     * @return a task object if successful, else null
      */
     public static Task deserialize(String input) {
         if (input.length() <= 1) {
@@ -99,9 +99,7 @@ public class TaskParser {
                 task.mark();
             }
             return task;
-        } catch (NotATask e) {
-            return null;
-        } catch (TaskFormatError e) {
+        } catch (TaskParseError e) {
             return null;
         }
     }
