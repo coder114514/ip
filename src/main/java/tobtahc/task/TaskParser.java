@@ -26,7 +26,7 @@ public class TaskParser {
      * @throws NotATask if the input does not resemble a task at all
      * @throws TaskFormatError if the input resembles a task but is not in the correct syntax
      */
-    public static Task parseTask(String input) throws NotATask, TaskFormatError {
+    public static Task parse(String input) throws NotATask, TaskFormatError {
         var matcherToDo = PATTERN_TODO.matcher(input);
 
         if (matcherToDo.find()) {
@@ -94,7 +94,7 @@ public class TaskParser {
             return null;
         }
         try {
-            var task = parseTask(input.substring(1));
+            var task = parse(input.substring(1));
             if (isDone) {
                 task.mark();
             }

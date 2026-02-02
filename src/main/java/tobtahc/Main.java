@@ -263,7 +263,7 @@ public class Main {
             }
 
             try {
-                var task = TaskParser.parseTask(input);
+                var task = TaskParser.parse(input);
                 tasks.add(task);
                 ui.botMessageSep();
                 if (rng % 4 == 0) {
