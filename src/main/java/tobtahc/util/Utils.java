@@ -23,18 +23,6 @@ final public class Utils {
                     Locale.ROOT);
 
     /**
-     * Updates the RNG {@code cur} with {@code inc}.
-     *
-     * @param cur current RNG
-     * @param inc the incremental value
-     * @return updated RNG
-     */
-    public static int nextRng(int cur, int inc) {
-        var mul = ((22695477L * cur) & ((1L << 31) - 1));
-        return (int)((mul + inc) & ((1L << 31) - 1));
-    }
-
-    /**
      * Outputs a string of the {@code LocalDateTime} object used for printing tasks.
      *
      * @param ldt the {@code LocalDateTime} object

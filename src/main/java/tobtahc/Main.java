@@ -14,6 +14,7 @@ import tobtahc.task.TaskFormatError;
 import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
 import tobtahc.ui.Ui;
+import tobtahc.util.Rng;
 import tobtahc.util.Utils;
 
 /**
@@ -52,7 +53,7 @@ public class Main {
     public void run() {
         ui.chatIntro();
 
-        int rng = 0;
+        Rng rng = new Rng();
         boolean endByEof = false;
         var scanner = new Scanner(System.in);
 
@@ -85,7 +86,7 @@ public class Main {
             }
 
             var input = scanner.nextLine().trim();
-            rng = Utils.nextRng(rng, input.hashCode());
+            rng.nextRng(input.hashCode());
 
             if (input.equals("bye")) {
                 break;
@@ -264,7 +265,7 @@ public class Main {
                 var task = TaskParser.parse(input);
                 tasks.add(task);
                 ui.botMessageSep();
-                if (rng % 4 == 0) {
+                if (rng.getRng() % 4 == 0) {
                     ui.botMessageLine("Ti tog!");
                     ui.botMessageLine("  dedda ksat: " + task.getDescription());
                     ui.botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.",
@@ -298,7 +299,7 @@ public class Main {
 
             } catch (NotATask e) {
                 ui.botMessageSep();
-                if (rng % 4 == 0) {
+                if (rng.getRng() % 4 == 0) {
                     ui.botMessageLine("ohce: " + input);
                 } else {
                     ui.botMessageLine("echo: " + input);
