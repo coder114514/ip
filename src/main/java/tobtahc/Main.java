@@ -13,6 +13,7 @@ import tobtahc.task.NotATask;
 import tobtahc.task.TaskFormatError;
 import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
+import tobtahc.ui.Ui;
 import tobtahc.util.Utils;
 
 /**
@@ -20,6 +21,7 @@ import tobtahc.util.Utils;
  */
 public class Main {
     private Storage storage;
+    private Ui ui;
 
     /** The pattern for matching the commands. The \s* before the number makes it more forgiving. */
     private static final Pattern PATTERN_MARK_UNMARK = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
@@ -41,13 +43,14 @@ public class Main {
      */
     public Main(String dataDir, String saveFileName, String tempFileName) {
         storage = new Storage("../data", "tasks.txt", "tasks.tmp.txt");
+        ui = new Ui();
     }
 
     /**
      * The main program logic.
      */
     public void run() {
-        chatIntro();
+        ui.chatIntro();
 
         int rng = 0;
         boolean endByEof = false;
@@ -60,21 +63,21 @@ public class Main {
             tasks = result.tasks();
             areTasksLoaded = true;
             if (result.numBadLines() > 0) {
-                botMessageSepError();
-                botMessageLine(String.format(
+                ui.botMessageSepError();
+                ui.botMessageLine(String.format(
                         "Info: there were %d bad lines in the save file, which will be removed.",
                                 result.numBadLines()));
-                botMessageSepError();
-                botMessageLine();
+                ui.botMessageSepError();
+                ui.botMessageLine();
             }
         } catch (IOException e) {
             tasks = new TaskList();
             areTasksLoaded = false;
-            botMessageSepError();
-            botMessageLine("Error: " + e.getMessage() + ".");
-            botMessageLine("Tasks will only be written to the temp file.");
-            botMessageSepError();
-            botMessageLine();
+            ui.botMessageSepError();
+            ui.botMessageLine("Error: " + e.getMessage() + ".");
+            ui.botMessageLine("Tasks will only be written to the temp file.");
+            ui.botMessageSepError();
+            ui.botMessageLine();
         }
 
         for (;;) {
@@ -89,47 +92,47 @@ public class Main {
             if (input.equals("bye")) {
                 break;
             } else if (input.startsWith("bye")) {
-                botMessageSep();
-                botMessageLine("Enter 'bye' to quit.");
-                botMessageSep();
+                ui.botMessageSep();
+                ui.botMessageLine("Enter 'bye' to quit.");
+                ui.botMessageSep();
                 continue;
             }
 
             if (input.equals("list")) {
-                botMessageSep();
-                botMessageLine(String.format("You have %s tasks in your list:",
+                ui.botMessageSep();
+                ui.botMessageLine(String.format("You have %s tasks in your list:",
                         tasks.size()));
                 if (tasks.size() == 0) {
-                    botMessageLine("(empty)");
+                    ui.botMessageLine("(empty)");
                 }
                 for (int i = 0; i < tasks.size(); ++i) {
-                    botMessageLine(String.format("%s.%s", i + 1, tasks.get(i)));
+                    ui.botMessageLine(String.format("%s.%s", i + 1, tasks.get(i)));
                 }
-                botMessageSep();
+                ui.botMessageSep();
                 continue;
             } else if (input.startsWith("list")) {
-                botMessageSep();
-                botMessageLine("Enter 'list' to list your tasks.");
-                botMessageSep();
+                ui.botMessageSep();
+                ui.botMessageLine("Enter 'list' to list your tasks.");
+                ui.botMessageSep();
                 continue;
             }
 
             if (input.equals("clear")) {
-                botMessageSep();
-                botMessageLine("Your tasks are all cleared.");
+                ui.botMessageSep();
+                ui.botMessageLine("Your tasks are all cleared.");
                 tasks.clear();
-                botMessageSep();
+                ui.botMessageSep();
                 continue;
             } else if (input.startsWith("clear")) {
-                botMessageSep();
-                botMessageLine("Enter 'clear' to clear your tasks.");
-                botMessageSep();
+                ui.botMessageSep();
+                ui.botMessageLine("Enter 'clear' to clear your tasks.");
+                ui.botMessageSep();
                 continue;
             }
 
             if (input.startsWith("before or on")) {
                 try {
-                    botMessageSep();
+                    ui.botMessageSep();
                     var date = LocalDate.parse(input.substring(12).trim());
                     for (int i = 0; i < tasks.size(); ++i) {
                         var task = tasks.get(i);
@@ -139,21 +142,21 @@ public class Main {
                         if (!ddl.isBeforeOrOn(date)) {
                             continue;
                         }
-                        botMessageLine("  " + (i + 1) + ": " + ddl.getDescription());
+                        ui.botMessageLine("  " + (i + 1) + ": " + ddl.getDescription());
                     }
-                    botMessageSep();
+                    ui.botMessageSep();
                 } catch (DateTimeParseException e) {
-                    botMessageSep();
-                    botMessageLine("Syntax error! Correct syntax:");
-                    botMessageLine("  before or on <date>");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Syntax error! Correct syntax:");
+                    ui.botMessageLine("  before or on <date>");
+                    ui.botMessageSep();
                 }
                 continue;
             }
 
             if (input.startsWith("occurs on")) {
                 try {
-                    botMessageSep();
+                    ui.botMessageSep();
                     var date = LocalDate.parse(input.substring(9).trim());
                     for (int i = 0; i < tasks.size(); ++i) {
                         var task = tasks.get(i);
@@ -163,14 +166,14 @@ public class Main {
                         if (!event.occursOn(date)) {
                             continue;
                         }
-                        botMessageLine("  " + (i + 1) + ": " + event.getDescription());
+                        ui.botMessageLine("  " + (i + 1) + ": " + event.getDescription());
                     }
-                    botMessageSep();
+                    ui.botMessageSep();
                 } catch (DateTimeParseException e) {
-                    botMessageSep();
-                    botMessageLine("Syntax error! Correct syntax:");
-                    botMessageLine("  occurs on <date>");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Syntax error! Correct syntax:");
+                    ui.botMessageLine("  occurs on <date>");
+                    ui.botMessageSep();
                 }
                 continue;
             }
@@ -183,38 +186,38 @@ public class Main {
                 try {
                     index = Integer.parseInt(indexString) - 1;
                 } catch (NumberFormatException e) {
-                    botMessageSep();
-                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    ui.botMessageSep();
                     continue;
                 }
                 if (index < 0 || index >= tasks.size()) {
-                    botMessageSep();
-                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    ui.botMessageSep();
                     continue;
                 }
                 var task = tasks.get(index);
                 if (input.charAt(0) == 'm') {
                     task.mark();
-                    botMessageSep();
-                    botMessageLine("Task marked as done!");
-                    botMessageLine("  " + task);
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Task marked as done!");
+                    ui.botMessageLine("  " + task);
+                    ui.botMessageSep();
                 } else {
                     task.unmark();
-                    botMessageSep();
-                    botMessageLine("Dekramnu ksat!");
-                    botMessageLine("  " + task);
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Dekramnu ksat!");
+                    ui.botMessageLine("  " + task);
+                    ui.botMessageSep();
                 }
                 saveTasks(tasks, areTasksLoaded);
                 continue;
             } else if (input.startsWith("mark") || input.startsWith("unmark")) {
-                botMessageSep();
-                botMessageLine("Syntax error! Correct syntax:");
-                botMessageLine("  mark <no> or unmark <no>");
-                botMessageSep();
+                ui.botMessageSep();
+                ui.botMessageLine("Syntax error! Correct syntax:");
+                ui.botMessageLine("  mark <no> or unmark <no>");
+                ui.botMessageSep();
                 continue;
             }
 
@@ -226,88 +229,88 @@ public class Main {
                 try {
                     index = Integer.parseInt(indexString) - 1;
                 } catch (NumberFormatException e) {
-                    botMessageSep();
-                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    ui.botMessageSep();
                     continue;
                 }
                 if (index < 0 || index >= tasks.size()) {
-                    botMessageSep();
-                    botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-                    botMessageSep();
+                    ui.botMessageSep();
+                    ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
+                    ui.botMessageSep();
                     continue;
                 }
                 var task = tasks.get(index);
                 tasks.remove(index);
-                botMessageSep();
+                ui.botMessageSep();
                 if (task.isDone()) {
-                    botMessageLine("Ksat removed!");
+                    ui.botMessageLine("Ksat removed!");
                 } else {
-                    botMessageLine("Task removed, but still UNDONE!");
+                    ui.botMessageLine("Task removed, but still UNDONE!");
                 }
-                botMessageLine("  " + task);
-                botMessageLine(String.format("Now you have %s tasks in your list.",
+                ui.botMessageLine("  " + task);
+                ui.botMessageLine(String.format("Now you have %s tasks in your list.",
                         tasks.size()));
-                botMessageSep();
+                ui.botMessageSep();
                 saveTasks(tasks, areTasksLoaded);
                 continue;
             } else if (input.startsWith("delete")) {
-                botMessageSep();
-                botMessageLine("Syntax error! Correct syntax:");
-                botMessageLine("  delete <no>");
-                botMessageSep();
+                ui.botMessageSep();
+                ui.botMessageLine("Syntax error! Correct syntax:");
+                ui.botMessageLine("  delete <no>");
+                ui.botMessageSep();
                 continue;
             }
 
             try {
                 var task = TaskParser.parseTask(input);
                 tasks.add(task);
-                botMessageSep();
+                ui.botMessageSep();
                 if (rng % 4 == 0) {
-                    botMessageLine("Ti tog!");
-                    botMessageLine("  dedda ksat: " + task.getDescription());
-                    botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.",
+                    ui.botMessageLine("Ti tog!");
+                    ui.botMessageLine("  dedda ksat: " + task.getDescription());
+                    ui.botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.",
                             tasks.size()));
                 } else {
-                    botMessageLine("Got it!");
-                    botMessageLine("  task added: " + task.getDescription());
-                    botMessageLine(String.format("Now you have %s tasks in your list.",
+                    ui.botMessageLine("Got it!");
+                    ui.botMessageLine("  task added: " + task.getDescription());
+                    ui.botMessageLine(String.format("Now you have %s tasks in your list.",
                             tasks.size()));
                 }
-                botMessageSep();
+                ui.botMessageSep();
                 saveTasks(tasks, areTasksLoaded);
 
             } catch (TaskFormatError e) {
-                botMessageSep();
-                botMessageLine("Syntax error! Correct syntax:");
+                ui.botMessageSep();
+                ui.botMessageLine("Syntax error! Correct syntax:");
                 switch (e.getTaskType()) {
                 case TODO:
-                    botMessageLine("  todo <task>");
+                    ui.botMessageLine("  todo <task>");
                     break;
                 case DEADLINE:
-                    botMessageLine("  deadline <task> /by <time>");
-                    botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
+                    ui.botMessageLine("  deadline <task> /by <time>");
+                    ui.botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 case EVENT:
-                    botMessageLine("  event <task> /from <time> /to <time>");
-                    botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
+                    ui.botMessageLine("  event <task> /from <time> /to <time>");
+                    ui.botMessageLine("And the correct form of <time> should be " + Utils.DATE_TIME_FORMATTER_INPUT_STRING);
                     break;
                 }
-                botMessageSep();
+                ui.botMessageSep();
 
             } catch (NotATask e) {
-                botMessageSep();
+                ui.botMessageSep();
                 if (rng % 4 == 0) {
-                    botMessageLine("ohce: " + input);
+                    ui.botMessageLine("ohce: " + input);
                 } else {
-                    botMessageLine("echo: " + input);
+                    ui.botMessageLine("echo: " + input);
                 }
-                botMessageSep();
+                ui.botMessageSep();
             }
         }
 
         saveTasks(tasks, areTasksLoaded);
-        chatBye(endByEof);
+        ui.chatBye(endByEof);
         scanner.close();
     }
 
@@ -315,42 +318,10 @@ public class Main {
         try {
             storage.saveTasks(tasks, areTasksLoaded);
         } catch (IOException e) {
-            botMessageSepError();
-            botMessageLine("Error: " + e.getMessage() + ".");
-            botMessageSepError();
-            botMessageLine();
+            ui.botMessageSepError();
+            ui.botMessageLine("Error: " + e.getMessage() + ".");
+            ui.botMessageSepError();
+            ui.botMessageLine();
         }
-    }
-
-    private void botMessageLine() {
-        System.out.println();
-    }
-
-    private void botMessageLine(String message) {
-        System.out.println("    " + message);
-    }
-
-    private void botMessageSep() {
-        botMessageLine("___________________________________________________________________\n");
-    }
-
-    private void botMessageSepError() {
-        botMessageLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
-    private void chatIntro() {
-        botMessageSep();
-        botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
-        botMessageLine("What can I do for you?");
-        botMessageSep();
-    }
-
-    private void chatBye(boolean endByEof) {
-        botMessageSep();
-        if (endByEof) {
-            botMessageLine("EOF DETECTED! Remember to say 'bye' next time!");
-        }
-        botMessageLine("Noos niaga uoy ees ot epoh! Eyb.");
-        botMessageSep();
     }
 }
