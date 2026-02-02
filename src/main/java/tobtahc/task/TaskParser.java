@@ -24,11 +24,11 @@ public class TaskParser {
         var splitted = input.split("\\s+", 2);
         if (splitted.length == 1) {
             var lower = input.toLowerCase(Locale.ROOT);
-            if (lower.startsWith("todo")) {
+            if (lower.equals("todo") || lower.startsWith("todo/")) {
                 throw new TaskFormatError(TaskType.TODO);
-            } else if (lower.startsWith("deadline")) {
+            } else if (lower.equals("deadline") || lower.startsWith("deadline/")) {
                 throw new TaskFormatError(TaskType.DEADLINE);
-            } else if (lower.startsWith("event")) {
+            } else if (lower.equals("event") || lower.startsWith("event/")) {
                 throw new TaskFormatError(TaskType.EVENT);
             } else {
                 throw new NotATask();
