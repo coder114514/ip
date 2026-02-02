@@ -1,29 +1,28 @@
 package tobtahc.command;
 
-import tobtahc.storage.Storage;
 import tobtahc.task.Task;
-import tobtahc.task.TaskList;
-import tobtahc.ui.Ui;
-import tobtahc.util.Rng;
 
 /**
  * The command for adding a task.
  */
 public class AddCommand extends ModifyingCommand {
     private Task task;
-    private Rng rng;
 
     /**
      * @param task the task to add
      * @param rng the RNG
      */
-    public AddCommand(Task task, Rng rng) {
+    public AddCommand(Task task) {
         this.task = task;
-        this.rng = rng;
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(CommandContext ctx) {
+        var ui = ctx.ui();
+        var tasks = ctx.tasks();
+        var storage = ctx.storage();
+        var rng = ctx.rng();
+
         tasks.add(task);
         ui.botMessageSep();
         if (rng.getRng() % 4 == 0) {

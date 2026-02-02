@@ -1,15 +1,14 @@
 package tobtahc.command;
 
-import tobtahc.storage.Storage;
-import tobtahc.task.TaskList;
-import tobtahc.ui.Ui;
-
 /**
  * The command for listing the tasks.
  */
 public class ListCommand extends Command {
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(CommandContext ctx) {
+        var ui = ctx.ui();
+        var tasks = ctx.tasks();
+
         ui.botMessageSep();
         ui.botMessageLine(String.format("You have %s tasks in your list:", tasks.size()));
         if (tasks.size() == 0) {

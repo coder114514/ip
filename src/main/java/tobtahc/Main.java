@@ -2,6 +2,7 @@ package tobtahc;
 
 import java.io.IOException;
 
+import tobtahc.command.CommandContext;
 import tobtahc.command.CommandParseError;
 import tobtahc.command.CommandParser;
 import tobtahc.storage.Storage;
@@ -16,9 +17,9 @@ public class Main {
     private Storage storage;
     private Ui ui;
     private Rng rng;
-    private CommandParser cmdParser;
     private TaskList tasks;
     private boolean endByEof;
+    private CommandContext ctx;
 
     /**
      * The main program launcher.
@@ -37,7 +38,6 @@ public class Main {
         storage = new Storage(dataDir, saveFileName);
         ui = new Ui();
         rng = new Rng();
-        cmdParser = new CommandParser(rng);
         endByEof = false;
     }
 
@@ -66,16 +66,19 @@ public class Main {
             return;
         }
 
+        ctx = new CommandContext(tasks, ui, storage, rng);
+
         for (;;) {
             String input = ui.readInput();
             if (input == null) {
                 endByEof = true;
                 break;
             }
+            rng.nextRng(input.hashCode());
 
             try {
-                var cmd = cmdParser.parse(input);
-                cmd.execute(tasks, ui, storage);
+                var cmd = CommandParser.parse(input);
+                cmd.execute(ctx);
 
                 if (cmd.isExit()) {
                     break;

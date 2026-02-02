@@ -10,7 +10,6 @@ import tobtahc.task.TaskFormatError;
 import tobtahc.task.TaskParser;
 import tobtahc.util.DateTimeUtil;
 import tobtahc.util.ParserUtil;
-import tobtahc.util.Rng;
 
 /**
  * Implements the command parser.
@@ -20,15 +19,6 @@ public class CommandParser {
     private static final Pattern PATTERN_NUMERIC_CMD =
             Pattern.compile("^(mark|unmark|delete)\\s*(\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
-    private Rng rng;
-
-    /**
-     * @param rng the RNG used to make the output have more variety
-     */
-    public CommandParser(Rng rng) {
-        this.rng = rng;
-    }
-
     /**
      * Parse the user input to get the command.
      *
@@ -36,9 +26,8 @@ public class CommandParser {
      * @return the command parsed from the user input
      * @throws CommandParseError if the user input resembles a command but in a wrong syntax
      */
-    public Command parse(String input) throws CommandParseError {
+    public static Command parse(String input) throws CommandParseError {
         var trimmed = input.trim();
-        rng.nextRng(trimmed.hashCode());
 
         var lower = trimmed.toLowerCase(Locale.ROOT);
 
@@ -135,7 +124,7 @@ public class CommandParser {
 
         try {
             var task = TaskParser.parse(trimmed);
-            return new AddCommand(task, rng);
+            return new AddCommand(task);
         } catch (TaskFormatError e) {
             switch (e.getTaskType()) {
             case TODO:
@@ -154,7 +143,7 @@ public class CommandParser {
             }
 
         } catch (NotATask e) {
-            return new EchoCommand(trimmed, rng);
+            return new EchoCommand(trimmed);
         }
 
         throw new AssertionError("unreachable");
