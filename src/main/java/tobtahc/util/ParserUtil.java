@@ -1,11 +1,14 @@
 package tobtahc.util;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * This class implements a few parser utilities.
  */
-public class ParserUtil {
+public final class ParserUtil {
     /**
-     * Find the index after consuming {@code tokenCount} tokens.
+     * Finds the index after consuming {@code tokenCount} tokens.
      *
      * @param s the string
      * @param tokenCount number of tokens to skip
@@ -15,10 +18,65 @@ public class ParserUtil {
         int i = 0;
         int n = s.length();
         for (int t = 0; t < tokenCount && i < n; t++) {
-            while (i < n && Character.isWhitespace(s.charAt(i))) i++;
-            while (i < n && !Character.isWhitespace(s.charAt(i))) i++;
-            while (i < n && Character.isWhitespace(s.charAt(i))) i++;
+            while (i < n && Character.isWhitespace(s.charAt(i))) {
+                ++i;
+            }
+            while (i < n && !Character.isWhitespace(s.charAt(i))) {
+                ++i;
+            }
+            while (i < n && Character.isWhitespace(s.charAt(i))) {
+                ++i;
+            }
         }
         return i == n ? -1 : i;
+    }
+
+    /**
+     * Parses the switches in the payload part of a task command.
+     * And in the returned map, "" corresponds to the description part.
+     *
+     * @param s the string payload
+     * @return the map containing switches and their values, null if there
+     *     are unrecoverable errors like a slash followed by space(s) and
+     *     duplicate keys
+     */
+    public static Map<String, String> parseSwitches(String s) {
+        var ret = new TreeMap<String, String>();
+        if (s.length() == 0) {
+            ret.put("", "");
+            return ret;
+        }
+
+        int i = nextSlash(s, 0);
+        ret.put("", s.substring(0, i++).trim());
+
+        while (i < s.length()) {
+            if (Character.isWhitespace(s.charAt(i))) {
+                return null;
+            }
+            int j = i;
+            while (j < s.length() && !Character.isWhitespace(s.charAt(j))) {
+                ++j;
+            }
+            var key = s.substring(i, j);
+            if (ret.containsKey(key)) {
+                return null;
+            }
+            int k = nextSlash(s, j);
+            var value = j < s.length() ? s.substring(j, k).trim() : "";
+            ret.put(key, value);
+            i = k + 1;
+        }
+
+        return ret;
+    }
+
+    private static int nextSlash(String s, int i) {
+        for (; i < s.length(); ++i) {
+            if (s.charAt(i) == '/') {
+                return i;
+            }
+        }
+        return i;
     }
 }

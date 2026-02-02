@@ -2,22 +2,15 @@ package tobtahc.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 import tobtahc.util.DateTimeUtil;
+import tobtahc.util.ParserUtil;
 
 /**
  * This class implements task parser and deserializer.
  */
 public class TaskParser {
-    /**
-     * The pattern for matching the commands.
-     * The (.+)s without a space before the slashes make it more forgiving.
-     */
-    private static final Pattern PATTERN_TODO = Pattern.compile("^todo (.+)");
-    private static final Pattern PATTERN_DEADLINE = Pattern.compile("^deadline (.+)/by (.+)");
-    private static final Pattern PATTERN_EVENT = Pattern.compile("^event (.+)/from (.+)/to (.+)");
-
     /**
      * Parses the user input to get the task.
      *
@@ -27,48 +20,95 @@ public class TaskParser {
      * @throws TaskFormatError if the input resembles a task but is not in the correct syntax
      */
     public static Task parse(String input) throws NotATask, TaskFormatError {
-        var matcherToDo = PATTERN_TODO.matcher(input);
-
-        if (matcherToDo.find()) {
-            var desc = matcherToDo.group(1).trim();
-            return new ToDo(desc);
-        } else if (input.startsWith("todo")) {
-            throw new TaskFormatError(TaskType.TODO);
+        var splitted = input.split("\\s+", 2);
+        if (splitted.length == 1) {
+            var lower = input.toLowerCase();
+            if (lower.startsWith("todo")) {
+                throw new TaskFormatError(TaskType.TODO);
+            } else if (lower.startsWith("deadline")) {
+                throw new TaskFormatError(TaskType.DEADLINE);
+            } else if (lower.startsWith("event")) {
+                throw new TaskFormatError(TaskType.EVENT);
+            } else {
+                throw new NotATask();
+            }
         }
 
-        var matcherDeadline = PATTERN_DEADLINE.matcher(input);
+        var verb = splitted[0].toLowerCase(Locale.ROOT);
+        var payload = splitted[1];
+        var m = ParserUtil.parseSwitches(payload);
 
-        if (matcherDeadline.find()) {
+        if (verb.equals("todo")) {
+            if (m == null) {
+                throw new TaskFormatError(TaskType.TODO);
+            }
+            var desc = m.get("");
+            if (desc == null || desc.length() == 0) {
+                throw new TaskFormatError(TaskType.TODO);
+            }
+            for (var key : m.keySet()) {
+                if (key.length() > 0) {
+                    throw new TaskFormatError(TaskType.TODO);
+                }
+            }
+            return new ToDo(desc);
+
+        } else if (verb.equals("deadline")) {
+            if (m == null) {
+                throw new TaskFormatError(TaskType.DEADLINE);
+            }
+            var desc = m.get("");
+            if (desc == null || desc.length() == 0) {
+                throw new TaskFormatError(TaskType.DEADLINE);
+            }
+            var by = m.get("by");
+            if (by == null || by.length() == 0) {
+                throw new TaskFormatError(TaskType.DEADLINE);
+            }
+            for (var key : m.keySet()) {
+                if (key.length() > 0 && !key.equals("by")) {
+                    throw new TaskFormatError(TaskType.DEADLINE);
+                }
+            }
             try {
-                var desc = matcherDeadline.group(1).trim();
-                var deadlineString = matcherDeadline.group(2).trim();
-                var deadline = LocalDateTime.parse(deadlineString, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+                var deadline = LocalDateTime.parse(by, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
                 return new Deadline(desc, deadline);
             } catch (DateTimeParseException e) {
                 throw new TaskFormatError(TaskType.DEADLINE);
             }
-        } else if (input.startsWith("deadline")) {
-            throw new TaskFormatError(TaskType.DEADLINE);
-        }
 
-        var matcherEvent = PATTERN_EVENT.matcher(input);
-
-        if (matcherEvent.find()) {
+        } else if (verb.equals("event")) {
+            if (m == null) {
+                throw new TaskFormatError(TaskType.EVENT);
+            }
+            var desc = m.get("");
+            if (desc == null || desc.length() == 0) {
+                throw new TaskFormatError(TaskType.EVENT);
+            }
+            var from = m.get("from");
+            if (from == null || from.length() == 0) {
+                throw new TaskFormatError(TaskType.EVENT);
+            }
+            var to = m.get("to");
+            if (to == null || to.length() == 0) {
+                throw new TaskFormatError(TaskType.EVENT);
+            }
+            for (var key : m.keySet()) {
+                if (key.length() > 0 && !key.equals("from") && !key.equals("to")) {
+                    throw new TaskFormatError(TaskType.EVENT);
+                }
+            }
             try {
-                var desc = matcherEvent.group(1).trim();
-                var fromString = matcherEvent.group(2).trim();
-                var from = LocalDateTime.parse(fromString, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
-                var toString = matcherEvent.group(3).trim();
-                var to = LocalDateTime.parse(toString, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
-                return new Event(desc, from, to);
+                var f = LocalDateTime.parse(from, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+                var t = LocalDateTime.parse(to, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+                return new Event(desc, f, t);
             } catch (DateTimeParseException e) {
                 throw new TaskFormatError(TaskType.EVENT);
             }
-        } else if (input.startsWith("event")) {
-            throw new TaskFormatError(TaskType.EVENT);
-        }
 
-        throw new NotATask();
+        } else {
+            throw new NotATask();
+        }
     }
 
     /**
@@ -94,7 +134,7 @@ public class TaskParser {
             return null;
         }
         try {
-            var task = parse(input.substring(1));
+            var task = parse(input.substring(1).trim());
             if (isDone) {
                 task.mark();
             }
