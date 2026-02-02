@@ -44,7 +44,7 @@ public class TaskParser {
                 throw new TaskFormatError(TaskType.TODO);
             }
             var desc = m.get("");
-            if (desc == null || desc.length() == 0) {
+            if (desc == null || desc.isEmpty()) {
                 throw new TaskFormatError(TaskType.TODO);
             }
             var allowed = Set.of("");
@@ -60,11 +60,11 @@ public class TaskParser {
                 throw new TaskFormatError(TaskType.DEADLINE);
             }
             var desc = m.get("");
-            if (desc == null || desc.length() == 0) {
+            if (desc == null || desc.isEmpty()) {
                 throw new TaskFormatError(TaskType.DEADLINE);
             }
             var by = m.get("by");
-            if (by == null || by.length() == 0) {
+            if (by == null || by.isEmpty()) {
                 throw new TaskFormatError(TaskType.DEADLINE);
             }
             var allowed = Set.of("", "by");
@@ -85,15 +85,15 @@ public class TaskParser {
                 throw new TaskFormatError(TaskType.EVENT);
             }
             var desc = m.get("");
-            if (desc == null || desc.length() == 0) {
+            if (desc == null || desc.isEmpty()) {
                 throw new TaskFormatError(TaskType.EVENT);
             }
             var from = m.get("from");
-            if (from == null || from.length() == 0) {
+            if (from == null || from.isEmpty()) {
                 throw new TaskFormatError(TaskType.EVENT);
             }
             var to = m.get("to");
-            if (to == null || to.length() == 0) {
+            if (to == null || to.isEmpty()) {
                 throw new TaskFormatError(TaskType.EVENT);
             }
             var allowed = Set.of("", "from", "to");

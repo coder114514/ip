@@ -1,5 +1,6 @@
 package tobtahc.util;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,17 +29,18 @@ public final class ParserUtil {
                 ++i;
             }
         }
-        return i == n ? -1 : i;
+        return i;
     }
 
     /**
      * Parses the switches in the payload part of a task command.
      * And in the returned map, "" corresponds to the description part.
+     * And it will normalize the keys.
      *
      * @param s the string payload
      * @return the map containing switches and their values, null if there
-     *     are unrecoverable errors like a slash followed by space(s) and
-     *     duplicate keys
+     *     are unrecoverable errors like a slash followed by space(s),
+     *     duplicate keys, keys with non-alphabetic characters etc
      */
     public static Map<String, String> parseSwitches(String s) {
         var ret = new TreeMap<String, String>();
@@ -51,18 +53,21 @@ public final class ParserUtil {
         ret.put("", s.substring(0, i++).trim());
 
         while (i < s.length()) {
-            if (Character.isWhitespace(s.charAt(i))) {
+            if (!Character.isAlphabetic(s.charAt(i))) {
                 return null;
             }
             int j = i;
-            while (j < s.length() && !Character.isWhitespace(s.charAt(j))) {
+            while (j < s.length() && Character.isAlphabetic(s.charAt(j))) {
                 ++j;
             }
-            var key = s.substring(i, j);
+            var key = s.substring(i, j).toLowerCase(Locale.ROOT);
             if (ret.containsKey(key)) {
                 return null;
             }
             int k = nextSlash(s, j);
+            //if (k == s.length() - 1) {
+            //    return null;
+            //}
             var value = j < s.length() ? s.substring(j, k).trim() : "";
             ret.put(key, value);
             i = k + 1;
