@@ -5,14 +5,14 @@ import java.time.LocalDate;
 import tobtahc.task.Deadline;
 
 /**
- * The command for "before or on <date>", which shows all deadline tasks before
- * or on <date>.
+ * The command for "before or on {@literal <date>}", which shows all deadline tasks before
+ * or on {@literal <date>}.
  */
 public class BeforeOrOnCommand extends Command {
     private LocalDate date;
 
     /**
-     * @param date the <date> in the command
+     * @param date the {@literal <date>} in the command
      */
     public BeforeOrOnCommand(LocalDate date) {
         this.date = date;

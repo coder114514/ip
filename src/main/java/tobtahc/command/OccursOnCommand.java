@@ -5,14 +5,14 @@ import java.time.LocalDate;
 import tobtahc.task.Event;
 
 /**
- * The command for "occurs on <date>", which shows all events that occurs
- * on <date>.
+ * The command for "occurs on {@literal <date>}", which shows all events that occurs
+ * on {@literal <date>}.
  */
 public class OccursOnCommand extends Command {
     private LocalDate date;
 
     /**
-     * @param date the <date> in the command
+     * @param date the {@literal <date>} in the command
      */
     public OccursOnCommand(LocalDate date) {
         this.date = date;

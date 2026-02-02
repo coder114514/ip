@@ -22,15 +22,6 @@ public class Main {
     private CommandContext ctx;
 
     /**
-     * The main program launcher.
-     *
-     * @param args command line arguments passed to the program
-     */
-    public static void main(String[] args) {
-        new Main("../data", "tasks.txt").run();
-    }
-
-    /**
      * @param dataDirPath path of the date directory
      * @param saveFilePath name of the save file
      */
@@ -93,5 +84,14 @@ public class Main {
         }
 
         ui.chatBye(endByEof);
+    }
+
+    /**
+     * The main program launcher.
+     *
+     * @param args command line arguments passed to the program
+     */
+    public static void main(String[] args) {
+        new Main("../data", "tasks.txt").run();
     }
 }

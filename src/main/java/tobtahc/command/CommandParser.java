@@ -47,10 +47,10 @@ public class CommandParser {
             int index = Integer.parseInt(m.group(2)) - 1;
 
             return switch (verb) {
-                case "mark" -> new MarkCommand(index);
-                case "unmark" -> new UnmarkCommand(index);
-                case "delete" -> new DeleteCommand(index);
-                default -> throw new AssertionError("unreachable");
+            case "mark" -> new MarkCommand(index);
+            case "unmark" -> new UnmarkCommand(index);
+            case "delete" -> new DeleteCommand(index);
+            default -> throw new AssertionError("unreachable");
             };
         }
 
@@ -119,6 +119,8 @@ public class CommandParser {
                 } else {
                     throw new CommandParseError("Enter 'clear' to clear your tasks.");
                 }
+            default:
+                throw new AssertionError("unreachable");
             }
         }
 
@@ -140,12 +142,12 @@ public class CommandParser {
                         "  event <task> /from <time> /to <time>",
                                 "And the correct form of <time> should be "
                                         + DateTimeUtil.DATE_TIME_FORMATTER_INPUT_STRING);
+            default:
+                throw new AssertionError("unreachable");
             }
 
         } catch (NotATask e) {
             return new EchoCommand(trimmed);
         }
-
-        throw new AssertionError("unreachable");
     }
 }

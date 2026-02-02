@@ -21,7 +21,7 @@ public class Rng {
      */
     public int nextRng(int inc) {
         var mul = ((22695477L * rng) & ((1L << 31) - 1));
-        rng = (int)((mul + inc) & ((1L << 31) - 1));
+        rng = (int) ((mul + inc) & ((1L << 31) - 1));
         return rng;
     }
 

@@ -35,7 +35,7 @@ public class Ui {
     public void botMessageLine(String message) {
         System.out.println("    " + message);
     }
- 
+
     /**
      * A helper for displaying the separator line.
      */
