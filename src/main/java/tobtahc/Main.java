@@ -19,16 +19,34 @@ import tobtahc.util.Utils;
  * The main program.
  */
 public class Main {
+    private Storage storage;
+
     /** The pattern for matching the commands. The \s* before the number makes it more forgiving. */
     private static final Pattern PATTERN_MARK_UNMARK = Pattern.compile("^(?:un)?mark\\s*([0-9]+)\\s*$");
     private static final Pattern PATTERN_DELETE = Pattern.compile("^delete\\s*([0-9]+)\\s*$");
 
     /**
-     * The main program.
+     * The main program launcher.
      *
      * @param args command line arguments passed to the program
      */
     public static void main(String[] args) {
+        new Main("../data", "tasks.txt", "tasks.tmp.txt").run();
+    }
+
+    /**
+     * @param dataDirPath path of the date directory
+     * @param saveFilePath name of the save file
+     * @param tempFilePath name of the temp file
+     */
+    public Main(String dataDir, String saveFileName, String tempFileName) {
+        storage = new Storage("../data", "tasks.txt", "tasks.tmp.txt");
+    }
+
+    /**
+     * The main program logic.
+     */
+    public void run() {
         chatIntro();
 
         int rng = 0;
@@ -38,7 +56,7 @@ public class Main {
         TaskList tasks;
         boolean areTasksLoaded;
         try {
-            var result = Storage.loadTasks();
+            var result = storage.loadTasks();
             tasks = result.tasks();
             areTasksLoaded = true;
             if (result.numBadLines() > 0) {
@@ -293,9 +311,9 @@ public class Main {
         scanner.close();
     }
 
-    private static void saveTasks(TaskList tasks, boolean areTasksLoaded) {
+    private void saveTasks(TaskList tasks, boolean areTasksLoaded) {
         try {
-            Storage.saveTasks(tasks, areTasksLoaded);
+            storage.saveTasks(tasks, areTasksLoaded);
         } catch (IOException e) {
             botMessageSepError();
             botMessageLine("Error: " + e.getMessage() + ".");
@@ -304,51 +322,30 @@ public class Main {
         }
     }
 
-    /**
-     * A helper for displaying the bot's response with an indentation.
-     * When called with no arguments, it just outputs a newline.
-     */
-    private static void botMessageLine() {
+    private void botMessageLine() {
         System.out.println();
     }
 
-    /**
-     * A helper for displaying the bot's response with an indentation.
-     *
-     * @param message message to display
-     */
-    private static void botMessageLine(String message) {
+    private void botMessageLine(String message) {
         System.out.println("    " + message);
     }
 
-    /**
-     * A helper for displaying the separator line.
-     */
-    private static void botMessageSep() {
+    private void botMessageSep() {
         botMessageLine("___________________________________________________________________\n");
     }
 
-    private static void botMessageSepError() {
+    private void botMessageSepError() {
         botMessageLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
-    /**
-     * A helper for displaying the intro message.
-     */
-    private static void chatIntro() {
+    private void chatIntro() {
         botMessageSep();
         botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
         botMessageLine("What can I do for you?");
         botMessageSep();
     }
 
-    /**
-     * A helper for displaying the bye message.
-     *
-     * @param endByEof if the chat is ended by an EOF instead of the user input 'bye',
-     *     display an info message.
-     */
-    private static void chatBye(boolean endByEof) {
+    private void chatBye(boolean endByEof) {
         botMessageSep();
         if (endByEof) {
             botMessageLine("EOF DETECTED! Remember to say 'bye' next time!");

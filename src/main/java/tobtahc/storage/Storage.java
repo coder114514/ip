@@ -17,11 +17,9 @@ import tobtahc.task.TaskParser;
  * This class implements the save file mechanics.
  */
 public class Storage {
-    /** Basically we always run the program from /text-ui-test, so no need to check for null. */
-    private static final Path PROJECT_ROOT = Path.of(System.getProperty("user.dir")).getParent();
-    private static final Path DATA_DIR = PROJECT_ROOT.resolve("data");
-    private static final Path TASKS_FILE = DATA_DIR.resolve("tasks.txt");
-    private static final Path TASKS_TMP_FILE = DATA_DIR.resolve("tasks.tmp.txt");
+    private Path dataDir;
+    private Path saveFilePath;
+    private Path tempFilePath;
 
     /**
      * @param numBadLines number of bad lines in the save file
@@ -29,24 +27,35 @@ public class Storage {
      */
     public record LoadResult(int numBadLines, TaskList tasks) {}
 
-    private static void ensureDirExists() throws IOException {
+    /**
+     * @param dataDirPath path of the date directory
+     * @param saveFilePath name of the save file
+     * @param tempFilePath name of the temp file
+     */
+    public Storage(String dataDirPath, String saveFileName, String tempFileName) {
+        dataDir = Path.of(dataDirPath);
+        saveFilePath = Path.of(dataDirPath, saveFileName);
+        tempFilePath = Path.of(dataDirPath, tempFileName);
+    }
+
+    private void ensureDirExists() throws IOException {
         try {
-            if (Files.notExists(DATA_DIR)) {
-                Files.createDirectories(DATA_DIR);
+            if (Files.notExists(dataDir)) {
+                Files.createDirectories(dataDir);
             }
         } catch (IOException e) {
             throw new IOException("failed to create the data directory", e);
         }
     }
 
-    private static void ensureFileExists() throws IOException {
+    private void ensureFileExists() throws IOException {
         try {
             ensureDirExists();
-            if (Files.notExists(TASKS_FILE)) {
-                Files.createFile(TASKS_FILE);
+            if (Files.notExists(saveFilePath)) {
+                Files.createFile(saveFilePath);
             }
         } catch (IOException e) {
-            throw new IOException("failed to create inital tasks.txt", e);
+            throw new IOException("failed to create the inital save file", e);
         }
     }
 
@@ -56,9 +65,9 @@ public class Storage {
      * @return a LoadResult
      * @throws IOException if there was an IO exception
      */
-    public static LoadResult loadTasks() throws IOException {
+    public LoadResult loadTasks() throws IOException {
         ensureFileExists();
-        try (var lines = Files.lines(TASKS_FILE)) {
+        try (var lines = Files.lines(saveFilePath)) {
             var numBadLines = new AtomicInteger(0);
             var tasks = lines.<Task>mapMulti((line, consumer) -> {
                 var task = TaskParser.deserialize(line);
@@ -75,34 +84,32 @@ public class Storage {
     }
 
     /**
-     * Save the tasks to the temp file, and if {@code areTasksLoaded} is {@code true},
+     * Save the tasks to the temp file, and if {@code replaceSaveFile} is {@code true},
      * replace the save file with the temp file.
      *
      * @param tasks tasks to save
-     * @param areTasksLoaded whether the save file was loaded successfully at the start,
-     *     if not, then we would only write to the temp file and would not replace the
-     *     save file
+     * @param replaceSaveFile if true, replace the save file with the temp file
      */
-    public static void saveTasks(TaskList tasks, boolean areTasksLoaded) throws IOException {
+    public void saveTasks(TaskList tasks, boolean replaceSaveFile) throws IOException {
         ensureDirExists();
         var sb = new StringBuilder();
         for (var task : tasks) {
             sb.append(task.serialize()).append("\n");
         }
         try {
-            Files.write(TASKS_TMP_FILE, sb.toString().getBytes(StandardCharsets.UTF_8));
+            Files.write(tempFilePath, sb.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new IOException("could not write to the temp file", e);
         }
-        if (!areTasksLoaded) {
+        if (!replaceSaveFile) {
             return;
         }
         try {
             try {
-                Files.move(TASKS_TMP_FILE, TASKS_FILE, StandardCopyOption.REPLACE_EXISTING,
+                Files.move(tempFilePath, saveFilePath, StandardCopyOption.REPLACE_EXISTING,
                         StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException e) {
-                Files.move(TASKS_TMP_FILE, TASKS_FILE, StandardCopyOption.REPLACE_EXISTING);
+                Files.move(tempFilePath, saveFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             throw new IOException("failed to replace the save file with the temp file", e);
