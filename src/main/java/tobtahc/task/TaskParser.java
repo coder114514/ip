@@ -3,6 +3,7 @@ package tobtahc.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.Set;
 
 import tobtahc.util.DateTimeUtil;
 import tobtahc.util.ParserUtil;
@@ -22,7 +23,7 @@ public class TaskParser {
     public static Task parse(String input) throws NotATask, TaskFormatError {
         var splitted = input.split("\\s+", 2);
         if (splitted.length == 1) {
-            var lower = input.toLowerCase();
+            var lower = input.toLowerCase(Locale.ROOT);
             if (lower.startsWith("todo")) {
                 throw new TaskFormatError(TaskType.TODO);
             } else if (lower.startsWith("deadline")) {
@@ -46,8 +47,9 @@ public class TaskParser {
             if (desc == null || desc.length() == 0) {
                 throw new TaskFormatError(TaskType.TODO);
             }
+            var allowed = Set.of("");
             for (var key : m.keySet()) {
-                if (key.length() > 0) {
+                if (!allowed.contains(key)) {
                     throw new TaskFormatError(TaskType.TODO);
                 }
             }
@@ -65,8 +67,9 @@ public class TaskParser {
             if (by == null || by.length() == 0) {
                 throw new TaskFormatError(TaskType.DEADLINE);
             }
+            var allowed = Set.of("", "by");
             for (var key : m.keySet()) {
-                if (key.length() > 0 && !key.equals("by")) {
+                if (!allowed.contains(key)) {
                     throw new TaskFormatError(TaskType.DEADLINE);
                 }
             }
@@ -93,8 +96,9 @@ public class TaskParser {
             if (to == null || to.length() == 0) {
                 throw new TaskFormatError(TaskType.EVENT);
             }
+            var allowed = Set.of("", "from", "to");
             for (var key : m.keySet()) {
-                if (key.length() > 0 && !key.equals("from") && !key.equals("to")) {
+                if (!allowed.contains(key)) {
                     throw new TaskFormatError(TaskType.EVENT);
                 }
             }
