@@ -3,6 +3,11 @@
 /out/
 /*.iml
 
+# JDT-LS files
+/.classpath
+/.project
+/.settings/
+
 # Gradle build files
 /.gradle/
 /build/
