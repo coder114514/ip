@@ -72,6 +72,11 @@ public class CommandParser {
             arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 2));
 
         } else if (lowerToks.length >= 1
+                && lowerToks[0].equals("find")) {
+            verb = "find";
+            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 1));
+
+        } else if (lowerToks.length >= 1
                 && lowerToks[0].equals("list")) {
             verb = "list";
             arg = lowerToks.length == 1 ? "" : null;
@@ -101,12 +106,8 @@ public class CommandParser {
                 } catch (DateTimeParseException e) {
                     throw new CommandParseError("Syntax error! Correct syntax:", "  occurs on <date>");
                 }
-            case "bye":
-                if (arg != null) {
-                    return new ExitCommand();
-                } else {
-                    throw new CommandParseError("Enter 'bye' to quit.");
-                }
+            case "find":
+                return new FindCommand(arg);
             case "list":
                 if (arg != null) {
                     return new ListCommand();
@@ -118,6 +119,12 @@ public class CommandParser {
                     return new ClearCommand();
                 } else {
                     throw new CommandParseError("Enter 'clear' to clear your tasks.");
+                }
+            case "bye":
+                if (arg != null) {
+                    return new ExitCommand();
+                } else {
+                    throw new CommandParseError("Enter 'bye' to quit.");
                 }
             default:
                 throw new AssertionError("unreachable");
