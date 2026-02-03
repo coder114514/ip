@@ -1,8 +1,8 @@
 @ECHO OFF
 
-cd /d %~dp0
+pushd %~dp0
 
-if exist ..\bin rmdir /s /q ..\bin
+if exist ..\bin rmdir /S /Q ..\bin
 mkdir ..\bin
 
 REM delete output from previous run
@@ -15,13 +15,20 @@ javac -cp ..\src\main\java -Xlint:none -d ..\bin @sources.txt
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
     del sources.txt
+    popd
     exit /b 1
 )
 REM no error here, errorlevel == 0
 del sources.txt
 
+cd ..
+
 REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin tobtahc.Main < input.txt > ACTUAL.TXT
+java -classpath bin tobtahc.Main < %~dp0\input.txt > %~dp0\ACTUAL.TXT
+
+cd %~dp0
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT
+
+popd

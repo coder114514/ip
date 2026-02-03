@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "$0")"
+pushd "$(dirname "$0")"
 
 if [ -d "../bin" ]
 then
@@ -24,12 +24,17 @@ if ! javac -cp ../src/main/java -Xlint:none -d ../bin @sources.txt
 then
     echo "********** BUILD FAILURE **********"
     rm sources.txt
+    popd
     exit 1
 fi
 rm sources.txt
 
+cd ..
+
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin tobtahc.Main < input.txt > ACTUAL.TXT
+java -classpath bin tobtahc.Main < "$(dirname "$0")"/input.txt > "$(dirname "$0")"/ACTUAL.TXT
+
+cd "$(dirname "$0")"
 
 # convert to UNIX format
 cp EXPECTED.TXT EXPECTED-UNIX.TXT
@@ -45,3 +50,5 @@ else
     echo "Test result: FAILED"
     exit 1
 fi
+
+popd

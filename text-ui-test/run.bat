@@ -1,8 +1,8 @@
 @ECHO OFF
 
-cd /d %~dp0
+pushd %~dp0
 
-if exist ..\bin rmdir /s /q ..\bin
+if exist ..\bin rmdir /S /Q ..\bin
 mkdir ..\bin
 
 REM compile the code into the bin folder
@@ -12,10 +12,15 @@ javac -cp ..\src\main\java -Xlint:none -d ..\bin @sources.txt
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
     del sources.txt
+    popd
     exit /b 1
 )
 REM no error here, errorlevel == 0
 del sources.txt
 
+cd ..
+
 REM run the program
-java -classpath ..\bin tobtahc.Main
+java -classpath bin tobtahc.Main
+
+popd
