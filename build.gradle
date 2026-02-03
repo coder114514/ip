@@ -18,10 +18,10 @@ test {
     useJUnitPlatform()
 
     testLogging {
-        events "passed", "skipped", "failed"
+        events 'passed', 'skipped', 'failed'
 
         showExceptions true
-        exceptionFormat "full"
+        exceptionFormat 'full'
         showCauses true
         showStackTraces true
         showStandardStreams = false
@@ -29,12 +29,16 @@ test {
 }
 
 application {
-    mainClass.set("tobtahc.Main")
+    mainClass.set('tobtahc.Main')
+}
+
+jar {
+    enabled = false
 }
 
 shadowJar {
-    archiveBaseName = "tobtahc"
-    archiveClassifier = null
+    archiveBaseName = 'tobtahc'
+    archiveClassifier = ''
 }
 
 run {
