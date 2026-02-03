@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pushd "$(dirname "$0")"
+pushd "$(dirname "$0")" >/dev/null
 
 if [ -d "../bin" ]
 then
@@ -18,7 +18,7 @@ if ! javac -cp ../src/main/java -Xlint:none -d ../bin @sources.txt
 then
     echo "********** BUILD FAILURE **********"
     rm sources.txt
-    popd
+    popd >/dev/null
     exit 1
 fi
 rm sources.txt
@@ -28,4 +28,4 @@ cd ..
 # run the program
 java -classpath bin tobtahc.Main
 
-popd
+popd >/dev/null
