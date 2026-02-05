@@ -70,10 +70,11 @@ public class Main {
             try {
                 var cmd = CommandParser.parse(input);
                 var result = cmd.execute(ctx);
+                var lines = result.messageLines();
 
-                if (result.messageLines() != null) {
+                if (!lines.isEmpty()) {
                     ui.botMessageSep();
-                    for (var line : result.messageLines()) {
+                    for (var line : lines) {
                         ui.botMessageLine(line);
                     }
                     ui.botMessageSep();
