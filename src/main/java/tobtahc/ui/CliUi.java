@@ -5,10 +5,10 @@ import java.util.Scanner;
 /**
  * This class implements UI stuff.
  */
-public class Ui {
+public class CliUi {
     private Scanner scanner;
 
-    public Ui() {
+    public CliUi() {
         scanner = new Scanner(System.in);
     }
 

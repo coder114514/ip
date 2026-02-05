@@ -7,7 +7,7 @@ import tobtahc.command.CommandParseError;
 import tobtahc.command.CommandParser;
 import tobtahc.storage.Storage;
 import tobtahc.task.TaskList;
-import tobtahc.ui.Ui;
+import tobtahc.ui.CliUi;
 import tobtahc.util.Rng;
 
 /**
@@ -15,7 +15,7 @@ import tobtahc.util.Rng;
  */
 public class CliApp {
     private Storage storage;
-    private Ui ui;
+    private CliUi cliUi;
     private Rng rng;
     private TaskList tasks;
     private boolean endByEof;
@@ -27,7 +27,7 @@ public class CliApp {
      */
     public CliApp(String dataDir, String saveFileName) {
         storage = new Storage(dataDir, saveFileName);
-        ui = new Ui();
+        cliUi = new CliUi();
         rng = new Rng();
         endByEof = false;
     }
@@ -38,32 +38,32 @@ public class CliApp {
      * @return program exit code
      */
     public int run() {
-        ui.chatIntro();
+        cliUi.chatIntro();
 
         try {
             var result = storage.loadTasks();
             tasks = result.tasks();
             if (result.numBadLines() > 0) {
-                ui.botMessageSepError();
-                ui.botMessageLine(String.format(
+                cliUi.botMessageSepError();
+                cliUi.botMessageLine(String.format(
                         "Info: there were %d bad lines in the save file, which will be removed.",
                                 result.numBadLines()));
-                ui.botMessageSepError();
-                ui.botMessageLine();
+                cliUi.botMessageSepError();
+                cliUi.botMessageLine();
             }
         } catch (IOException e) {
-            ui.botMessageSepError();
-            ui.botMessageLine("Could not load the save file.");
-            ui.botMessageLine("IO Error: " + e.getMessage() + ".");
-            ui.botMessageLine("Aborting.");
-            ui.botMessageSepError();
+            cliUi.botMessageSepError();
+            cliUi.botMessageLine("Could not load the save file.");
+            cliUi.botMessageLine("IO Error: " + e.getMessage() + ".");
+            cliUi.botMessageLine("Aborting.");
+            cliUi.botMessageSepError();
             return 1;
         }
 
         ctx = new CommandContext(tasks, rng);
 
         for (;;) {
-            String input = ui.readInput();
+            String input = cliUi.readInput();
             if (input == null) {
                 endByEof = true;
                 break;
@@ -75,22 +75,22 @@ public class CliApp {
                 var lines = result.messageLines();
 
                 if (!lines.isEmpty()) {
-                    ui.botMessageSep();
+                    cliUi.botMessageSep();
                     for (var line : lines) {
-                        ui.botMessageLine(line);
+                        cliUi.botMessageLine(line);
                     }
-                    ui.botMessageSep();
+                    cliUi.botMessageSep();
                 }
 
                 if (result.needSave()) {
                     try {
                         storage.saveTasks(tasks);
                     } catch (IOException e) {
-                        ui.botMessageSepError();
-                        ui.botMessageLine("Could not save the tasks.");
-                        ui.botMessageLine("IO Error: " + e.getMessage() + ".");
-                        ui.botMessageSepError();
-                        ui.botMessageLine();
+                        cliUi.botMessageSepError();
+                        cliUi.botMessageLine("Could not save the tasks.");
+                        cliUi.botMessageLine("IO Error: " + e.getMessage() + ".");
+                        cliUi.botMessageSepError();
+                        cliUi.botMessageLine();
                     }
                 }
 
@@ -98,15 +98,15 @@ public class CliApp {
                     break;
                 }
             } catch (CommandParseError e) {
-                ui.botMessageSep();
+                cliUi.botMessageSep();
                 for (var line : e.getLines()) {
-                    ui.botMessageLine(line);
+                    cliUi.botMessageLine(line);
                 }
-                ui.botMessageSep();
+                cliUi.botMessageSep();
             }
         }
 
-        ui.chatBye(endByEof);
+        cliUi.chatBye(endByEof);
 
         return 0;
     }
