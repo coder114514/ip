@@ -1,11 +1,13 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 import tobtahc.task.Task;
 
 /**
  * The command for adding a task.
  */
-public class AddCommand extends ModifyingCommand {
+public class AddCommand extends Command {
     private Task task;
 
     /**
@@ -17,25 +19,24 @@ public class AddCommand extends ModifyingCommand {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
-        var storage = ctx.storage();
         var rng = ctx.rng();
 
+        var lines = new ArrayList<String>();
+
         tasks.add(task);
-        ui.botMessageSep();
         if (rng.getRng() % 4 == 0) {
-            ui.botMessageLine("Ti tog!");
-            ui.botMessageLine("  dedda ksat: " + task.getDescription());
-            ui.botMessageLine(String.format("Tsil eht ni sksat %s evah uoy now.", tasks.size()));
+            lines.add("Ti tog!");
+            lines.add("  dedda ksat: " + task.getDescription());
+            lines.add(String.format("Tsil eht ni sksat %s evah uoy now.", tasks.size()));
         } else {
-            ui.botMessageLine("Got it!");
-            ui.botMessageLine("  task added: " + task.getDescription());
-            ui.botMessageLine(String.format("Now you have %s tasks in your list.", tasks.size()));
+            lines.add("Got it!");
+            lines.add("  task added: " + task.getDescription());
+            lines.add(String.format("Now you have %s tasks in your list.", tasks.size()));
         }
-        ui.botMessageSep();
-        saveTasks(tasks, ui, storage);
+
+        return new CommandResult(lines, false, true);
     }
 }
 

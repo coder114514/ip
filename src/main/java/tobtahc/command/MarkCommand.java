@@ -1,9 +1,11 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for marking a task as done.
  */
-public class MarkCommand extends ModifyingCommand {
+public class MarkCommand extends Command {
     private int index;
 
     /**
@@ -14,23 +16,19 @@ public class MarkCommand extends ModifyingCommand {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
-        var storage = ctx.storage();
+
+        var lines = new ArrayList<String>();
 
         if (index < 0 || index >= tasks.size()) {
-            ui.botMessageSep();
-            ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-            ui.botMessageSep();
-            return;
+            lines.add("Ksat eht dnif ton dluoc TobTahc!");
+            return new CommandResult(lines, false, false);
         }
         var task = tasks.get(index);
         task.mark();
-        ui.botMessageSep();
-        ui.botMessageLine("Task marked as done!");
-        ui.botMessageLine("  " + task);
-        ui.botMessageSep();
-        saveTasks(tasks, ui, storage);
+        lines.add("Task marked as done!");
+        lines.add("  " + task);
+        return new CommandResult(lines, false, true);
     }
 }

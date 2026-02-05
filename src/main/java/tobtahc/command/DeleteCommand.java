@@ -1,9 +1,11 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for deleting a task.
  */
-public class DeleteCommand extends ModifyingCommand {
+public class DeleteCommand extends Command {
     private int index;
 
     /**
@@ -14,29 +16,26 @@ public class DeleteCommand extends ModifyingCommand {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
-        var storage = ctx.storage();
+
+        var lines = new ArrayList<String>();
 
         if (index < 0 || index >= tasks.size()) {
-            ui.botMessageSep();
-            ui.botMessageLine("Ksat eht dnif ton dluoc TobTahc!");
-            ui.botMessageSep();
-            return;
+            lines.add("Ksat eht dnif ton dluoc TobTahc!");
+            return new CommandResult(lines, false, false);
         }
         var task = tasks.get(index);
         tasks.remove(index);
-        ui.botMessageSep();
         if (task.isDone()) {
-            ui.botMessageLine("Ksat removed!");
+            lines.add("Ksat removed!");
         } else {
-            ui.botMessageLine("Task removed, but still UNDONE!");
+            lines.add("Task removed, but still UNDONE!");
         }
-        ui.botMessageLine("  " + task);
-        ui.botMessageLine(String.format("Now you have %s tasks in your list.", tasks.size()));
-        ui.botMessageSep();
-        saveTasks(tasks, ui, storage);
+        lines.add("  " + task);
+        lines.add(String.format("Now you have %s tasks in your list.", tasks.size()));
+
+        return new CommandResult(lines, false, true);
     }
 }
 

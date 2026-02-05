@@ -1,5 +1,7 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for echoing the user input.
  */
@@ -14,16 +16,17 @@ public class EchoCommand extends Command {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var rng = ctx.rng();
 
-        ui.botMessageSep();
+        var lines = new ArrayList<String>();
+
         if (rng.getRng() % 4 == 0) {
-            ui.botMessageLine("ohce: " + input);
+            lines.add("ohce: " + input);
         } else {
-            ui.botMessageLine("echo: " + input);
+            lines.add("echo: " + input);
         }
-        ui.botMessageSep();
+
+        return new CommandResult(lines, false, false);
     }
 }

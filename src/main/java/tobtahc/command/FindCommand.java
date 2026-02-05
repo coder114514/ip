@@ -1,5 +1,7 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for listing the tasks.
  */
@@ -11,23 +13,24 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
         int cnt = 0;
 
-        ui.botMessageSep();
-        ui.botMessageLine("Here are the matching tasks in your list:");
+        var lines = new ArrayList<String>();
+
+        lines.add("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); ++i) {
             if (tasks.get(i).getDescription().indexOf(keyword) < 0) {
                 continue;
             }
             ++cnt;
-            ui.botMessageLine(String.format("%s.%s", i + 1, tasks.get(i)));
+            lines.add(String.format("%s.%s", i + 1, tasks.get(i)));
         }
         if (cnt == 0) {
-            ui.botMessageLine("(empty)");
+            lines.add("(empty)");
         }
-        ui.botMessageSep();
+
+        return new CommandResult(lines, false, false);
     }
 }

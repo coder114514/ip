@@ -1,22 +1,25 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for listing the tasks.
  */
 public class ListCommand extends Command {
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
 
-        ui.botMessageSep();
-        ui.botMessageLine(String.format("You have %s tasks in your list:", tasks.size()));
+        var lines = new ArrayList<String>();
+
+        lines.add(String.format("You have %s tasks in your list:", tasks.size()));
         if (tasks.size() == 0) {
-            ui.botMessageLine("(empty)");
+            lines.add("(empty)");
         }
         for (int i = 0; i < tasks.size(); ++i) {
-            ui.botMessageLine(String.format("%s.%s", i + 1, tasks.get(i)));
+            lines.add(String.format("%s.%s", i + 1, tasks.get(i)));
         }
-        ui.botMessageSep();
+
+        return new CommandResult(lines, false, false);
     }
 }

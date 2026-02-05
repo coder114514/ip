@@ -8,13 +8,7 @@ public abstract class Command {
      * Executes the command itself.
      *
      * @param ctx the command context
+     * @return a {@code CommandResult}
      */
-    public abstract void execute(CommandContext ctx);
-
-    /**
-     * {@return true if this command should terminate the bot}
-     */
-    public boolean isExit() {
-        return false;
-    }
+    public abstract CommandResult execute(CommandContext ctx);
 }

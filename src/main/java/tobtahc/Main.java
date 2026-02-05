@@ -57,7 +57,7 @@ public class Main {
             return;
         }
 
-        ctx = new CommandContext(tasks, ui, storage, rng);
+        ctx = new CommandContext(tasks, rng);
 
         for (;;) {
             String input = ui.readInput();
@@ -69,9 +69,28 @@ public class Main {
 
             try {
                 var cmd = CommandParser.parse(input);
-                cmd.execute(ctx);
+                var result = cmd.execute(ctx);
 
-                if (cmd.isExit()) {
+                if (result.messageLines() != null) {
+                    ui.botMessageSep();
+                    for (var line : result.messageLines()) {
+                        ui.botMessageLine(line);
+                    }
+                    ui.botMessageSep();
+                }
+
+                if (result.needSave()) {
+                    try {
+                        storage.saveTasks(tasks);
+                    } catch (IOException e) {
+                        ui.botMessageSepError();
+                        ui.botMessageLine("Error: " + e.getMessage() + ".");
+                        ui.botMessageSepError();
+                        ui.botMessageLine();
+                    }
+                }
+
+                if (result.isExit()) {
                     break;
                 }
             } catch (CommandParseError e) {

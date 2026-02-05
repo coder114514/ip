@@ -1,6 +1,7 @@
 package tobtahc.command;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import tobtahc.task.Deadline;
 
@@ -19,11 +20,11 @@ public class BeforeOrOnCommand extends Command {
     }
 
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
 
-        ui.botMessageSep();
+        var lines = new ArrayList<String>();
+
         for (int i = 0; i < tasks.size(); ++i) {
             var task = tasks.get(i);
             if (!(task instanceof Deadline ddl)) {
@@ -32,8 +33,9 @@ public class BeforeOrOnCommand extends Command {
             if (!ddl.isBeforeOrOn(date)) {
                 continue;
             }
-            ui.botMessageLine("  " + (i + 1) + ": " + ddl.getDescription());
+            lines.add(String.format("%s.%s", i + 1, ddl.getDescription()));
         }
-        ui.botMessageSep();
+
+        return new CommandResult(lines, false, false);
     }
 }

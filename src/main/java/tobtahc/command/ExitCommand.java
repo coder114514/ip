@@ -5,11 +5,7 @@ package tobtahc.command;
  */
 public class ExitCommand extends Command {
     @Override
-    public void execute(CommandContext ctx) {
-    }
-
-    @Override
-    public boolean isExit() {
-        return true;
+    public CommandResult execute(CommandContext ctx) {
+        return new CommandResult(null, true, false);
     }
 }

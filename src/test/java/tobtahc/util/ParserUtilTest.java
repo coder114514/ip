@@ -1,12 +1,10 @@
-package tobtahc;
+package tobtahc.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
-
-import tobtahc.util.ParserUtil;
 
 public class ParserUtilTest {
     @Test

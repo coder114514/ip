@@ -1,19 +1,20 @@
 package tobtahc.command;
 
+import java.util.ArrayList;
+
 /**
  * The command for clearing the tasks.
  */
-public class ClearCommand extends ModifyingCommand {
+public class ClearCommand extends Command {
     @Override
-    public void execute(CommandContext ctx) {
-        var ui = ctx.ui();
+    public CommandResult execute(CommandContext ctx) {
         var tasks = ctx.tasks();
-        var storage = ctx.storage();
 
-        ui.botMessageSep();
-        ui.botMessageLine("Your tasks are all cleared.");
+        var lines = new ArrayList<String>();
+
         tasks.clear();
-        ui.botMessageSep();
-        saveTasks(tasks, ui, storage);
+        lines.add("Your tasks are all cleared.");
+
+        return new CommandResult(lines, false, true);
     }
 }
