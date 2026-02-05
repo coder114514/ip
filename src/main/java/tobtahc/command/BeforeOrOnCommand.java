@@ -33,7 +33,7 @@ public class BeforeOrOnCommand extends Command {
             if (!ddl.isBeforeOrOn(date)) {
                 continue;
             }
-            lines.add(String.format("%s.%s", i + 1, ddl.getDescription()));
+            lines.add(String.format("%s.%s", i + 1, ddl));
         }
 
         return new CommandResult(lines, false, false);

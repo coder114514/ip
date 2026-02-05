@@ -26,7 +26,7 @@ public class AddCommand extends Command {
         var lines = new ArrayList<String>();
 
         tasks.add(task);
-        if (rng.getRng() % 4 == 0) {
+        if (rng.chance(1, 4)) {
             lines.add("Ti tog!");
             lines.add("  dedda ksat: " + task.getDescription());
             lines.add(String.format("Tsil eht ni sksat %s evah uoy now.", tasks.size()));

@@ -33,7 +33,7 @@ public class OccursOnCommand extends Command {
             if (!event.occursOn(date)) {
                 continue;
             }
-            lines.add(String.format("%s.%s", i + 1, event.getDescription()));
+            lines.add(String.format("%s.%s", i + 1, event));
         }
 
         return new CommandResult(lines, false, false);

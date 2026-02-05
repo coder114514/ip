@@ -1,34 +1,22 @@
 package tobtahc.util;
 
+import java.util.Random;
+
 /**
- * My custom simple RNG.
+ * The RNG class.
  */
-public class Rng {
-    private int rng;
+public class Rng implements RandomProvider {
+    private Random r;
 
     /**
-     * Initializes the RNG with 0.
+     * Initializes the RNG.
      */
     public Rng() {
-        rng = 0;
+        r = new Random();
     }
 
-    /**
-     * Updates the RNG with {@code inc}.
-     *
-     * @param inc the incremental value
-     * @return updated RNG
-     */
-    public int nextRng(int inc) {
-        var mul = ((22695477L * rng) & ((1L << 31) - 1));
-        rng = (int) ((mul + inc) & ((1L << 31) - 1));
-        return rng;
-    }
-
-    /**
-     * {@return the current RNG}
-     */
-    public int getRng() {
-        return rng;
+    @Override
+    public boolean chance(int nominator, int denominator) {
+        return r.nextInt(denominator) < nominator;
     }
 }

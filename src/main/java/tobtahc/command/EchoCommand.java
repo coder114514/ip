@@ -21,7 +21,7 @@ public class EchoCommand extends Command {
 
         var lines = new ArrayList<String>();
 
-        if (rng.getRng() % 4 == 0) {
+        if (rng.chance(1, 4)) {
             lines.add("ohce: " + input);
         } else {
             lines.add("echo: " + input);

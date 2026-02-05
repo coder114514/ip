@@ -65,7 +65,6 @@ public class Main {
                 endByEof = true;
                 break;
             }
-            rng.nextRng(input.hashCode());
 
             try {
                 var cmd = CommandParser.parse(input);

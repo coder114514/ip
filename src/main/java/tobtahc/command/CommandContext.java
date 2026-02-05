@@ -1,7 +1,7 @@
 package tobtahc.command;
 
 import tobtahc.task.TaskList;
-import tobtahc.util.Rng;
+import tobtahc.util.RandomProvider;
 
 /**
  * The command context passed to {@code execute}.
@@ -11,5 +11,5 @@ import tobtahc.util.Rng;
  */
 public record CommandContext(
     TaskList tasks,
-    Rng rng
+    RandomProvider rng
 ) {}
