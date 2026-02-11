@@ -5,6 +5,8 @@ package tobtahc.task;
  */
 public class ToDo extends Task {
     /**
+     * Initializes a ToDo task.
+     *
      * @param description description of the task
      */
     public ToDo(String description) {

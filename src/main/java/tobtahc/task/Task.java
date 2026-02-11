@@ -9,6 +9,8 @@ public abstract class Task {
     private boolean isDone;
 
     /**
+     * Initiailizes the task with its descriptoin.
+     *
      * @param description description of the task
      */
     public Task(String description) {

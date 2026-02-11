@@ -3,11 +3,16 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for listing the tasks.
+ * The command for finding/searching tasks containing a keyword.
  */
 public class FindCommand extends Command {
     private String keyword;
 
+    /**
+     * Initializes the command for finding tasks containing a keyword.
+     *
+     * @param keyword the keyword for search
+     */
     public FindCommand(String keyword) {
         this.keyword = keyword;
     }

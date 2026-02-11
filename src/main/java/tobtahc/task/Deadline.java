@@ -21,7 +21,10 @@ public class Deadline extends Task {
     }
 
     /**
-     * {@return whether the task is due on/before {@code date}}
+     * Checks whether the task is due on/before {@code date}.
+     *
+     * @param date a {@code LocalDate}
+     * @return whether the task is due on/before {@code date}
      */
     public boolean isBeforeOrOn(LocalDate date) {
         return !deadline.toLocalDate().isAfter(date);

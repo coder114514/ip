@@ -48,3 +48,10 @@ run {
 checkstyle {
     toolVersion = '11.0.0'
 }
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
+}
+
+build.dependsOn javadoc

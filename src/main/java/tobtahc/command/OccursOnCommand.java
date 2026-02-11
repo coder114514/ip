@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import tobtahc.task.Event;
 
 /**
- * The command for "occurs on {@literal <date>}", which shows all events that occurs
+ * The command for "occurs on {@literal <date>}", which shows all events that occur
  * on {@literal <date>}.
  */
 public class OccursOnCommand extends Command {
     private LocalDate date;
 
     /**
+     * Initializes the command for showing all events that occur on some date.
+     *
      * @param date the {@literal <date>} in the command
      */
     public OccursOnCommand(LocalDate date) {

@@ -9,6 +9,8 @@ public class EchoCommand extends Command {
     private String input;
 
     /**
+     * Initializes the echo command with what to echo.
+     *
      * @param input the user input
      */
     public EchoCommand(String input) {

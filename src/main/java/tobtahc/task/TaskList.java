@@ -11,11 +11,16 @@ import java.util.List;
 public class TaskList extends AbstractList<Task> {
     private final List<Task> tasks;
 
+    /**
+     * Initializes an empty task list.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
     /**
+     * Initializes a task list with {@code tasks}.
+     *
      * @param tasks the raw list of tasks
      */
     public TaskList(List<Task> tasks) {

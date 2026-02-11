@@ -8,6 +8,9 @@ import java.util.Scanner;
 public class CliUi {
     private Scanner scanner;
 
+    /**
+     * Initializes the UI actor for CLI app.
+     */
     public CliUi() {
         scanner = new Scanner(System.in);
     }

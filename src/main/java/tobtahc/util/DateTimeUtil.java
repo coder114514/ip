@@ -8,16 +8,17 @@ import java.util.Locale;
  * This class contains some utilities.
  */
 public final class DateTimeUtil {
-    /**
-     * The date time formats used for parsing user input and printing tasks.
-     */
+    /** The date time format string for parsing user input. */
     public static final String DATE_TIME_FORMATTER_INPUT_STRING =
             "y-M-d HH:mm";
+    /** The date time formatter for parsing user input. */
     public static final DateTimeFormatter DATE_TIME_FORMATTER_INPUT =
             DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER_INPUT_STRING,
                     Locale.ROOT);
+    /** The date time format string for print dates. */
     public static final String DATE_TIME_FORMATTER_OUTPUT_STRING =
             "MMM dd yyyy HH:mm";
+    /** The date time formatter for print dates. */
     public static final DateTimeFormatter DATE_TIME_FORMATTER_OUTPUT =
             DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER_OUTPUT_STRING,
                     Locale.ROOT);

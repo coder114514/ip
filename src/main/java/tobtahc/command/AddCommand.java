@@ -11,8 +11,9 @@ public class AddCommand extends Command {
     private Task task;
 
     /**
+     * Initializes the command for adding a task.
+     *
      * @param task the task to add
-     * @param rng the RNG
      */
     public AddCommand(Task task) {
         this.task = task;

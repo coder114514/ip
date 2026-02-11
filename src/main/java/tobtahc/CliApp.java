@@ -22,8 +22,10 @@ public class CliApp {
     private CommandContext ctx;
 
     /**
-     * @param dataDirPath path of the date directory
-     * @param saveFilePath name of the save file
+     * Initializes the CLI app object.
+     *
+     * @param dataDir path of the date directory
+     * @param saveFileName name of the save file
      */
     public CliApp(String dataDir, String saveFileName) {
         storage = new Storage(dataDir, saveFileName);

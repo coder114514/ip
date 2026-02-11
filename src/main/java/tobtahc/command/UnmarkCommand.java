@@ -9,6 +9,8 @@ public class UnmarkCommand extends Command {
     private int index;
 
     /**
+     * Initializes the command for unmarking a task.
+     *
      * @param index the index of the task
      */
     public UnmarkCommand(int index) {

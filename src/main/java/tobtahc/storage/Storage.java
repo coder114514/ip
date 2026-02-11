@@ -26,6 +26,8 @@ public class Storage {
     private String saveFileName;
 
     /**
+     * The result of loading the save file.
+     *
      * @param numBadLines number of bad lines in the save file
      * @param tasks the deserialized task objects
      */
@@ -33,7 +35,7 @@ public class Storage {
 
     /**
      * @param dataDirPath path of the date directory
-     * @param saveFilePath name of the save file
+     * @param saveFileName name of the save file
      */
     public Storage(String dataDirPath, String saveFileName) {
         dataDir = Path.of(dataDirPath);
@@ -65,7 +67,7 @@ public class Storage {
     /**
      * Loads the tasks from the save file.
      *
-     * @return a LoadResult
+     * @return a {@code LoadResult}
      * @throws IOException if there was an IO exception
      */
     public LoadResult loadTasks() throws IOException {
@@ -87,9 +89,10 @@ public class Storage {
     }
 
     /**
-     * Saves the tasks to the temp file, and replaces the save file with the temp file.
+     * Saves the tasks to the save file.
      *
      * @param tasks tasks to save
+     * @throws IOException if there are IO Exceptions
      */
     public void saveTasks(TaskList tasks) throws IOException {
         ensureDirExists();

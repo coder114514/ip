@@ -24,7 +24,10 @@ public class Event extends Task {
     }
 
     /**
-     * {@return whether the event occurs on {@code date}}
+     * Checks whether the event occurs on {@code date}.
+     *
+     * @param date a {@code LocalDate}
+     * @return whether the event occurs on {@code date}
      */
     public boolean occursOn(LocalDate date) {
         return !to.toLocalDate().isBefore(date)

@@ -9,6 +9,8 @@ public class MarkCommand extends Command {
     private int index;
 
     /**
+     * Initiailizing the command for marking a task.
+     *
      * @param index the index of the task
      */
     public MarkCommand(int index) {
