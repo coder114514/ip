@@ -40,25 +40,25 @@ public class CliApp {
      * @return program exit code
      */
     public int run() {
-        cliUi.chatIntro();
+        cliUi.printIntro();
 
         try {
             var result = storage.loadTasks();
             tasks = result.tasks();
             if (result.numBadLines() > 0) {
-                cliUi.botMessageSepError();
-                cliUi.botMessageLine(String.format(
+                cliUi.printMessageSepError();
+                cliUi.printMessageLine(String.format(
                         "Info: there were %d bad lines in the save file, which will be removed.",
                                 result.numBadLines()));
-                cliUi.botMessageSepError();
-                cliUi.botMessageLine();
+                cliUi.printMessageSepError();
+                cliUi.printMessageLine();
             }
         } catch (IOException e) {
-            cliUi.botMessageSepError();
-            cliUi.botMessageLine("Could not load the save file.");
-            cliUi.botMessageLine("IO Error: " + e.getMessage() + ".");
-            cliUi.botMessageLine("Aborting.");
-            cliUi.botMessageSepError();
+            cliUi.printMessageSepError();
+            cliUi.printMessageLine("Could not load the save file.");
+            cliUi.printMessageLine("IO Error: " + e.getMessage() + ".");
+            cliUi.printMessageLine("Aborting.");
+            cliUi.printMessageSepError();
             return 1;
         }
 
@@ -77,22 +77,22 @@ public class CliApp {
                 var lines = result.messageLines();
 
                 if (!lines.isEmpty()) {
-                    cliUi.botMessageSep();
+                    cliUi.printMessageSep();
                     for (var line : lines) {
-                        cliUi.botMessageLine(line);
+                        cliUi.printMessageLine(line);
                     }
-                    cliUi.botMessageSep();
+                    cliUi.printMessageSep();
                 }
 
                 if (result.needSave()) {
                     try {
                         storage.saveTasks(tasks);
                     } catch (IOException e) {
-                        cliUi.botMessageSepError();
-                        cliUi.botMessageLine("Could not save the tasks.");
-                        cliUi.botMessageLine("IO Error: " + e.getMessage() + ".");
-                        cliUi.botMessageSepError();
-                        cliUi.botMessageLine();
+                        cliUi.printMessageSepError();
+                        cliUi.printMessageLine("Could not save the tasks.");
+                        cliUi.printMessageLine("IO Error: " + e.getMessage() + ".");
+                        cliUi.printMessageSepError();
+                        cliUi.printMessageLine();
                     }
                 }
 
@@ -100,15 +100,15 @@ public class CliApp {
                     break;
                 }
             } catch (CommandParseError e) {
-                cliUi.botMessageSep();
+                cliUi.printMessageSep();
                 for (var line : e.getLines()) {
-                    cliUi.botMessageLine(line);
+                    cliUi.printMessageLine(line);
                 }
-                cliUi.botMessageSep();
+                cliUi.printMessageSep();
             }
         }
 
-        cliUi.chatBye(endByEof);
+        cliUi.printBye(endByEof);
 
         return 0;
     }

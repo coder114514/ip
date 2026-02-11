@@ -29,7 +29,7 @@ public class CliUi {
      * A helper for displaying the bot's response with an indentation.
      * When called with no arguments, it just outputs a newline.
      */
-    public void botMessageLine() {
+    public void printMessageLine() {
         System.out.println();
     }
 
@@ -38,32 +38,32 @@ public class CliUi {
      *
      * @param message message to display
      */
-    public void botMessageLine(String message) {
+    public void printMessageLine(String message) {
         System.out.println("    " + message);
     }
 
     /**
      * A helper for displaying the separator line.
      */
-    public void botMessageSep() {
-        botMessageLine("___________________________________________________________________\n");
+    public void printMessageSep() {
+        printMessageLine("___________________________________________________________________\n");
     }
 
     /**
      * A helper for displaying the separator line for errors.
      */
-    public void botMessageSepError() {
-        botMessageLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    public void printMessageSepError() {
+        printMessageLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     /**
      * A helper for displaying the intro message.
      */
-    public void chatIntro() {
-        botMessageSep();
-        botMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
-        botMessageLine("What can I do for you?");
-        botMessageSep();
+    public void printIntro() {
+        printMessageSep();
+        printMessageLine("Hello! I'm TobTahc. Tob tahc a ma I.");
+        printMessageLine("What can I do for you?");
+        printMessageSep();
     }
 
     /**
@@ -72,12 +72,12 @@ public class CliUi {
      * @param endByEof if the chat is ended by an EOF instead of the user input 'bye',
      *     display an info message.
      */
-    public void chatBye(boolean endByEof) {
-        botMessageSep();
+    public void printBye(boolean endByEof) {
+        printMessageSep();
         if (endByEof) {
-            botMessageLine("EOF DETECTED! Remember to say 'bye' next time!");
+            printMessageLine("EOF DETECTED! Remember to say 'bye' next time!");
         }
-        botMessageLine("Noos niaga uoy ees ot epoh! Eyb.");
-        botMessageSep();
+        printMessageLine("Noos niaga uoy ees ot epoh! Eyb.");
+        printMessageSep();
     }
 }

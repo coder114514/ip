@@ -63,18 +63,18 @@ public class CommandParser {
                 && lowerToks[1].equals("or")
                 && lowerToks[2].equals("on")) {
             verb = "before or on";
-            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 3));
+            arg = trimmed.substring(ParserUtil.findIndexAfterTokens(trimmed, 3));
 
         } else if (lowerToks.length >= 2
                 && lowerToks[0].equals("occurs")
                 && lowerToks[1].equals("on")) {
             verb = "occurs on";
-            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 2));
+            arg = trimmed.substring(ParserUtil.findIndexAfterTokens(trimmed, 2));
 
         } else if (lowerToks.length >= 1
                 && lowerToks[0].equals("find")) {
             verb = "find";
-            arg = trimmed.substring(ParserUtil.indexAfterTokens(trimmed, 1));
+            arg = trimmed.substring(ParserUtil.findIndexAfterTokens(trimmed, 1));
 
         } else if (lowerToks.length >= 1
                 && lowerToks[0].equals("list")) {

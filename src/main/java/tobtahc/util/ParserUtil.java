@@ -15,7 +15,7 @@ public final class ParserUtil {
      * @param tokenCount number of tokens to skip
      * @return the index
      */
-    public static int indexAfterTokens(String s, int tokenCount) {
+    public static int findIndexAfterTokens(String s, int tokenCount) {
         int i = 0;
         int n = s.length();
         for (int t = 0; t < tokenCount && i < n; t++) {
@@ -53,7 +53,7 @@ public final class ParserUtil {
             return null;
         }
 
-        int i = nextSlash(s, 0);
+        int i = findNextSlash(s, 0);
         ret.put("", s.substring(0, i++).trim());
 
         while (i < s.length()) {
@@ -71,7 +71,7 @@ public final class ParserUtil {
             if (ret.containsKey(key)) {
                 return null;
             }
-            int k = nextSlash(s, j);
+            int k = findNextSlash(s, j);
             var value = j < s.length() ? s.substring(j, k).trim() : "";
             ret.put(key, value);
             i = k + 1;
@@ -80,7 +80,7 @@ public final class ParserUtil {
         return ret;
     }
 
-    private static int nextSlash(String s, int i) {
+    private static int findNextSlash(String s, int i) {
         for (; i < s.length(); ++i) {
             if (s.charAt(i) == '/') {
                 return i;

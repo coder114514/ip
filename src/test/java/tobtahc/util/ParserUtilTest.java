@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 class ParserUtilTest {
     @Test
-    public void indexAfterTokensTest() {
-        assertEquals(6, ParserUtil.indexAfterTokens("ha hi bruh", 2));
+    public void findIndexAfterTokensTest() {
+        assertEquals(6, ParserUtil.findIndexAfterTokens("ha hi bruh", 2));
     }
 
     @Test
