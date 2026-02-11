@@ -11,7 +11,7 @@ import tobtahc.ui.CliUi;
 import tobtahc.util.Rng;
 
 /**
- * The app object.
+ * The CLI app object.
  */
 public class CliApp {
     private Storage storage;
