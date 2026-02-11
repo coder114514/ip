@@ -29,6 +29,7 @@ test {
 }
 
 application {
+    applicationName = 'tobtahc'
     mainClass.set('tobtahc.Main')
 }
 
@@ -36,9 +37,24 @@ jar {
     enabled = false
 }
 
+distZip.enabled = false
+distTar.enabled = false
+installDist.enabled = false
+startScripts.enabled = false
+
+distributions {
+    shadow {
+        distributionBaseName = 'tobtahc'
+    }
+}
+
 shadowJar {
     archiveBaseName = 'tobtahc'
     archiveClassifier = ''
+}
+
+tasks.named('startShadowScripts') {
+    outputDir = file("${buildDir}/scripts")
 }
 
 run {
