@@ -3,6 +3,7 @@ package tobtahc.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import tobtahc.util.DateTimeUtil;
@@ -39,78 +40,14 @@ public class TaskParser {
         var payload = splitted[1];
         var m = ParserUtil.parseSwitches(payload);
 
-        if (verb.equals("todo")) {
-            if (m == null) {
-                throw new TaskFormatError(TaskType.TODO);
-            }
-            var desc = m.get("");
-            if (desc == null || desc.isEmpty()) {
-                throw new TaskFormatError(TaskType.TODO);
-            }
-            var allowed = Set.of("");
-            for (var key : m.keySet()) {
-                if (!allowed.contains(key)) {
-                    throw new TaskFormatError(TaskType.TODO);
-                }
-            }
-            return new ToDo(desc);
-
-        } else if (verb.equals("deadline")) {
-            if (m == null) {
-                throw new TaskFormatError(TaskType.DEADLINE);
-            }
-            var desc = m.get("");
-            if (desc == null || desc.isEmpty()) {
-                throw new TaskFormatError(TaskType.DEADLINE);
-            }
-            var by = m.get("by");
-            if (by == null || by.isEmpty()) {
-                throw new TaskFormatError(TaskType.DEADLINE);
-            }
-            var allowed = Set.of("", "by");
-            for (var key : m.keySet()) {
-                if (!allowed.contains(key)) {
-                    throw new TaskFormatError(TaskType.DEADLINE);
-                }
-            }
-            try {
-                var deadline = LocalDateTime.parse(by, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
-                return new Deadline(desc, deadline);
-            } catch (DateTimeParseException e) {
-                throw new TaskFormatError(TaskType.DEADLINE);
-            }
-
-        } else if (verb.equals("event")) {
-            if (m == null) {
-                throw new TaskFormatError(TaskType.EVENT);
-            }
-            var desc = m.get("");
-            if (desc == null || desc.isEmpty()) {
-                throw new TaskFormatError(TaskType.EVENT);
-            }
-            var from = m.get("from");
-            if (from == null || from.isEmpty()) {
-                throw new TaskFormatError(TaskType.EVENT);
-            }
-            var to = m.get("to");
-            if (to == null || to.isEmpty()) {
-                throw new TaskFormatError(TaskType.EVENT);
-            }
-            var allowed = Set.of("", "from", "to");
-            for (var key : m.keySet()) {
-                if (!allowed.contains(key)) {
-                    throw new TaskFormatError(TaskType.EVENT);
-                }
-            }
-            try {
-                var f = LocalDateTime.parse(from, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
-                var t = LocalDateTime.parse(to, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
-                return new Event(desc, f, t);
-            } catch (DateTimeParseException e) {
-                throw new TaskFormatError(TaskType.EVENT);
-            }
-
-        } else {
+        switch (verb) {
+        case "todo":
+            return parseToDo(m);
+        case "deadline":
+            return parseDeadline(m);
+        case "event":
+            return parseEvent(m);
+        default:
             throw new NotATask();
         }
     }
@@ -145,6 +82,80 @@ public class TaskParser {
             return task;
         } catch (TaskParseError e) {
             return null;
+        }
+    }
+
+    private static Task parseToDo(Map<String, String> m) throws TaskFormatError {
+        if (m == null) {
+            throw new TaskFormatError(TaskType.TODO);
+        }
+        var desc = m.get("");
+        if (desc == null || desc.isEmpty()) {
+            throw new TaskFormatError(TaskType.TODO);
+        }
+        var allowed = Set.of("");
+        for (var key : m.keySet()) {
+            if (!allowed.contains(key)) {
+                throw new TaskFormatError(TaskType.TODO);
+            }
+        }
+        return new ToDo(desc);
+    }
+
+    private static Task parseDeadline(Map<String, String> m) throws TaskFormatError {
+        if (m == null) {
+            throw new TaskFormatError(TaskType.DEADLINE);
+        }
+        var desc = m.get("");
+        if (desc == null || desc.isEmpty()) {
+            throw new TaskFormatError(TaskType.DEADLINE);
+        }
+        var by = m.get("by");
+        if (by == null || by.isEmpty()) {
+            throw new TaskFormatError(TaskType.DEADLINE);
+        }
+        var allowed = Set.of("", "by");
+        for (var key : m.keySet()) {
+            if (!allowed.contains(key)) {
+                throw new TaskFormatError(TaskType.DEADLINE);
+            }
+        }
+        try {
+            var deadline = LocalDateTime.parse(by, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+            return new Deadline(desc, deadline);
+        } catch (DateTimeParseException e) {
+            throw new TaskFormatError(TaskType.DEADLINE);
+        }
+    }
+
+    private static Task parseEvent(Map<String, String> m) throws TaskFormatError {
+        if (m == null) {
+            throw new TaskFormatError(TaskType.EVENT);
+        }
+        var desc = m.get("");
+        if (desc == null || desc.isEmpty()) {
+            throw new TaskFormatError(TaskType.EVENT);
+        }
+        var from = m.get("from");
+        if (from == null || from.isEmpty()) {
+            throw new TaskFormatError(TaskType.EVENT);
+        }
+        var to = m.get("to");
+        if (to == null || to.isEmpty()) {
+            throw new TaskFormatError(TaskType.EVENT);
+        }
+        var allowed = Set.of("", "from", "to");
+        for (var key : m.keySet()) {
+            if (!allowed.contains(key)) {
+                throw new TaskFormatError(TaskType.EVENT);
+            }
+        }
+        try {
+            var f = LocalDateTime.parse(from, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+            var t = LocalDateTime.parse(to, DateTimeUtil.DATE_TIME_FORMATTER_INPUT);
+            return new Event(desc, f, t);
+        } catch (DateTimeParseException e) {
+            throw new TaskFormatError(TaskType.EVENT);
         }
     }
 }
