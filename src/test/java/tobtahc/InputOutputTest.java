@@ -168,7 +168,7 @@ class InputOutputTest {
         }
 
         {
-            String[] msg = {"Syntax error! Correct syntax:", "  todo <task>"};
+            String[] msg = { "Syntax error! Correct syntax:", "  todo <task>" };
             var ex = assertThrows(CommandParseError.class, () -> CommandParser.parse("todo").execute(ctx));
             assertArrayEquals(msg, ex.getLines());
         }
