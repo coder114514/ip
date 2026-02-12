@@ -1,6 +1,8 @@
 package tobtahc;
 
 import javafx.application.Application;
+import tobtahc.cli.CliApp;
+import tobtahc.gui.GuiApp;
 
 /**
  * The entry point.

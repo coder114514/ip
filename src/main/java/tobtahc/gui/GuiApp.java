@@ -1,4 +1,4 @@
-package tobtahc;
+package tobtahc.gui;
 
 import java.util.List;
 

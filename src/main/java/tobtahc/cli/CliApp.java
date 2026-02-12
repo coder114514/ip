@@ -1,4 +1,4 @@
-package tobtahc;
+package tobtahc.cli;
 
 import java.io.IOException;
 
@@ -7,7 +7,6 @@ import tobtahc.command.CommandParseError;
 import tobtahc.command.CommandParser;
 import tobtahc.storage.Storage;
 import tobtahc.task.TaskList;
-import tobtahc.ui.CliUi;
 import tobtahc.util.Rng;
 
 /**

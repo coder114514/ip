@@ -1,11 +1,11 @@
-package tobtahc.ui;
+package tobtahc.cli;
 
 import java.util.Scanner;
 
 /**
- * This class implements UI stuff.
+ * This class implements CLI helpers.
  */
-public class CliUi {
+class CliUi {
     private Scanner scanner;
 
     /**
