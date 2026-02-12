@@ -33,6 +33,9 @@ public class GuiApp extends Application {
         userInput = new TextField();
         sendButton = new Button("Send");
 
+        var dialogBox = new DialogBox("Hello!");
+        dialogContainer.getChildren().addAll(dialogBox);
+
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
