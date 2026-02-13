@@ -48,7 +48,7 @@ public class CliApp {
                 cliUi.printMessageSepError();
                 cliUi.printMessageLine(String.format(
                         "Info: there were %d bad lines in the save file, which will be removed.",
-                                result.numBadLines()));
+                        result.numBadLines()));
                 cliUi.printMessageSepError();
                 cliUi.printMessageLine();
             }
