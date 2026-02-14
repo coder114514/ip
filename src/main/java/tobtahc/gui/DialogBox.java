@@ -1,96 +1,88 @@
 package tobtahc.gui;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 /**
- * A dialog box GUI element.
+ * Represents a dialog box consisting of an ImageView to represent the profile image
+ * and a label containing text from the speaker.
  */
 class DialogBox extends HBox {
     private static final Image defaultImage =
             new Image(DialogBox.class.getResourceAsStream("/images/default-profile-image.png"));
 
-    private Label text;
+    @FXML
+    private Label dialog;
+    @FXML
     private ImageView displayPicture;
 
-    /**
-     * Initializes the dialog box with the dialog text and default profile image
-     *
-     * @param s the dialog text
-     */
-    public DialogBox(String s) {
-        this(s, defaultImage);
-    }
+    private DialogBox(String text, Image img) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
+            fxmlLoader.setController(this);
+            fxmlLoader.setRoot(this);
+            fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    /**
-     * Initializes the dialog box with the dialog text and the profile image
-     *
-     * @param s the dialog text
-     * @param i the profile image
-     */
-    public DialogBox(String s, Image i) {
-        text = new Label(s);
-        displayPicture = new ImageView(i);
-
-        // Styling the dialog box
-        text.setWrapText(true);
-        displayPicture.setFitWidth(100.0);
-        displayPicture.setFitHeight(100.0);
-        this.setAlignment(Pos.TOP_RIGHT);
-
-        this.getChildren().addAll(text, displayPicture);
+        dialog.setText(text);
+        displayPicture.setImage(img);
     }
 
     /**
      * Creates a user's dialog box.
      *
-     * @param s the dialog text
+     * @param text the dialog text
      */
-    public static DialogBox getUserDialog(String s) {
-        return getUserDialog(s, defaultImage);
+    public static DialogBox getUserDialog(String text) {
+        return getUserDialog(text, defaultImage);
     }
 
     /**
      * Creates a user's dialog box.
      *
-     * @param s the dialog text
-     * @param i the profile image
+     * @param text the dialog text
+     * @param img the profile image
      */
-    public static DialogBox getUserDialog(String s, Image i) {
-        return new DialogBox(s, i);
+    public static DialogBox getUserDialog(String text, Image img) {
+        return new DialogBox(text, img);
     }
 
     /**
      * Creates a bot's dialog box.
      *
-     * @param s the dialog text
+     * @param text the dialog text
      */
-    public static DialogBox getBotDialog(String s) {
-        return getBotDialog(s, defaultImage);
+    public static DialogBox getBotDialog(String text) {
+        return getBotDialog(text, defaultImage);
     }
 
     /**
      * Creates a bot's dialog box.
      *
-     * @param s the dialog text
-     * @param i the profile image
+     * @param text the dialog text
+     * @param img the profile image
      */
-    public static DialogBox getBotDialog(String s, Image i) {
-        var db = new DialogBox(s, i);
+    public static DialogBox getBotDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
         db.flip();
         return db;
     }
 
     private void flip() {
-        this.setAlignment(Pos.TOP_LEFT);
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        FXCollections.reverse(tmp);
-        this.getChildren().setAll(tmp);
+        var tmp = FXCollections.observableArrayList(this.getChildren());
+        Collections.reverse(tmp);
+        getChildren().setAll(tmp);
+        setAlignment(Pos.TOP_LEFT);
     }
 }
