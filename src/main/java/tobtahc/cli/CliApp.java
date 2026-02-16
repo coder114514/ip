@@ -17,7 +17,7 @@ public class CliApp {
     private CliUi cliUi;
     private Rng rng;
     private TaskList tasks;
-    private boolean endByEof;
+    private boolean isEndByEof;
     private CommandContext ctx;
 
     /**
@@ -30,7 +30,7 @@ public class CliApp {
         storage = new Storage(dataDir, saveFileName);
         cliUi = new CliUi();
         rng = new Rng();
-        endByEof = false;
+        isEndByEof = false;
     }
 
     /**
@@ -66,7 +66,7 @@ public class CliApp {
         for (;;) {
             String input = cliUi.readInput();
             if (input == null) {
-                endByEof = true;
+                isEndByEof = true;
                 break;
             }
 
@@ -107,7 +107,7 @@ public class CliApp {
             }
         }
 
-        cliUi.printBye(endByEof);
+        cliUi.printBye(isEndByEof);
 
         return 0;
     }
