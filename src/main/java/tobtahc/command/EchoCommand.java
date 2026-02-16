@@ -3,15 +3,15 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for echoing the user input.
+ * Command to echo the user input back as a response.
  */
 public class EchoCommand extends Command {
     private String input;
 
     /**
-     * Initializes the echo command with what to echo.
+     * Constructs an {@code EchoCommand} with the text to be echoed.
      *
-     * @param input the user input
+     * @param input the input string to be repeated
      */
     public EchoCommand(String input) {
         this.input = input;

@@ -5,15 +5,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * This class implements a few parser utilities.
+ * Utility for low-level string parsing and token processing.
  */
 public final class ParserUtil {
     /**
-     * Finds the index after consuming {@code tokenCount} tokens.
+     * Finds the character index in a string after skipping a number of tokens.
      *
-     * @param s the string
-     * @param tokenCount number of tokens to skip
-     * @return the index
+     * @param s the string to process
+     * @param tokenCount the number of tokens to skip
+     * @return the index in the string after the specified tokens
      */
     public static int findIndexAfterTokens(String s, int tokenCount) {
         int i = 0;
@@ -33,14 +33,12 @@ public final class ParserUtil {
     }
 
     /**
-     * Parses the switches in the payload part of a task command.
-     * And in the returned map, "" corresponds to the description part.
-     * And it will normalize the keys.
+     * Parses the switches and descriptions from a command payload.
+     * The returned map uses an empty string key for the main description.
      *
-     * @param s the string payload
-     * @return the map containing switches and their values, null if there
-     *     are unrecoverable errors like a slash followed by space(s),
-     *     duplicate keys, keys with non-alphabetic characters etc
+     * @param s the string payload to parse
+     * @return a map of normalized switches and values, or {@code null} if
+     *         parsing encounters unrecoverable syntax errors
      */
     public static Map<String, String> parseSwitches(String s) {
         var ret = new TreeMap<String, String>();

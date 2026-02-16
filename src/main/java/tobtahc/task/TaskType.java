@@ -1,13 +1,13 @@
 package tobtahc.task;
 
 /**
- * The types of tasks.
+ * Types of tasks supported by the application.
  */
 public enum TaskType {
-    /** the ToDo tasks */
+    /** To-do task type. */
     TODO,
-    /** the Deadline tasks */
+    /** Deadline task type. */
     DEADLINE,
-    /** the Event tasks */
+    /** Event task type. */
     EVENT,
 }

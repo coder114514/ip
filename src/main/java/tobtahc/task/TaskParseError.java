@@ -1,7 +1,7 @@
 package tobtahc.task;
 
 /**
- * The base class for all task parse errors.
+ * Error indicating a failure to parse a task string.
  */
 public class TaskParseError extends Exception {
 }

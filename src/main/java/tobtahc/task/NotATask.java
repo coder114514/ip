@@ -1,7 +1,7 @@
 package tobtahc.task;
 
 /**
- * Thrown when the input is not a task.
+ * Error indicating that the provided input does not represent a valid task.
  */
 public class NotATask extends TaskParseError {
 }

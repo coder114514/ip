@@ -3,11 +3,11 @@ package tobtahc.command;
 import java.util.List;
 
 /**
- * The record representing the result of a command.
+ * Result of a command execution.
  *
- * @param messageLines lines of the message to print
- * @param isExit whether the chatbot should exit
- * @param needSave whether the task list needs to be saved
+ * @param messageLines the lines of text to be displayed to the user
+ * @param isExit {@code true} if the application should terminate
+ * @param needSave {@code true} if changes to the task list should be persisted
  */
 public record CommandResult(
     List<String> messageLines,

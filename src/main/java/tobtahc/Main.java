@@ -5,16 +5,16 @@ import tobtahc.cli.CliApp;
 import tobtahc.gui.GuiApp;
 
 /**
- * The entry point.
+ * Entry point for the application.
  */
 public class Main {
     private static final String DATA_DIR = "data";
     private static final String SAVE_FILE_NAME = "tasks.txt";
 
     /**
-     * The main program launcher.
+     * Launches the application.
      *
-     * @param args command line arguments passed to the program
+     * @param args the command-line arguments
      */
     public static void main(String[] args) {
         if (args.length > 1) {

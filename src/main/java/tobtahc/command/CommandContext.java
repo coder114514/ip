@@ -4,10 +4,10 @@ import tobtahc.task.TaskList;
 import tobtahc.util.RandomProvider;
 
 /**
- * The command context passed to {@code execute}.
+ * Contextual data required to execute a command.
  *
- * @param tasks the task list
- * @param rng the rng actor
+ * @param tasks the task list to be operated on
+ * @param rng the RNG provider
  */
 public record CommandContext(
     TaskList tasks,

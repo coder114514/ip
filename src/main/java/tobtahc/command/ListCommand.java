@@ -3,7 +3,7 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for listing the tasks.
+ * Command to list tasks.
  */
 public class ListCommand extends Command {
     @Override

@@ -3,23 +3,23 @@ package tobtahc.util;
 import java.util.Random;
 
 /**
- * The RNG class.
+ * A provider for randomness using the standard Java RNG.
  */
 public class Rng implements RandomProvider {
     private Random r;
 
     /**
-     * Initializes the RNG.
+     * Constructs a new {@code Rng} instance.
      */
     public Rng() {
         r = new Random();
     }
 
     @Override
-    public boolean chance(int nominator, int denominator) {
-        if (nominator < 0 || denominator <= 0 || nominator > denominator) {
+    public boolean chance(int numerator, int denominator) {
+        if (numerator < 0 || denominator <= 0 || numerator > denominator) {
             throw new IllegalArgumentException("illegal arguments passed to chance()");
         }
-        return r.nextInt(denominator) < nominator;
+        return r.nextInt(denominator) < numerator;
     }
 }

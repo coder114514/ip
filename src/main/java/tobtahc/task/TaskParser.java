@@ -10,16 +10,16 @@ import tobtahc.util.DateTimeUtil;
 import tobtahc.util.ParserUtil;
 
 /**
- * This class implements task parser and deserializer.
+ * Utility for parsing and deserializing task-related strings.
  */
 public class TaskParser {
     /**
-     * Parses the user input to get the task.
+     * Parses the input string into a task object.
      *
-     * @param input user input
-     * @return task object
-     * @throws NotATask if the input does not resemble a task at all
-     * @throws TaskFormatError if the input resembles a task but is not in the correct syntax
+     * @param input the raw input string
+     * @return the parsed task object
+     * @throws NotATask if the input does not resemble a task
+     * @throws TaskFormatError if the input has an invalid task format
      */
     public static Task parse(String input) throws NotATask, TaskFormatError {
         var splitted = input.split("\\s+", 2);
@@ -53,14 +53,10 @@ public class TaskParser {
     }
 
     /**
-     * Deserializes the task object.
-     * Since I'm lazy, the format is largely reusing the command syntax.
-     * The first character is either 0 or 1, representing undone/done.
-     * The rest of the string is just the command used to create the task.
-     * So that is why we can simply use Task.parseTask() here.
+     * Deserializes a string back into a task object.
      *
-     * @param input the string to deserialize into a task object
-     * @return a task object if successful, else null
+     * @param input the string to deserialize
+     * @return the deserialized task object, or {@code null} if unsuccessful
      */
     public static Task deserialize(String input) {
         if (input.length() <= 1) {

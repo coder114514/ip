@@ -1,14 +1,14 @@
 package tobtahc.command;
 
 /**
- * This is the base class for all the commands.
+ * Abstract base class for all commands.
  */
 public abstract class Command {
     /**
-     * Executes the command itself.
+     * Executes the command logic using the provided context.
      *
-     * @param ctx the command context
-     * @return a {@code CommandResult}
+     * @param ctx the context in which the command runs
+     * @return the execution result
      */
     public abstract CommandResult execute(CommandContext ctx);
 }

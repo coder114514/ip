@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import tobtahc.task.Task;
 
 /**
- * The command for adding a task.
+ * Command to add a task.
  */
 public class AddCommand extends Command {
     private Task task;
 
     /**
-     * Initializes the command for adding a task.
+     * Constructs an {@code AddCommand}.
      *
      * @param task the task to add
      */

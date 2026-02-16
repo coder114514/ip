@@ -1,17 +1,16 @@
 package tobtahc.task;
 
 /**
- * This is the base class for the three kinds of tasks.
- * It implements the common behavior.
+ * Abstract base class for all tasks.
  */
 public abstract class Task {
     private String description;
     private boolean isDone;
 
     /**
-     * Initiailizes the task with its descriptoin.
+     * Constructs a {@code Task} with the specified description.
      *
-     * @param description description of the task
+     * @param description the description of the task
      */
     public Task(String description) {
         this.description = description;
@@ -19,13 +18,9 @@ public abstract class Task {
     }
 
     /**
-     * Serializes the task object.
-     * The behavior is delegated to each child class.
-     * Since I'm lazy, the format is largely reusing the command syntax.
-     * The first character is either 0 or 1, representing undone/done.
-     * The rest of the string is just the command used to create the task.
+     * Returns a string representation of the task for storage.
      *
-     * @return serialized task object
+     * @return the serialized task string
      */
     public abstract String serialize();
 
@@ -35,42 +30,50 @@ public abstract class Task {
     }
 
     /**
-     * {@return description of the task}
+     * Returns the description of the task.
+     *
+     * @return the task description
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * {@return task status plus the description of the task}
+     * Returns the task icon(s) (including status) and the description.
+     *
+     * @return the formatted icon(s) (including status) and description string
      */
     public String getDescriptionWithStatus() {
         return "[" + getStatusIcon() + "] " + getDescription();
     }
 
     /**
-     * {@return whether the task is marked done}
+     * Returns {@code true} if the task is marked as done.
+     *
+     * @return {@code true} if the task is done; {@code false} otherwise
      */
     public boolean isDone() {
         return isDone;
     }
 
     /**
-     * {@return X if the task is done, space otherwise}
+     * Returns the status icon based on whether the task is done.
+     *
+     * @return "X" if done, or a space character if not done
      */
     public String getStatusIcon() {
         return isDone() ? "X" : " ";
     }
 
     /**
-     * Marks the task as done.
+     * Marks the task as completed.
      */
     public void mark() {
         isDone = true;
     }
 
     /**
-     * Unmarks the task.
+     * Marks the task as not completed.
      */
     public void unmark() {
         isDone = false;

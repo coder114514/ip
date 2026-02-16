@@ -1,13 +1,13 @@
 package tobtahc.task;
 
 /**
- * Implements the ToDo task.
+ * A task without a specific date or time.
  */
 public class ToDo extends Task {
     /**
-     * Initializes a ToDo task.
+     * Constructs a {@code ToDo} task.
      *
-     * @param description description of the task
+     * @param description the task description
      */
     public ToDo(String description) {
         super(description);

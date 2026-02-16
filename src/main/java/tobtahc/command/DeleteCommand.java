@@ -3,15 +3,15 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for deleting a task.
+ * Command to delete a task.
  */
 public class DeleteCommand extends Command {
     private int index;
 
     /**
-     * Initializes the command with the index of the task to delete.
+     * Constructs a {@code DeleteCommand} with the target index.
      *
-     * @param index the index of the task
+     * @param index the zero-based index of the task to delete
      */
     public DeleteCommand(int index) {
         this.index = index;

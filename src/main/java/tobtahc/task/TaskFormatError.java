@@ -1,23 +1,25 @@
 package tobtahc.task;
 
 /**
- * Thrown when the input is supposed to be a task but in wrong syntax.
+ * Error indicating that a task input string has an invalid format.
  */
 public class TaskFormatError extends TaskParseError {
-    /** the type of the task */
+    /** The type of the task. */
     private TaskType type;
 
     /**
-     * Initializes the exception with the type of the task.
+     * Constructs a {@code TaskFormatError} with the specified task type.
      *
-     * @param type type of the task
+     * @param type the type of the task
      */
     public TaskFormatError(TaskType type) {
         this.type = type;
     }
 
     /**
-     * {@return the type of the task}
+     * Returns the type of the task that caused the error.
+     *
+     * @return the task type
      */
     public TaskType getTaskType() {
         return type;

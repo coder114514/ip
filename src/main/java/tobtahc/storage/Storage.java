@@ -18,7 +18,7 @@ import tobtahc.task.TaskList;
 import tobtahc.task.TaskParser;
 
 /**
- * This class implements the save file mechanics.
+ * Manager for saving and loading tasks from the local file system.
  */
 public class Storage {
     private Path dataDir;
@@ -26,16 +26,18 @@ public class Storage {
     private String saveFileName;
 
     /**
-     * The result of loading the save file.
+     * Result of a task loading operation.
      *
-     * @param numBadLines number of bad lines in the save file
-     * @param tasks the deserialized task objects
+     * @param numBadLines the number of corrupted or unreadable lines found
+     * @param tasks the list of tasks successfully recovered from the file
      */
     public record LoadResult(int numBadLines, TaskList tasks) {}
 
     /**
-     * @param dataDirPath path of the date directory
-     * @param saveFileName name of the save file
+     * Constructs a {@code Storage} instance with the specified directory and file name.
+     *
+     * @param dataDirPath the path of the directory to store data
+     * @param saveFileName the name of the file to save tasks in
      */
     public Storage(String dataDirPath, String saveFileName) {
         dataDir = Path.of(dataDirPath);
@@ -43,32 +45,11 @@ public class Storage {
         this.saveFileName = saveFileName;
     }
 
-    private void ensureDirExists() throws IOException {
-        try {
-            if (Files.notExists(dataDir)) {
-                Files.createDirectories(dataDir);
-            }
-        } catch (IOException e) {
-            throw new IOException("failed to create the data directory", e);
-        }
-    }
-
-    private void ensureFileExists() throws IOException {
-        try {
-            ensureDirExists();
-            if (Files.notExists(saveFilePath)) {
-                Files.createFile(saveFilePath);
-            }
-        } catch (IOException e) {
-            throw new IOException("failed to create the initial save file", e);
-        }
-    }
-
     /**
      * Loads the tasks from the save file.
      *
-     * @return a {@code LoadResult}
-     * @throws IOException if there was an IO exception
+     * @return the loaded tasks and number of corrupted lines
+     * @throws IOException if an I/O error occurs during the file reading process
      */
     public LoadResult loadTasks() throws IOException {
         ensureFileExists();
@@ -89,10 +70,10 @@ public class Storage {
     }
 
     /**
-     * Saves the tasks to the save file.
+     * Saves the provided tasks to the save file.
      *
-     * @param tasks tasks to save
-     * @throws IOException if there are IO Exceptions
+     * @param tasks the list of tasks to be persisted
+     * @throws IOException if an I/O error occurs during the file writing process
      */
     public void saveTasks(TaskList tasks) throws IOException {
         ensureDirExists();
@@ -118,6 +99,27 @@ public class Storage {
             }
         } catch (IOException e) {
             throw new IOException("failed to replace the save file with the temp file", e);
+        }
+    }
+
+    private void ensureDirExists() throws IOException {
+        try {
+            if (Files.notExists(dataDir)) {
+                Files.createDirectories(dataDir);
+            }
+        } catch (IOException e) {
+            throw new IOException("failed to create the data directory", e);
+        }
+    }
+
+    private void ensureFileExists() throws IOException {
+        try {
+            ensureDirExists();
+            if (Files.notExists(saveFilePath)) {
+                Files.createFile(saveFilePath);
+            }
+        } catch (IOException e) {
+            throw new IOException("failed to create the initial save file", e);
         }
     }
 }

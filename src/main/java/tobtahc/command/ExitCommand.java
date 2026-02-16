@@ -3,7 +3,7 @@ package tobtahc.command;
 import java.util.List;
 
 /**
- * The command for exiting the chat bot, aka "bye".
+ * Command to exit the application.
  */
 public class ExitCommand extends Command {
     @Override

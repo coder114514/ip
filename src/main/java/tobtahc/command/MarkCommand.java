@@ -3,15 +3,15 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for marking a task as done.
+ * Command to mark a task as completed.
  */
 public class MarkCommand extends Command {
     private int index;
 
     /**
-     * Initiailizing the command for marking a task.
+     * Constructs a {@code MarkCommand} with the target index.
      *
-     * @param index the index of the task
+     * @param index the zero-based index of the task to mark
      */
     public MarkCommand(int index) {
         this.index = index;

@@ -3,15 +3,15 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for unmarking a task.
+ * Command to mark a completed task as not done.
  */
 public class UnmarkCommand extends Command {
     private int index;
 
     /**
-     * Initializes the command for unmarking a task.
+     * Constructs an {@code UnmarkCommand} with the target index.
      *
-     * @param index the index of the task
+     * @param index the zero-based index of the task to unmark
      */
     public UnmarkCommand(int index) {
         this.index = index;

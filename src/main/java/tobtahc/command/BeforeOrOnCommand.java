@@ -6,17 +6,15 @@ import java.util.ArrayList;
 import tobtahc.task.Deadline;
 
 /**
- * The command for "before or on {@literal <date>}", which shows all deadline tasks that
- * are due before or on {@literal <date>}.
+ * Command to list tasks occurring before or on a specific date.
  */
 public class BeforeOrOnCommand extends Command {
     private LocalDate date;
 
     /**
-     * Initiailizes the command for showing all deadline tasks that are due before or on
-     * some date.
+     * Constructs a {@code BeforeOrOnCommand}.
      *
-     * @param date the {@literal <date>} in the command
+     * @param date the date to filter events by
      */
     public BeforeOrOnCommand(LocalDate date) {
         this.date = date;

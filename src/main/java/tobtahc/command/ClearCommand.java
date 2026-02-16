@@ -3,7 +3,7 @@ package tobtahc.command;
 import java.util.ArrayList;
 
 /**
- * The command for clearing the tasks.
+ * Command to clear tasks.
  */
 public class ClearCommand extends Command {
     @Override

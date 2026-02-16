@@ -6,14 +6,16 @@ import java.time.LocalDateTime;
 import tobtahc.util.DateTimeUtil;
 
 /**
- * Implements the Deadline task.
+ * A task with a specific deadline.
  */
 public class Deadline extends Task {
     private LocalDateTime deadline;
 
     /**
-     * @param description description of the task
-     * @param deadline The deadline of the task
+     * Constructs a {@code Deadline} task.
+     *
+     * @param description the task description
+     * @param deadline the deadline date and time
      */
     public Deadline(String description, LocalDateTime deadline) {
         super(description);
@@ -21,10 +23,10 @@ public class Deadline extends Task {
     }
 
     /**
-     * Checks whether the task is due on/before {@code date}.
+     * Returns {@code true} if the task is due on or before the given date.
      *
-     * @param date a {@code LocalDate}
-     * @return whether the task is due on/before {@code date}
+     * @param date the date to compare
+     * @return {@code true} if due on or before {@code date}; {@code false} otherwise
      */
     public boolean isBeforeOrOn(LocalDate date) {
         return !deadline.toLocalDate().isAfter(date);

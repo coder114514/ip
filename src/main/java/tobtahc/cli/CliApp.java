@@ -10,7 +10,7 @@ import tobtahc.task.TaskList;
 import tobtahc.util.Rng;
 
 /**
- * The CLI app object.
+ * CLI for the application.
  */
 public class CliApp {
     private Storage storage;
@@ -21,7 +21,7 @@ public class CliApp {
     private CommandContext ctx;
 
     /**
-     * Initializes the CLI app object.
+     * Constructs a new CLI application instance.
      *
      * @param dataDir path of the date directory
      * @param saveFileName name of the save file
@@ -34,9 +34,9 @@ public class CliApp {
     }
 
     /**
-     * The main program logic.
+     * Runs the CLI application.
      *
-     * @return program exit code
+     * @return the program exit code
      */
     public int run() {
         cliUi.printIntro();

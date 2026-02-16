@@ -6,16 +6,18 @@ import java.time.LocalDateTime;
 import tobtahc.util.DateTimeUtil;
 
 /**
- * Implements the Event task.
+ * A task occurring during a specific time period.
  */
 public class Event extends Task {
     private LocalDateTime from;
     private LocalDateTime to;
 
     /**
-     * @param description description of the task
-     * @param from starting time of the event
-     * @param to ending time of the event
+     * Constructs an {@code Event} task.
+     *
+     * @param description the task description
+     * @param from the starting time of the event
+     * @param to the ending time of the event
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
@@ -24,10 +26,10 @@ public class Event extends Task {
     }
 
     /**
-     * Checks whether the event occurs on {@code date}.
+     * Returns {@code true} if the event occurs on the given date.
      *
-     * @param date a {@code LocalDate}
-     * @return whether the event occurs on {@code date}
+     * @param date the date to check
+     * @return {@code true} if the event occurs on {@code date}; {@code false} otherwise
      */
     public boolean occursOn(LocalDate date) {
         return !to.toLocalDate().isBefore(date)

@@ -1,15 +1,15 @@
 package tobtahc.util;
 
 /**
- * The random provider used to provide some variety to chat bot's output.
+ * Provider for randomness.
  */
 public interface RandomProvider {
     /**
-     * Returns true with probability nominator/denominator, false otherwise.
+     * Returns {@code true} with a probability of numerator/denominator.
      *
-     * @param nominator the nominator
-     * @param denominator the denominator
-     * @return true with probability nominator/denominator, false otherwise
+     * @param numerator the numerator of the probability fraction
+     * @param denominator the denominator of the probability fraction
+     * @return {@code true} with the specified probability; {@code false} otherwise
      */
-    boolean chance(int nominator, int denominator);
+    boolean chance(int numerator, int denominator);
 }

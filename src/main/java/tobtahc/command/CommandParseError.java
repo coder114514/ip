@@ -1,24 +1,26 @@
 package tobtahc.command;
 
 /**
- * The exception for all command parse errors.
- * Used when the user input resembles some command but in wrong syntax.
+ * Error indicating invalid command syntax.
+ * This occurs when user input resembles a known command but does not follow the correct format.
  */
 public class CommandParseError extends Exception {
-    /** the lines of messages  */
+    /** The lines of the error message. */
     private final String[] lines;
 
     /**
-     * Initializes the exception with the lines of messages to show.
+     * Constructs a {@code CommandParseError} with specific error messages.
      *
-     * @param lines lines of messages
+     * @param lines the descriptive lines of the error
      */
     public CommandParseError(String... lines) {
         this.lines = lines;
     }
 
     /**
-     * {@return the lines of messages to show}
+     * Returns the error message lines to be displayed.
+     *
+     * @return the array of error message lines
      */
     public String[] getLines() {
         return lines;

@@ -12,19 +12,20 @@ import tobtahc.util.DateTimeUtil;
 import tobtahc.util.ParserUtil;
 
 /**
- * Implements the command parser.
+ * Parser for user input strings into executable commands.
  */
 public class CommandParser {
-    /** The patterns for matching the commands. The \s* before the number makes it more permissive. */
+    // Pattern for matching numeric commands (mark, unmark, delete).
+    // The \s* before the number makes it more permissive for user input.
     private static final Pattern PATTERN_NUMERIC_CMD =
             Pattern.compile("^(mark|unmark|delete)\\s*(\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
 
     /**
-     * Parse the user input to get the command.
+     * Parses the user input into a command.
      *
-     * @param input the user input
-     * @return the command parsed from the user input
-     * @throws CommandParseError if the user input resembles a command but in a wrong syntax
+     * @param input the raw input string from the user
+     * @return the command represented by the input
+     * @throws CommandParseError if the input resembles a command but has invalid syntax
      */
     public static Command parse(String input) throws CommandParseError {
         var trimmed = input.trim();
