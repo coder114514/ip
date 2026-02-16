@@ -1,4 +1,4 @@
-package tobtahc;
+package tobtahc.cli;
 
 import java.io.IOException;
 
@@ -7,11 +7,10 @@ import tobtahc.command.CommandParseError;
 import tobtahc.command.CommandParser;
 import tobtahc.storage.Storage;
 import tobtahc.task.TaskList;
-import tobtahc.ui.CliUi;
 import tobtahc.util.Rng;
 
 /**
- * The app object.
+ * The CLI app object.
  */
 public class CliApp {
     private Storage storage;
@@ -49,7 +48,7 @@ public class CliApp {
                 cliUi.printMessageSepError();
                 cliUi.printMessageLine(String.format(
                         "Info: there were %d bad lines in the save file, which will be removed.",
-                                result.numBadLines()));
+                        result.numBadLines()));
                 cliUi.printMessageSepError();
                 cliUi.printMessageLine();
             }
