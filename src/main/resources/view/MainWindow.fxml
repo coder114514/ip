@@ -15,6 +15,7 @@
             fx:controller="tobtahc.gui.MainWindow">
     <children>
         <TextField fx:id="userInput"
+                   promptText="Type here..."
                    layoutY="569.0"
                    onAction="#handleUserInput"
                    prefHeight="30.0"

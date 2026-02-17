@@ -8,6 +8,7 @@
 .text-field {
     -fx-background-color: #d9ffe2;
     -fx-font: 16px "Arial";
+    -fx-prompt-text-fill: #666666;
 }
 
 .button {
