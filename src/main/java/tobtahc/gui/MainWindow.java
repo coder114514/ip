@@ -62,6 +62,9 @@ public class MainWindow extends AnchorPane {
                 event.consume();
             }
         });
+
+        addDialogs(DialogBox.getBotDialog("Hello! I'm TobTahc. Tob tahc a ma I.\n"
+                + "What can I do for you?", botImage));
     }
 
     /**
