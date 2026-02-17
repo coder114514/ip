@@ -18,11 +18,6 @@ import javafx.scene.layout.HBox;
  * and a label containing text from the speaker.
  */
 class DialogBox extends HBox {
-    private static final Image userImage =
-            new Image(DialogBox.class.getResourceAsStream("/images/user.png"));
-    private static final Image botImage =
-            new Image(DialogBox.class.getResourceAsStream("/images/bot.png"));
-
     @FXML private Label dialog;
     @FXML private ImageView displayPicture;
 
@@ -44,29 +39,32 @@ class DialogBox extends HBox {
     }
 
     /**
-     * Creates a user's dialog box.
+     * Creates a dialog box representing the user.
      *
-     * @param text the dialog text
+     * @param text the user's input text
+     * @param img the user's profile image
+     * @return a {@code DialogBox} containing the user's message and image
      */
-    public static DialogBox getUserDialog(String text) {
-        return new DialogBox(text, userImage);
+    public static DialogBox getUserDialog(String text, Image img) {
+        return new DialogBox(text, img);
     }
 
     /**
-     * Creates a bot's dialog box.
+     * Creates a dialog box representing the chatbot.
      *
-     * @param text the dialog text
+     * @param text the chatbot's response text
+     * @param img the chatbot's profile image
+     * @return a {@code DialogBox} containing the chatbot's response and image
      */
-    public static DialogBox getBotDialog(String text) {
-        var db = new DialogBox(text, botImage);
-        db.flip();
-        return db;
+    public static DialogBox getBotDialog(String text, Image img) {
+        return new DialogBox(text, img).flip();
     }
 
-    private void flip() {
+    private DialogBox flip() {
         var tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
+        return this;
     }
 }

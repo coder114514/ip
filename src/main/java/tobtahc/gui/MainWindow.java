@@ -1,7 +1,6 @@
 package tobtahc.gui;
 
 import java.io.IOException;
-import java.util.List;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import tobtahc.command.CommandContext;
@@ -19,6 +19,9 @@ import tobtahc.command.CommandParser;
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
+    private static final String USER_IMAGE_PATH = "/images/user.png";
+    private static final String BOT_IMAGE_PATH = "/images/bot.png";
+
     @FXML private ScrollPane scrollPane;
     @FXML private VBox dialogContainer;
     @FXML private TextField userInput;
@@ -26,12 +29,25 @@ public class MainWindow extends AnchorPane {
 
     private UserContext userCtx;
     private CommandContext cmdCtx;
+    private Image userImage;
+    private Image botImage;
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * This method is called automatically by the FXML loader.
+     */
     @FXML
     public void initialize() {
+        userImage = new Image(getClass().getResourceAsStream(USER_IMAGE_PATH));
+        botImage = new Image(getClass().getResourceAsStream(BOT_IMAGE_PATH));
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
+    /**
+     * Injects the user context into the controller.
+     *
+     * @param ctx the user context to inject
+     */
     public void setUserContext(UserContext ctx) {
         userCtx = ctx;
         cmdCtx = new CommandContext(ctx.tasks(), ctx.rng());
@@ -41,7 +57,7 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         userInput.clear();
-        addDialogs(DialogBox.getUserDialog(input));
+        addDialogs(DialogBox.getUserDialog(input, userImage));
 
         try {
             var cmd = CommandParser.parse(input);
@@ -49,7 +65,7 @@ public class MainWindow extends AnchorPane {
             var lines = result.messageLines();
 
             if (!lines.isEmpty()) {
-                addDialogs(DialogBox.getBotDialog(concat(lines)));
+                addDialogs(DialogBox.getBotDialog(String.join("\n", lines), botImage));
             }
 
             if (result.needSave()) {
@@ -68,39 +84,11 @@ public class MainWindow extends AnchorPane {
                 Platform.exit();
             }
         } catch (CommandParseError e) {
-            addDialogs(DialogBox.getBotDialog(concat(e.getLines())));
+            addDialogs(DialogBox.getBotDialog(String.join("\n", e.getLines()), botImage));
         }
     }
 
     private void addDialogs(DialogBox... boxes) {
         dialogContainer.getChildren().addAll(boxes);
-    }
-
-    private String concat(List<String> lines) {
-        var sb = new StringBuilder();
-        boolean first = true;
-        for (var line : lines) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append('\n');
-            }
-            sb.append(line);
-        }
-        return sb.toString();
-    }
-
-    private String concat(String... lines) {
-        var sb = new StringBuilder();
-        boolean first = true;
-        for (var line : lines) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append('\n');
-            }
-            sb.append(line);
-        }
-        return sb.toString();
     }
 }
