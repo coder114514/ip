@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import tobtahc.command.CommandContext;
@@ -40,7 +41,27 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         userImage = new Image(getClass().getResourceAsStream(USER_IMAGE_PATH));
         botImage = new Image(getClass().getResourceAsStream(BOT_IMAGE_PATH));
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) -> {
+            // This moves the scroll to the bottom ONLY when the height increases
+            scrollPane.setVvalue(1.0);
+        });
+
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaY() != 0) {
+                // Calculate the movement based on the content's current size
+                double deltaY = event.getDeltaY();
+                double contentHeight = dialogContainer.getBoundsInLocal().getHeight();
+                double scrollSpeed = 2.0; // Increase this to make scrolling faster
+
+                // Manually update the vvalue to force immediate response
+                double curVvalue = scrollPane.getVvalue();
+                scrollPane.setVvalue(curVvalue - (deltaY * scrollSpeed / contentHeight));
+
+                // Prevent "double scrolling"
+                event.consume();
+            }
+        });
     }
 
     /**
