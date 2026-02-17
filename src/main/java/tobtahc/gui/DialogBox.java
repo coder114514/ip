@@ -18,8 +18,10 @@ import javafx.scene.layout.HBox;
  * and a label containing text from the speaker.
  */
 class DialogBox extends HBox {
-    private static final Image defaultImage =
-            new Image(DialogBox.class.getResourceAsStream("/images/default-profile-image.png"));
+    private static final Image userImage =
+            new Image(DialogBox.class.getResourceAsStream("/images/user.png"));
+    private static final Image botImage =
+            new Image(DialogBox.class.getResourceAsStream("/images/bot.png"));
 
     @FXML private Label dialog;
     @FXML private ImageView displayPicture;
@@ -47,17 +49,7 @@ class DialogBox extends HBox {
      * @param text the dialog text
      */
     public static DialogBox getUserDialog(String text) {
-        return getUserDialog(text, defaultImage);
-    }
-
-    /**
-     * Creates a user's dialog box.
-     *
-     * @param text the dialog text
-     * @param img the profile image
-     */
-    public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        return new DialogBox(text, userImage);
     }
 
     /**
@@ -66,17 +58,7 @@ class DialogBox extends HBox {
      * @param text the dialog text
      */
     public static DialogBox getBotDialog(String text) {
-        return getBotDialog(text, defaultImage);
-    }
-
-    /**
-     * Creates a bot's dialog box.
-     *
-     * @param text the dialog text
-     * @param img the profile image
-     */
-    public static DialogBox getBotDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
+        var db = new DialogBox(text, botImage);
         db.flip();
         return db;
     }
