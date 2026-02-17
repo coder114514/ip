@@ -1,7 +1,6 @@
 package tobtahc.gui;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -61,8 +60,8 @@ class DialogBox extends HBox {
     }
 
     private DialogBox flip() {
-        var tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
+        var tmp = FXCollections.observableArrayList(getChildren());
+        FXCollections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
