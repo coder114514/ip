@@ -13,13 +13,16 @@ import tobtahc.storage.Storage;
 import tobtahc.util.Rng;
 
 /**
- * The GUI app object.
+ * GUI for the application.
  */
 public class GuiApp extends Application {
     private Storage storage;
     private Rng rng;
     private UserContext ctx;
 
+    /**
+     * Initializes the application.
+     */
     @Override
     public void init() {
         var params = getParameters().getRaw();
@@ -27,6 +30,11 @@ public class GuiApp extends Application {
         rng = new Rng();
     }
 
+    /**
+     * Starts the GUI.
+     *
+     * @param stage the primary stage for this application
+     */
     @Override
     public void start(Stage stage) {
         try {
@@ -54,6 +62,7 @@ public class GuiApp extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("TobTahc");
             fxmlLoader.<MainWindow>getController().setUserContext(ctx);
             stage.show();
         } catch (IOException e) {
