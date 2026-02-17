@@ -11,4 +11,13 @@ public abstract class Command {
      * @return the execution result
      */
     public abstract CommandResult execute(CommandContext ctx);
+
+    /**
+     * Returns a string representing the type of the command.
+     *
+     * @return a string representing the type of the command
+     */
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
 }

@@ -86,7 +86,8 @@ public class MainWindow extends AnchorPane {
             var lines = result.messageLines();
 
             if (!lines.isEmpty()) {
-                addDialogs(DialogBox.getBotDialog(String.join("\n", lines), botImage));
+                addDialogs(DialogBox.getBotDialog(String.join("\n", lines), botImage,
+                        cmd.getType()));
             }
 
             if (result.needSave()) {

@@ -54,9 +54,23 @@ class DialogBox extends HBox {
      * @param text the chatbot's response text
      * @param img the chatbot's profile image
      * @return a {@code DialogBox} containing the chatbot's response and image
+     *         with the default style
      */
     public static DialogBox getBotDialog(String text, Image img) {
         return new DialogBox(text, img).flip();
+    }
+
+    /**
+     * Creates a dialog box representing the chatbot.
+     *
+     * @param text the chatbot's response text
+     * @param img the chatbot's profile image
+     * @param commandType the type of ther user's command
+     * @return a {@code DialogBox} containing the chatbot's response and image,
+     *         styled based on {@code CommandType}
+     */
+    public static DialogBox getBotDialog(String text, Image img, String commandType) {
+        return new DialogBox(text, img).flip().changeStyle(commandType);
     }
 
     private DialogBox flip() {
@@ -65,6 +79,24 @@ class DialogBox extends HBox {
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
+        return this;
+    }
+
+    private DialogBox changeStyle(String commandType) {
+        switch (commandType) {
+        case "AddCommand":
+            dialog.getStyleClass().add("add-label");
+            break;
+        case "MarkCommand":
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case "UnmarkCommand":
+            dialog.getStyleClass().add("unmarked-label");
+            break;
+        case "DeleteCommand":
+            dialog.getStyleClass().add("delete-label");
+            break;
+        }
         return this;
     }
 }
