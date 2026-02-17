@@ -19,14 +19,10 @@ import tobtahc.command.CommandParser;
  * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private VBox dialogContainer;
-    @FXML
-    private TextField userInput;
-    @FXML
-    private Button sendButton;
+    @FXML private ScrollPane scrollPane;
+    @FXML private VBox dialogContainer;
+    @FXML private TextField userInput;
+    @FXML private Button sendButton;
 
     private UserContext userCtx;
     private CommandContext cmdCtx;

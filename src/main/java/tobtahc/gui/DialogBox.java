@@ -21,10 +21,8 @@ class DialogBox extends HBox {
     private static final Image defaultImage =
             new Image(DialogBox.class.getResourceAsStream("/images/default-profile-image.png"));
 
-    @FXML
-    private Label dialog;
-    @FXML
-    private ImageView displayPicture;
+    @FXML private Label dialog;
+    @FXML private ImageView displayPicture;
 
     private DialogBox(String text, Image img) {
         try {
