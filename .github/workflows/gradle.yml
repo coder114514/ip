@@ -5,21 +5,14 @@ on: [push, pull_request]
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - name: Set up repository
-        uses: actions/checkout@master
-
-      - name: Set up repository
-        uses: actions/checkout@master
-        with:
-          ref: master
-
-      - name: Merge to master
-        run: git checkout --progress --force ${{ github.sha }}
+      - name: Check out repository
+        uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
@@ -30,6 +23,24 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           java-package: jdk+fx
+          cache: 'gradle'
 
       - name: Build and check with Gradle
-        run: ./gradlew check
+        run: ./gradlew --no-daemon check
+
+      - name: Build fat jar
+        run: ./gradlew --no-daemon shadowJar
+
+      - name: Upload fat jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: tobtahc-jar-${{ runner.os }}
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+      - name: Upload Javadoc
+        uses: actions/upload-artifact@v4
+        with:
+          name: tobtahc-javadoc-${{ runner.os }}
+          path: build/docs/javadoc/**
+          if-no-files-found: error
