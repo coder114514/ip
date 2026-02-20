@@ -73,6 +73,21 @@ class DialogBox extends HBox {
         return new DialogBox(text, img).flip().changeStyle(commandType);
     }
 
+    /**
+     * Creates a dialog box representing the chatbot if there is syntax error.
+     *
+     * @param text the chatbot's response text
+     * @param img the chatbot's profile image
+     * @param commandType the type of ther user's command
+     * @return a {@code DialogBox} containing the chatbot's response and image,
+     *         styled based on {@code CommandType}
+     */
+    public static DialogBox getBotDialogForSyntaxError(String text, Image img) {
+        var d = new DialogBox(text, img).flip();
+        d.dialog.getStyleClass().add("error-label");
+        return d;
+    }
+
     private DialogBox flip() {
         var tmp = FXCollections.observableArrayList(getChildren());
         FXCollections.reverse(tmp);

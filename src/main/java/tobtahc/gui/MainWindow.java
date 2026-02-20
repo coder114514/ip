@@ -114,7 +114,7 @@ public class MainWindow extends AnchorPane {
                 Platform.exit();
             }
         } catch (CommandParseError e) {
-            addDialogs(DialogBox.getBotDialog(String.join("\n", e.getLines()), botImage));
+            addDialogs(DialogBox.getBotDialogForSyntaxError(String.join("\n", e.getLines()), botImage));
         }
     }
 
