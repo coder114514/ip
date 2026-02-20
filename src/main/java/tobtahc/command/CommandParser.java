@@ -106,6 +106,11 @@ public class CommandParser {
             arg = lowerToks.length == 1 ? "" : null;
 
         } else if (lowerToks.length >= 1
+                && lowerToks[0].equals("sort")) {
+            verb = "sort";
+            arg = lowerToks.length == 1 ? "" : null;
+
+        } else if (lowerToks.length >= 1
                 && lowerToks[0].equals("clear")) {
             verb = "clear";
             arg = lowerToks.length == 1 ? "" : null;
@@ -137,6 +142,12 @@ public class CommandParser {
                     return new ListCommand();
                 } else {
                     throw new CommandParseError("Enter 'list' to list your tasks.");
+                }
+            case "sort":
+                if (arg != null) {
+                    return new SortCommand();
+                } else {
+                    throw new CommandParseError("Enter 'sort' to list your tasks in a sorted way.");
                 }
             case "clear":
                 if (arg != null) {

@@ -26,6 +26,15 @@ public class Event extends Task {
     }
 
     /**
+     * Returns the start time.
+     *
+     * @return the start time
+     */
+    public LocalDateTime getStart() {
+        return from;
+    }
+
+    /**
      * Returns {@code true} if the event occurs on the given date.
      *
      * @param date the date to check

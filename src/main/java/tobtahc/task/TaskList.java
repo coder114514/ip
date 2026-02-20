@@ -2,6 +2,7 @@ package tobtahc.task;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,15 @@ import java.util.List;
  */
 public class TaskList extends AbstractList<Task> {
     private final List<Task> tasks;
+
+    /**
+     * A task with its index in the task list.
+     *
+     * @param <T> the concrete task type
+     * @param task the task
+     * @param index the index of the task in the task list
+     */
+    public record TaskWithIndex<T extends Task>(T task, int index) {}
 
     /**
      * Constructs an empty task list.
@@ -86,5 +96,73 @@ public class TaskList extends AbstractList<Task> {
     @Override
     public Iterator<Task> iterator() {
         return tasks.iterator();
+    }
+
+    /**
+     * Returns a list of all undone {@code ToDo} tasks with their indices.
+     *
+     * @return a list of all undone {@code ToDo} tasks with their indices
+     */
+    public List<TaskWithIndex<ToDo>> getAllUndoneToDos() {
+        var ret = new ArrayList<TaskWithIndex<ToDo>>();
+        for (int i = 0; i < tasks.size(); ++i) {
+            var task = tasks.get(i);
+            if (task instanceof ToDo todo && !task.isDone()) {
+                ret.add(new TaskWithIndex<>(todo, i));
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Returns a list of all undone {@code Deadline} tasks with their indices, sorted by due time.
+     *
+     * @return a list of all undone {@code Deadline} tasks with their indices, sorted by due time
+     */
+    public List<TaskWithIndex<Deadline>> getAllUndoneDeadlinesSorted() {
+        var ret = new ArrayList<TaskWithIndex<Deadline>>();
+        for (int i = 0; i < tasks.size(); ++i) {
+            var task = tasks.get(i);
+            if (task instanceof Deadline deadline && !task.isDone()) {
+                ret.add(new TaskWithIndex<>(deadline, i));
+            }
+        }
+        ret.sort(Comparator.comparing((TaskWithIndex<Deadline> twi) -> twi.task().getBy())
+                .thenComparing(twi -> twi.index()));
+        return ret;
+    }
+
+    /**
+     * Returns a list of all undone {@code Event} tasks with their indices, sorted by start time.
+     *
+     * @return a list of all undone {@code Event} tasks with their indices, sorted by start time
+     */
+    public List<TaskWithIndex<Event>> getAllUndoneEventsSorted() {
+        var ret = new ArrayList<TaskWithIndex<Event>>();
+        for (int i = 0; i < tasks.size(); ++i) {
+            var task = tasks.get(i);
+            if (task instanceof Event event && !task.isDone()) {
+                ret.add(new TaskWithIndex<>(event, i));
+            }
+        }
+        ret.sort(Comparator.comparing((TaskWithIndex<Event> twi) -> twi.task().getStart())
+                .thenComparing(twi -> twi.index()));
+        return ret;
+    }
+
+    /**
+     * Returns a list of all done tasks with their indices.
+     *
+     * @return a list of all done tasks with their indices
+     */
+    public List<TaskWithIndex<Task>> getAllDoneTasks() {
+        var ret = new ArrayList<TaskWithIndex<Task>>();
+        for (int i = 0; i < tasks.size(); ++i) {
+            var task = tasks.get(i);
+            if (task.isDone()) {
+                ret.add(new TaskWithIndex<>(task, i));
+            }
+        }
+        return ret;
     }
 }

@@ -141,5 +141,21 @@ class InputOutputTest {
                 "2.[D][ ] return book (by: Aug 05 2019 15:00)",
                 "4.[T][ ] borrow book",
                 "5.[D][ ] return book (by: Aug 09 2019 15:00)");
+
+        assertExec(ctx, "sort", false,
+                "Here are all your undone deadlines, sorted by due time:",
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)",
+                "7.[D][ ] do homework (by: Aug 07 2019 20:00)",
+                "5.[D][ ] return book (by: Aug 09 2019 15:00)",
+                "",
+                "Here are all your undone events, sorted by start time:",
+                "6.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
+                "",
+                "Here are all your undone todos:",
+                "1.[T][ ] read book",
+                "4.[T][ ] borrow book",
+                "",
+                "And here are all your done tasks:",
+                "3.[T][X] join sports club");
     }
 }

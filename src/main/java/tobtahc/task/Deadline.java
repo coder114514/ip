@@ -23,6 +23,15 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns the due time.
+     *
+     * @return the due time
+     */
+    public LocalDateTime getBy() {
+        return deadline;
+    }
+
+    /**
      * Returns {@code true} if the task is due on or before the given date.
      *
      * @param date the date to compare
