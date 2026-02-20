@@ -97,7 +97,7 @@ class DialogBox extends HBox {
             dialog.getStyleClass().add("delete-label");
             break;
         default:
-            throw new AssertionError("unreachable");
+            // Do nothing
         }
         return this;
     }
