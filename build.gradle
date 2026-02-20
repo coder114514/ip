@@ -53,24 +53,19 @@ jar {
     enabled = false
 }
 
-distZip.enabled = false
-distTar.enabled = false
-installDist.enabled = false
-startScripts.enabled = false
-
-distributions {
-    shadow {
-        distributionBaseName = 'tobtahc'
-    }
-}
+tasks.matching { it.name in ['distZip',
+                             'distTar',
+                             'installDist',
+                             'startScripts',
+                             'shadowDistZip',
+                             'shadowDistTar',
+                             'installShadowDist',
+                             'startShadowScripts'] }
+        .configureEach { enabled = false }
 
 shadowJar {
     archiveBaseName = 'tobtahc'
     archiveClassifier = javaFxPlatform
-}
-
-tasks.named('startShadowScripts') {
-    outputDir = file("${buildDir}/scripts")
 }
 
 run {
