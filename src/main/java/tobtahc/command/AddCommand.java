@@ -30,11 +30,11 @@ public class AddCommand extends Command {
         if (rng.chance(1, 4)) {
             lines.add("Ti tog!");
             lines.add("  dedda ksat: " + task.getDescription());
-            lines.add(String.format("Tsil eht ni sksat %s evah uoy now.", tasks.size()));
+            lines.add(String.format("Tsil eht ni sksat %d evah uoy now.", tasks.size()));
         } else {
             lines.add("Got it!");
             lines.add("  task added: " + task.getDescription());
-            lines.add(String.format("Now you have %s tasks in your list.", tasks.size()));
+            lines.add(String.format("Now you have %d tasks in your list.", tasks.size()));
         }
 
         return new CommandResult(lines, false, true);

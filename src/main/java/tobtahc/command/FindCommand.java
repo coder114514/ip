@@ -30,7 +30,7 @@ public class FindCommand extends Command {
                 continue;
             }
             ++cnt;
-            lines.add(String.format("%s.%s", i + 1, tasks.get(i)));
+            lines.add(String.format("%d.%s", i + 1, tasks.get(i)));
         }
         if (cnt == 0) {
             lines.add("(empty)");

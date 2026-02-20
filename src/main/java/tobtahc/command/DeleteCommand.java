@@ -35,7 +35,7 @@ public class DeleteCommand extends Command {
             lines.add("Task removed, but still UNDONE!");
         }
         lines.add("  " + task);
-        lines.add(String.format("Now you have %s tasks in your list.", tasks.size()));
+        lines.add(String.format("Now you have %d tasks in your list.", tasks.size()));
 
         return new CommandResult(lines, false, true);
     }
