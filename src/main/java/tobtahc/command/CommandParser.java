@@ -18,7 +18,7 @@ public class CommandParser {
     // Pattern for matching numeric commands (mark, unmark, delete).
     // The \s* before the number makes it more permissive for user input.
     private static final Pattern PATTERN_NUMERIC_CMD =
-            Pattern.compile("^(mark|unmark|delete)\\s*(\\d+)\\s*$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^(mark|unmark|delete)\\s*(0*[1-9]\\d*)\\s*$", Pattern.CASE_INSENSITIVE);
 
     /**
      * Parses the user input into a command.
