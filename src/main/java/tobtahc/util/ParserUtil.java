@@ -16,6 +16,9 @@ public final class ParserUtil {
      * @return the index in the string after the specified tokens
      */
     public static int findIndexAfterTokens(String s, int tokenCount) {
+        assert s != null : "findIndexAfterTokens: input string must not be null";
+        assert tokenCount >= 0 : "findIndexAfterTokens: tokenCount must be non-negative";
+
         int i = 0;
         int n = s.length();
         for (int t = 0; t < tokenCount && i < n; t++) {
@@ -29,6 +32,10 @@ public final class ParserUtil {
                 ++i;
             }
         }
+
+        assert i >= 0 && i <= n : "findIndexAfterTokens returned out-of-bounds index: "
+                + i + " for length " + n;
+
         return i;
     }
 

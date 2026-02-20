@@ -28,6 +28,8 @@ public class CommandParser {
      * @throws CommandParseError if the input resembles a command but has invalid syntax
      */
     public static Command parse(String input) throws CommandParseError {
+        assert input != null : "CommandParser.parse: input must not be null";
+
         var trimmed = input.trim();
         var lower = trimmed.toLowerCase(Locale.ROOT);
 
@@ -60,6 +62,9 @@ public class CommandParser {
             String verb = m.group(1).toLowerCase(Locale.ROOT);
             int index = Integer.parseInt(m.group(2)) - 1;
 
+            assert verb.equals("mark") || verb.equals("unmark")
+                    || verb.equals("delete") : "Unexpected numeric command verb: " + verb;
+
             return switch (verb) {
             case "mark" -> new MarkCommand(index);
             case "unmark" -> new UnmarkCommand(index);
@@ -72,6 +77,8 @@ public class CommandParser {
 
     private static Command tryParseKeywordCommand(String trimmed, String lower) throws CommandParseError {
         var lowerToks = lower.split("\\s+");
+        assert lowerToks.length >= 1 : "Tokenization produced no tokens";
+
         String verb = null;
         String arg = null;
 
