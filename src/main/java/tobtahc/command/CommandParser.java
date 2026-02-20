@@ -33,6 +33,20 @@ public class CommandParser {
         var trimmed = input.trim();
         var lower = trimmed.toLowerCase(Locale.ROOT);
 
+        var numericCmd = tryParseNumericCommand(trimmed, lower);
+        if (numericCmd != null) {
+            return numericCmd;
+        }
+
+        var keywordCmd = tryParseKeywordCommand(trimmed, lower);
+        if (keywordCmd != null) {
+            return keywordCmd;
+        }
+
+        return parseTaskOrEcho(trimmed);
+    }
+
+    private static Command tryParseNumericCommand(String trimmed, String lower) throws CommandParseError {
         if (lower.startsWith("mark") || lower.startsWith("unmark") || lower.startsWith("delete")) {
             var m = PATTERN_NUMERIC_CMD.matcher(trimmed);
             if (!m.matches()) {
@@ -58,7 +72,10 @@ public class CommandParser {
             default -> throw new AssertionError("unreachable");
             };
         }
+        return null;
+    }
 
+    private static Command tryParseKeywordCommand(String trimmed, String lower) throws CommandParseError {
         var lowerToks = lower.split("\\s+");
         assert lowerToks.length >= 1 : "Tokenization produced no tokens";
 
@@ -138,6 +155,10 @@ public class CommandParser {
             }
         }
 
+        return null;
+    }
+
+    private static Command parseTaskOrEcho(String trimmed) throws CommandParseError {
         try {
             var task = TaskParser.parse(trimmed);
             return new AddCommand(task);
