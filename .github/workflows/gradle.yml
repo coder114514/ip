@@ -31,6 +31,9 @@ jobs:
       - name: Build fat jar
         run: ./gradlew --no-daemon shadowJar
 
+      - name: Generate Javadoc
+        run: ./gradlew --no-daemon javadoc
+
       - name: Upload fat jar
         uses: actions/upload-artifact@v4
         with:
