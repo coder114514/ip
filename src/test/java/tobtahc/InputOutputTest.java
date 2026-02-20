@@ -18,6 +18,11 @@ import tobtahc.util.ChanceAlwaysFalse;
 import tobtahc.util.ChanceAlwaysTrue;
 
 class InputOutputTest {
+    public void assertExec(CommandContext ctx, String input, boolean needSave, String... msg) {
+        var cmd = assertDoesNotThrow(() -> CommandParser.parse(input).execute(ctx));
+        assertEquals(new CommandResult(List.of(msg), false, needSave), cmd);
+    }
+
     @Test
     public void inputOutputTest() {
         var tasks = new TaskList();
@@ -26,146 +31,88 @@ class InputOutputTest {
         var ctx = new CommandContext(tasks, alwaysFalse);
         var ctxRev = new CommandContext(tasks, alwaysTrue);
 
-        {
-            var msg = List.of("Your tasks are all cleared.");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("clear").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "clear", true,
+                "Your tasks are all cleared.");
 
-        {
-            var msg = List.of("echo: hi");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("hi").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "hi", false,
+                "echo: hi");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: read book",
-                              "Now you have 1 tasks in your list.");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("todo read book").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "todo read book", true,
+                "Got it!",
+                "  task added: read book",
+                "Now you have 1 tasks in your list.");
 
-        {
-            var msg = List.of("Task marked as done!",
-                              "  [T][X] read book");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("mark 1").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "mark 1", true,
+                "Task marked as done!",
+                "  [T][X] read book");
 
-        {
-            var msg = List.of("Dekramnu ksat!",
-                              "  [T][ ] read book");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("unmark 1").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "unmark 1", true,
+                "Dekramnu ksat!",
+                "  [T][ ] read book");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: return book (by: Aug 05 2019 15:00)",
-                              "Now you have 2 tasks in your list.");
-            var cmd = assertDoesNotThrow(() ->
-                    CommandParser.parse("deadline return book /by 2019-08-05 15:00").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "deadline return book /by 2019-08-05 15:00", true,
+                "Got it!",
+                "  task added: return book (by: Aug 05 2019 15:00)",
+                "Now you have 2 tasks in your list.");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
-                              "Now you have 3 tasks in your list.");
-            var cmd = assertDoesNotThrow(() ->
-                    CommandParser.parse("event project meeting /from 2019-08-06 14:00 /to 2019-08-06 16:00")
-                            .execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "event project meeting /from 2019-08-06 14:00 /to 2019-08-06 16:00", true,
+                "Got it!",
+                "  task added: project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
+                "Now you have 3 tasks in your list.");
 
-        {
-            var msg = List.of("Ti tog!",
-                              "  dedda ksat: join sports club",
-                              "Tsil eht ni sksat 4 evah uoy now.");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("todo join sports club").execute(ctxRev));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctxRev, "todo join sports club", true,
+                "Ti tog!",
+                "  dedda ksat: join sports club",
+                "Tsil eht ni sksat 4 evah uoy now.");
 
-        {
-            var msg = List.of("Task marked as done!",
-                              "  [T][X] join sports club");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("mark 4").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "mark 4", true,
+                "Task marked as done!",
+                "  [T][X] join sports club");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: borrow book",
-                              "Now you have 5 tasks in your list.");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("todo borrow book").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "todo borrow book", true,
+                "Got it!",
+                "  task added: borrow book",
+                "Now you have 5 tasks in your list.");
 
-        {
-            var msg = List.of("You have 5 tasks in your list:",
-                              "1.[T][ ] read book",
-                              "2.[D][ ] return book (by: Aug 05 2019 15:00)",
-                              "3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
-                              "4.[T][X] join sports club",
-                              "5.[T][ ] borrow book");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("list").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "list", false,
+                "You have 5 tasks in your list:",
+                "1.[T][ ] read book",
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)",
+                "3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
+                "4.[T][X] join sports club",
+                "5.[T][ ] borrow book");
 
-        {
-            var msg = List.of("2.[D][ ] return book (by: Aug 05 2019 15:00)");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("before or on 2019-08-06").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "before or on 2019-08-06", false,
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: return book (by: Aug 09 2019 15:00)",
-                              "Now you have 6 tasks in your list.");
-            var cmd = assertDoesNotThrow(() ->
-                    CommandParser.parse("deadline return book/by 2019-08-09 15:00").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "deadline return book/by 2019-08-09 15:00", true,
+                "Got it!",
+                "  task added: return book (by: Aug 09 2019 15:00)",
+                "Now you have 6 tasks in your list.");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
-                              "Now you have 7 tasks in your list.");
-            var cmd = assertDoesNotThrow(() ->
-                    CommandParser.parse("event project meeting/To 2019-08-12 16:00/from 2019-08-12 14:00")
-                            .execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "event project meeting/To 2019-08-12 16:00/from 2019-08-12 14:00", true,
+                "Got it!",
+                "  task added: project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
+                "Now you have 7 tasks in your list.");
 
-        {
-            var msg = List.of("Got it!",
-                              "  task added: do homework (by: Aug 07 2019 20:00)",
-                              "Now you have 8 tasks in your list.");
-            var cmd = assertDoesNotThrow(() ->
-                    CommandParser.parse("deadline do homework /by 2019-08-07 20:00").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "deadline do homework /by 2019-08-07 20:00", true,
+                "Got it!",
+                "  task added: do homework (by: Aug 07 2019 20:00)",
+                "Now you have 8 tasks in your list.");
 
-        {
-            var msg = List.of("7.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("occurs on 2019-08-12").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "occurs on 2019-08-12", false,
+                "7.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)");
 
-        {
-            var msg = List.of("You have 8 tasks in your list:",
-                              "1.[T][ ] read book",
-                              "2.[D][ ] return book (by: Aug 05 2019 15:00)",
-                              "3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
-                              "4.[T][X] join sports club",
-                              "5.[T][ ] borrow book",
-                              "6.[D][ ] return book (by: Aug 09 2019 15:00)",
-                              "7.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
-                              "8.[D][ ] do homework (by: Aug 07 2019 20:00)");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("list").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "list", false,
+                "You have 8 tasks in your list:",
+                "1.[T][ ] read book",
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)",
+                "3.[E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
+                "4.[T][X] join sports club",
+                "5.[T][ ] borrow book",
+                "6.[D][ ] return book (by: Aug 09 2019 15:00)",
+                "7.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
+                "8.[D][ ] do homework (by: Aug 07 2019 20:00)");
 
         {
             String[] msg = { "Syntax error! Correct syntax:", "  todo <task>" };
@@ -173,35 +120,26 @@ class InputOutputTest {
             assertArrayEquals(msg, ex.getLines());
         }
 
-        {
-            var msg = List.of("Task removed, but still UNDONE!",
-                              "  [E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
-                              "Now you have 7 tasks in your list.");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("delete 3").execute(ctx));
-            assertEquals(new CommandResult(msg, false, true), cmd);
-        }
+        assertExec(ctx, "delete 3", true,
+                "Task removed, but still UNDONE!",
+                "  [E][ ] project meeting (from: Aug 06 2019 14:00 to: Aug 06 2019 16:00)",
+                "Now you have 7 tasks in your list.");
 
-        {
-            var msg = List.of("You have 7 tasks in your list:",
-                              "1.[T][ ] read book",
-                              "2.[D][ ] return book (by: Aug 05 2019 15:00)",
-                              "3.[T][X] join sports club",
-                              "4.[T][ ] borrow book",
-                              "5.[D][ ] return book (by: Aug 09 2019 15:00)",
-                              "6.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
-                              "7.[D][ ] do homework (by: Aug 07 2019 20:00)");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("list").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "list", false,
+                "You have 7 tasks in your list:",
+                "1.[T][ ] read book",
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)",
+                "3.[T][X] join sports club",
+                "4.[T][ ] borrow book",
+                "5.[D][ ] return book (by: Aug 09 2019 15:00)",
+                "6.[E][ ] project meeting (from: Aug 12 2019 14:00 to: Aug 12 2019 16:00)",
+                "7.[D][ ] do homework (by: Aug 07 2019 20:00)");
 
-        {
-            var msg = List.of("Here are the matching tasks in your list:",
-                              "1.[T][ ] read book",
-                              "2.[D][ ] return book (by: Aug 05 2019 15:00)",
-                              "4.[T][ ] borrow book",
-                              "5.[D][ ] return book (by: Aug 09 2019 15:00)");
-            var cmd = assertDoesNotThrow(() -> CommandParser.parse("find book").execute(ctx));
-            assertEquals(new CommandResult(msg, false, false), cmd);
-        }
+        assertExec(ctx, "find book", false,
+                "Here are the matching tasks in your list:",
+                "1.[T][ ] read book",
+                "2.[D][ ] return book (by: Aug 05 2019 15:00)",
+                "4.[T][ ] borrow book",
+                "5.[D][ ] return book (by: Aug 09 2019 15:00)");
     }
 }
