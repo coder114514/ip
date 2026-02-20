@@ -18,6 +18,6 @@ public abstract class Command {
      * @return a string representing the type of the command
      */
     public String getType() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 }
