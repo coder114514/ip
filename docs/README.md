@@ -8,13 +8,16 @@ TobTahc is a task management chatbot that helps you keep track of your todos, de
 
 1. Download the jar file from [here](https://github.com/coder114514/ip/releases/latest).
 1. Run the following command within the enclosing folder of the JAR file.
-```sh
-java -jar tobtahc.jar
-```
+
+   ```sh
+   java -jar tobtahc.jar
+   ```
+
 1. Type commands in the text field and press Enter or click Send.
 1. The `data` directory is for storing your tasks.
 
 Program Options:
+
 ```
 Usage: java -jar tobtahc.jar [options]
 
@@ -63,8 +66,9 @@ Display all tasks in the task list.
 **Format**: `list`
 
 **Task Status Symbols**:
-- `[T]` = ToDo, `[D]` = Deadline, `[E]` = Event
-- `[X]` = Done, `[ ]` = Not Done
+
+* `[T]` = ToDo, `[D]` = Deadline, `[E]` = Event
+* `[X]` = Done, `[ ]` = Not Done
 
 ---
 
@@ -169,15 +173,15 @@ As you can see in the previous section, some commands ask you to input a date ti
 
 ### Date
 
-- `y`/`yyyy`: Year (`2019`).
-- `M`: Month of the year (1-12 or 01-12).
-- `d`: Day of the month (1-31 or 01-31).
-- `MM`: Month of the year (01-12).
-- `dd`: Day of the month (01-31).
-- `-`: Literal separator.
+* `y`/`yyyy`: Year (`2019`).
+* `M`: Month of the year (1-12 or 01-12).
+* `d`: Day of the month (1-31 or 01-31).
+* `MM`: Month of the year (01-12).
+* `dd`: Day of the month (01-31).
+* `-`: Literal separator.
 
 ### Time
 
-- `HH`: Hour of the day (00-23).
-- `mm`: Minute of the hour (00-59).
-- `:`: Literal separator.
+* `HH`: Hour of the day (00-23).
+* `mm`: Minute of the hour (00-59).
+* `:`: Literal separator.
