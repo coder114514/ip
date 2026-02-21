@@ -87,3 +87,8 @@ javadoc {
 }
 
 build.dependsOn javadoc
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
