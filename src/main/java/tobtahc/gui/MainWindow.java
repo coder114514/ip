@@ -41,6 +41,11 @@ public class MainWindow extends AnchorPane {
         userImage = new Image(getClass().getResourceAsStream(USER_IMAGE_PATH));
         botImage = new Image(getClass().getResourceAsStream(BOT_IMAGE_PATH));
 
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) -> {
+            // This moves the scroll to the bottom ONLY when the height increases
+            scrollPane.setVvalue(1.0);
+        });
+
         addDialogs(DialogBox.getBotDialog("Hello! I'm TobTahc. Tob tahc a ma I.\n"
                 + "What can I do for you?", botImage));
     }
@@ -94,8 +99,6 @@ public class MainWindow extends AnchorPane {
         } catch (CommandParseError e) {
             addDialogs(DialogBox.getBotDialogForSyntaxError(String.join("\n", e.getLines()), botImage));
         }
-        // autoscroll downwards after the new message bubbles have been added
-        Platform.runLater(() -> scrollPane.setVvalue(1.0));
     }
 
     private void addDialogs(DialogBox... boxes) {
