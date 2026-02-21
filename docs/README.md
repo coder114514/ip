@@ -6,12 +6,10 @@ TobTahc is a task management chatbot that helps you keep track of your todos, de
 
 ## Quickstart
 
-1. Download the jar file for your platform from [here](https://github.com/coder114514/ip/releases/latest).
-1. Run one of the following commands within the enclosing folder of the JAR file depending on your platform.
+1. Download the jar file from [here](https://github.com/coder114514/ip/releases/latest).
+1. Run the following command within the enclosing folder of the JAR file.
 ```sh
-java -jar tobtahc-win.jar
-java -jar tobtahc-linux.jar
-java -jar tobtahc-mac.jar
+java -jar tobtahc.jar
 ```
 1. Type commands in the text field and press Enter or click Send.
 1. The `data` directory is for storing your tasks.

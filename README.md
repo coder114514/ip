@@ -33,10 +33,15 @@ Build the runnable fat jar:
 
 Run:
 ```sh
-java -jar build/libs/tobtahc-*.jar
+java -jar build/libs/tobtahc.jar
 ```
 
 Options:
-```sh
-java -jar build/libs/tobtahc-*.jar -h
+```
+Usage: java -jar tobtahc.jar [options]
+
+Options:
+  -g, --gui, /gui      Start the application in GUI mode (default)
+  -c, --cli, /cli      Start the application in CLI mode
+  -h, --help, /?       Show this help message
 ```
