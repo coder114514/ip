@@ -92,3 +92,13 @@ tasks.withType(AbstractArchiveTask).configureEach {
     preserveFileTimestamps = false
     reproducibleFileOrder = true
 }
+
+import org.apache.tools.ant.filters.FixCrLfFilter
+
+// Normalize EOL of selected text resources in the build output (so the JAR contents are consistent)
+// This does NOT change files in the working tree.
+tasks.named('processResources') {
+    filesMatching(['**/*.fxml', '**/*.css']) {
+        filter(FixCrLfFilter, eol: FixCrLfFilter.CrLf.newInstance('lf'))
+    }
+}

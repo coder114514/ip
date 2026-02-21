@@ -31,10 +31,23 @@ jobs:
       - name: Build fat jar
         run: ./gradlew --no-daemon shadowJar
 
+      - name: Show jar SHA-256 (Linux)
+        if: runner.os == 'Linux'
+        run: sha256sum build/libs/tobtahc.jar
+
+      - name: Show jar SHA-256 (macOS)
+        if: runner.os == 'macOS'
+        run: shasum -a 256 build/libs/tobtahc.jar
+
+      - name: Show jar SHA-256 (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: (Get-FileHash build/libs/tobtahc.jar -Algorithm SHA256).Hash
+
       - name: Upload fat jar
         uses: actions/upload-artifact@v4
         with:
           name: tobtahc-jar-${{ runner.os }}
-          path: build/libs/*.jar
+          path: build/libs/tobtahc.jar
           if-no-files-found: error
           retention-days: 14
