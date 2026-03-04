@@ -161,7 +161,9 @@ Exit TobTahc.
 
 ---
 
-And TobTahc just echos anything that is not a command.
+TobTahc just echos anything that is not a command.
+
+And sometimes, TobTahc would have a flipped response (like how TobTahc is flipped ChatBot) to add some variety.
 
 ## Data Storage
 
